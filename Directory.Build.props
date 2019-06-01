@@ -1,0 +1,22 @@
+<Project>
+  <PropertyGroup>  
+    <VersionSuffix Condition="$(Beta) == 'true'">-beta</VersionSuffix>
+    <Root>$(MSBuildThisFileDirectory)</Root>
+  </PropertyGroup>
+  <ItemGroup>
+    <AdditionalFiles Include="$(Root)stylecop.json" Link="stylecop.json" />
+    <Compile Include="$(Root)CommonAssemblyInfo.cs" />
+    <PackageReference Include="StyleCop.Analyzers" Version="1.0.2" PrivateAssets="All" />
+  </ItemGroup>
+  <PropertyGroup>
+    <Authors>Nicola Biancolini</Authors>
+    <Company>React Consulting S.r.l.</Company>
+    <CodeAnalysisRuleSet>$(Root)Cake.Board.ruleset</CodeAnalysisRuleSet>
+    <Copyright>Copyright (c) Nicola Biancolini $([System.DateTime]::Now.ToString(yyyy))</Copyright>
+    <GenerateDocumentationFile>false</GenerateDocumentationFile>
+    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
+    <LangVersion>latest</LangVersion>
+    <NeutralLanguage>en-US</NeutralLanguage>
+    <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+  </PropertyGroup>
+</Project>
