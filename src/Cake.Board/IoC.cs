@@ -17,8 +17,6 @@ namespace Cake.Board
     {
         private static IServiceProvider _services;
 
-        private static IoC _instance;
-
         private IoC()
         {
         }
@@ -26,15 +24,19 @@ namespace Cake.Board
         /// <summary>
         /// Todo.
         /// </summary>
-        /// <param name="cakeContext">Todo1.</param>
-        /// <param name="board">Todo2.</param>
-        /// <returns>Todo3.</returns>
-        public static IoC WireUp(ICakeContext cakeContext, IBoard board)
+        /// <typeparam name="TContainer">Todo1.</typeparam>
+        /// <param name="container">Todo2.</param>
+        /// <param name="context">Todo3.</param>
+        public static void WireUp<TContainer>(IDependencyContainer container, ICakeContext context)
+            where TContainer : IDependencyContainer
         {
-            if (IoC._instance == null)
-                IoC._instance = new IoC().Configure(cakeContext, board);
+            if (IoC._services != null)
+                return;
 
-            return IoC._instance;
+            ServiceCollection serviceCollection = new ServiceCollection();
+            serviceCollection.AddSingleton(context.Log);
+
+            IoC._services = container.Configure(serviceCollection).BuildServiceProvider();
         }
 
         /// <summary>
@@ -43,17 +45,5 @@ namespace Cake.Board
         /// <typeparam name="T">Todo1.</typeparam>
         /// <returns>Todo2.</returns>
         public static T Get<T>() => IoC._services.GetService<T>();
-
-        private IoC Configure(ICakeContext cakeContext, IBoard board)
-        {
-            Ensure.NotNull(cakeContext, nameof(cakeContext));
-            ServiceCollection serviceCollection = new ServiceCollection();
-            serviceCollection.AddSingleton(cakeContext.Log);
-            serviceCollection.AddSingleton(board);
-
-            IoC._services = serviceCollection.BuildServiceProvider();
-
-            return this;
-        }
     }
 }

@@ -25,7 +25,8 @@
       "topLevelTypes": [
         "class",
         "struct",
-        "interface"
+        "interface",
+        "enum"
       ]
     },
     "namingRules": {
