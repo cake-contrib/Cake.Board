@@ -1,0 +1,20 @@
+assembly-versioning-scheme: None
+assembly-file-versioning-scheme: None
+assembly-informational-format: None
+branches:
+  master:
+    tag:
+    increment: Patch
+    mode: ContinuousDelivery
+    prevent-increment-of-merged-branch-version: true
+  (pull|pull\-requests|pr)[/-]:
+    tag: PR
+    increment: Inherit
+    mode: ContinuousDelivery
+    track-merge-target: true
+    tag-number-pattern: '[/-](?<number>\d+)[-/]'
+  preview?[/-]:
+    tag: beta
+    increment: None
+  relese?[/-]:
+    increment: None
