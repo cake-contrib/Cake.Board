@@ -1,24 +1,29 @@
-assembly-versioning-scheme: None
-assembly-file-versioning-scheme: None
-assembly-informational-format: None
-branches:
-  master:
-    regex: master
-    tag:
-    increment: Patch
-    mode: ContinuousDelivery
-    prevent-increment-of-merged-branch-version: true
-  pull-request:
-    regex: (pull|pull\-requests|pr)[/-]
-    tag: PR
-    increment: Inherit
-    mode: ContinuousDelivery
-    track-merge-target: true
-    tag-number-pattern: '[/-](?<number>\d+)[-/]'
-  preview:
-    regex: preview[/-]
-    tag: beta
-    increment: None
-  stable:
-    regex: stable[/-]
-    increment: None
+# assembly-versioning-scheme: None
+# assembly-file-versioning-scheme: None
+# assembly-informational-format: None
+# branches:
+#   master:
+#     regex: master
+#     tag: ''
+#     increment: Patch
+#     mode: ContinuousDelivery
+#     prevent-increment-of-merged-branch-version: true
+#   feature:
+#     regex: feature[/-]
+#     tag: useBranchName
+#     increment: None
+#   pull-request:
+#     regex: (pull|pull\-requests|pr)[/-]
+#     tag: PR
+#     increment: Inherit
+#     mode: ContinuousDelivery
+#     track-merge-target: true
+#     tag-number-pattern: '[/-](?<number>\d+)[-/]'
+#   preview:
+#     regex: preview[/-]
+#     tag: beta
+#     increment: None
+#   stable:
+#     regex: stable[/-]
+#     tag: ''
+#     increment: None
