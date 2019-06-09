@@ -21,7 +21,6 @@ public class BuildPaths
         var binDir = rootDir.Combine("bin");
         
         var outputDir = rootDir.Combine("output");
-        var azureBoardDir = outputDir.Combine("azure-boards");
 
         var licensePath = $"{outputDir.FullPath}/LICENSE.txt";
         var releaseNotesPath = $"{outputDir.FullPath}/release-notes.md";
@@ -37,7 +36,6 @@ public class BuildPaths
             rootDir,
             binDir,
             outputDir,
-            azureBoardDir,
             testResultDir,
             testCoverageDir,
             testConverageResultsDir,
@@ -77,7 +75,6 @@ public class BuildDirectories
     public DirectoryPath Root { get; private set; }
     public DirectoryPath Bin { get; private set; }
     public DirectoryPath Output { get; private set; }
-    public DirectoryPath AzureBoards { get; private set; }
     public DirectoryPath TestResult { get; private set; }
     public DirectoryPath TestCoverage { get; private set; }
     public DirectoryPath TestCoverageResults { get; private set; } 
@@ -88,7 +85,6 @@ public class BuildDirectories
         DirectoryPath root,
         DirectoryPath bin,
         DirectoryPath output,
-        DirectoryPath azureBoards,
         DirectoryPath testResult,
         DirectoryPath testCoverage,
         DirectoryPath testCoverageResults,
@@ -97,7 +93,6 @@ public class BuildDirectories
         Root = root;
         Bin = bin;
         Output = output;
-        AzureBoards = azureBoards;
         TestResult = testResult;
         TestCoverage = testCoverage;
         TestCoverageResults = testCoverageResults;
@@ -107,7 +102,6 @@ public class BuildDirectories
             Root,
             Bin,
             Output,
-            AzureBoards,
             TestResult,
             TestCoverage,
             TestCoverageResults,

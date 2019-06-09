@@ -1,0 +1,49 @@
+name: hello-cake-meetup
+
+variables:
+  artifacts_directory: $(System.DefaultWorkingDirectory)/.artifacts
+
+trigger:
+  branches:
+    include:
+      - master
+      - preview/*
+      - stable/*
+
+jobs:
+  - job: windows_build_agent
+    displayName: Windows Agent
+    pool:
+      vmImage: vs2017-win2016
+          
+    steps:
+      # Clean and checkout
+      - checkout: self
+        clean: all
+        continueOnError: 'false'
+
+      # Build, test and generate artifact output
+      - powershell: .\build.ps1
+        displayName: 'Build, test and generate artifact output on working directory'
+        continueOnError: 'false'
+
+  - job: ubuntu_build_agent
+    displayName: Ubuntu Agent
+    pool:
+      vmImage: ubuntu-16.04
+
+    steps:
+      # Install Cake.Tool dotnet tool
+      - bash: dotnet tool install --global Cake.Tool --version 0.33.0
+        displayName: 'Install dotnet Cake.Tool on global path'
+        continueOnError: 'false'
+
+      # Clean and checkout
+      - checkout: self
+        clean: all
+        continueOnError: 'false'
+
+      # Build, test and generate artifact output
+      - bash: dotnet cake build.cake
+        displayName: 'Build, test and generate artifact output on working directory'
+        continueOnError: 'false'

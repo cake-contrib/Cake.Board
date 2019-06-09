@@ -31,7 +31,6 @@ public class BuildParameters
     public DotNetCoreMSBuildSettings MSBuildSettings { get; private set; }
     public BuildPaths ArtifactPaths { get; private set; }
     public BuildVersion Version { get; private set; }
-    public Dictionary<string, DirectoryPath> PackagesBuildMap { get; private set; }
 
     public bool IsStableRelease() => !IsLocalBuild && IsMainRepo && IsStableBranch && !IsPullRequest && IsTagged;
     public bool IsPreviewRelease() => !IsLocalBuild && IsMainRepo && IsMainBranch && !IsPullRequest && IsTagged;
@@ -57,6 +56,8 @@ public class BuildParameters
             EnabledUnitTests = IsEnabled(context, "ENABLED_UNIT_TESTS"),
             EnabledPublishNuget = IsEnabled(context, "ENABLED_PUBLISH_NUGET"),
 
+            CoverageThreshold = context.Argument("coverage-threshold", 100),
+
             IsRunningOnUnix = context.IsRunningOnUnix(),
             IsRunningOnWindows = context.IsRunningOnWindows(),
             IsRunningOnLinux = context.Environment.Platform.Family == PlatformFamily.Linux,
@@ -81,18 +82,13 @@ public class BuildParameters
     public void Setup(
         ICakeContext context,
         GitVersion gitVersion,
-        int lineCoverageThreshold)
+        int? lineCoverageThreshold = null)
     {
         Version = BuildVersion.Calculate(context, this, gitVersion);
-        CoverageThreshold = lineCoverageThreshold;
+        CoverageThreshold = lineCoverageThreshold ?? CoverageThreshold;
         MSBuildSettings = GetMsBuildSettings(context, Version);
 
         ArtifactPaths = BuildPaths.GetPaths(context, Configuration, Version);
-        
-        PackagesBuildMap = new Dictionary<string, DirectoryPath>
-        {
-            ["Cake.Board.AzureBoards"] = ArtifactPaths.Directories.AzureBoards
-        };
     }
 
     private DotNetCoreMSBuildSettings GetMsBuildSettings(
