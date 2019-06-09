@@ -4,7 +4,7 @@
 namespace Cake.Board.Abstractions
 {
     /// <summary>
-    /// Todo.
+    /// Work item.
     /// </summary>
     public interface IWorkItem
     {
@@ -12,5 +12,25 @@ namespace Cake.Board.Abstractions
         /// Gets or sets work item Id.
         /// </summary>
         string Id { get; set; }
+
+        /// <summary>
+        /// Gets or sets work item type.
+        /// </summary>
+        string Type { get; set; }
+
+        /// <summary>
+        /// Gets or sets work item state.
+        /// </summary>
+        string State { get; set; }
+
+        /// <summary>
+        /// Gets or sets work item title.
+        /// </summary>
+        string Title { get; set; }
+
+        /// <summary>
+        /// Gets or sets work item description.
+        /// </summary>
+        string Description { get; set; }
     }
 }

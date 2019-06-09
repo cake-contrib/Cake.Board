@@ -3,15 +3,14 @@
 
 using System;
 using System.Collections.Generic;
-using System.Net;
 using System.Net.Http;
 using System.Threading.Tasks;
 
 using Cake.Board.Abstractions;
+using Cake.Board.AzureBoards.Converters;
 using Cake.Board.AzureBoards.Models;
 using Cake.Board.Extensions;
 using Newtonsoft.Json;
-using Polly;
 
 namespace Cake.Board.AzureBoards
 {
@@ -50,7 +49,7 @@ namespace Cake.Board.AzureBoards
                 .ExecuteAsync(async () =>
                     await this._client.GetAsync($"{this._client.BaseAddress}/_apis/wit/wiql/{id.ArgumentNotEmptyOrWhitespace(nameof(id))}"));
 
-            return JsonConvert.DeserializeObject<WorkItem>(await response.Content.ReadAsStringAsync());
+            return JsonConvert.DeserializeObject<WorkItem>(await response.Content.ReadAsStringAsync(), new WorkItemConverter());
         }
 
         /// <inheritdoc/>
@@ -66,7 +65,7 @@ namespace Cake.Board.AzureBoards
                 .ExecuteAsync(async () =>
                     await this._client.GetAsync($"{this._client.BaseAddress}/{project.ArgumentNotEmptyOrWhitespace(nameof(project))}/{team.ArgumentNotEmptyOrWhitespace(nameof(team))}/_apis/wit/wiql/{queryId.ArgumentNotEmptyOrWhitespace(nameof(queryId))}"));
 
-            return JsonConvert.DeserializeObject<IEnumerable<WorkItem>>(await response.Content.ReadAsStringAsync());
+            return JsonConvert.DeserializeObject<IEnumerable<WorkItem>>(await response.Content.ReadAsStringAsync(), new WorkItemsConverter());
         }
     }
 }
