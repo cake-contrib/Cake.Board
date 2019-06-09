@@ -157,46 +157,11 @@ Task("Coverage-Report")
             parameters.ArtifactPaths.Directories.TestCoverageResults, settings);
     });
 
-Task("Copy-Bin")
-    .Does<BuildParameters>((parameters) =>
-    {
-        var settings = new DotNetCorePublishSettings
-        {
-            Configuration = parameters.Configuration,
-            Framework = parameters.Framework,
-            NoBuild = true,
-            MSBuildSettings = parameters.MSBuildSettings
-        };
-
-        foreach (var package in parameters.PackagesBuildMap)
-        {
-            Information("Run publish for {0} to {1}", package.Key, package.Value); 
-
-            settings.OutputDirectory = package.Value;
-            DotNetCorePublish($"./src/**/{package.Key}.csproj", settings);  
-        }
-    });
-
 Task("Copy-Files")
     .Does<BuildParameters>((parameters) => 
     {
         Information("Copy static files to artifacts"); 
-        CopyFileToDirectory("./LICENSE", parameters.ArtifactPaths.Directories.Root);
-
-        foreach (var project in GetFiles("./src/**/*.csproj"))
-        {
-            var settings = new DotNetCorePackSettings 
-            {
-                NoBuild = true,
-                NoRestore = true,
-                Configuration = parameters.Configuration,
-                OutputDirectory = parameters.ArtifactPaths.Directories.Root,
-                MSBuildSettings = parameters.MSBuildSettings
-            };
-
-            Information("Run pack for {0} to {1}", project.GetFilenameWithoutExtension(), settings.OutputDirectory); 
-            DotNetCorePack(project.FullPath, settings);
-        }
+        CopyFile("./LICENSE", parameters.ArtifactPaths.Files.License);
     });
 
 Task("Release-Notes")
@@ -214,8 +179,6 @@ Task("Release-Notes")
         if (string.IsNullOrEmpty(System.IO.File.ReadAllText(parameters.ArtifactPaths.Files.ReleaseNotes.FullPath)))
             System.IO.File.WriteAllText(parameters.ArtifactPaths.Files.ReleaseNotes.FullPath, "No issues closed since last release");
     });
-
-
 
 Task("Publish-Test-Results-AzurePipelines-UbuntuAgent")
     .WithCriteria<BuildParameters>((context, parameters) => 
@@ -256,7 +219,6 @@ Task("Publish-Test-Results")
     .IsDependentOn("Publish-Test-Results-AzurePipelines")
     .Does(() =>
     {
-
     });
 
 Task("Publish-Coverage-Results-AzurePipelines-UbuntuAgent")
@@ -300,7 +262,6 @@ Task("Publish-Coverage-Results")
     .IsDependentOn("Publish-Coverage-Results-AzurePipelines")
     .Does(() =>
     {
-
     });
 
 Task("Publish-Artifacts-AzurePipelines-UbuntuAgent")
@@ -334,17 +295,30 @@ Task("Publish-Artifacts-AzurePipelines-WindowsAgent")
     });
 
 Task("Pack-Nuget")
-    .WithCriteria<BuildParameters>((context, parameters) => 
-        parameters.IsRunningOnAzurePipeline, "Nuget packages are generated only on agents.")
-    .WithCriteria<BuildParameters>((context, parameters) => 
-        parameters.IsRunningOnWindows, "Nuget packages are generated only on Windows agents.")
     .Does<BuildParameters>((parameters) => 
-    {
-        //foreach(var package in parameters.Packages.Nuget)
-            // Pack(
-            //     package.NuspecPath,
-            //     parameters.Configuration,
-            //     parameters.ArtifactPaths.Directories.)
+    {   
+        var settings = new DotNetCorePackSettings 
+        {
+            NoBuild = true,
+            NoRestore = true,
+            Configuration = parameters.Configuration,
+            OutputDirectory = parameters.ArtifactPaths.Directories.Root,
+            MSBuildSettings = parameters.MSBuildSettings
+        };
+
+        foreach(var package in GetFiles($"./nuspec/*.nuspec"))
+        {
+            var packageId = package.GetFilenameWithoutExtension();
+
+            Information("Run pack for {0} to {1}", packageId, parameters.ArtifactPaths.Directories.Nuget.Combine($"{packageId}.nupkg")); 
+            Pack(
+                File($"./nuspec/{packageId}.nuspec"),
+                parameters.Configuration,
+                Directory($"./src/{packageId}"),
+                parameters.ArtifactPaths.Directories.Nuget,
+                parameters.Version.SemVersion,
+                parameters.ArtifactPaths.Files.License);
+        }
     });
 
 Task("Publish-Artifacts-AzurePipelines")
@@ -363,7 +337,6 @@ Task("Publish-Artifacts")
 Task("Copy")
     .IsDependentOn("Test")
     .IsDependentOn("Coverage-Report")
-    .IsDependentOn("Copy-Bin") 
     .IsDependentOn("Copy-Files")   
     .IsDependentOn("Release-Notes")
     .Does(() =>

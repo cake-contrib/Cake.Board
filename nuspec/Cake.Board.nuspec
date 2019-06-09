@@ -1,0 +1,22 @@
+<?xml version="1.0"?>
+<package>
+  <metadata>
+    <id>Cake.Board</id>
+    <version>$version$</version>
+    <title>Cake.Board</title>
+    <authors>Nicola Biancolini</authors>
+    <owners>Nicola Biancolini</owners>
+    <license type="expression">MIT</license>
+    <projectUrl>https://github.com/nicolabiancolini/Cake.Board</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>This add-in allows you to interact directly with the work items of Azure Boards.</description>
+    <language>en-US</language>
+    <tags>cake build azure azure-boards work-item wit board</tags>
+    <developmentDependency>true</developmentDependency>
+    <releaseNotes>https://github.com/nicolabiancolini/Cake.Board/releases</releaseNotes>
+    
+    <dependencies>
+      <dependency id="Cake.Board.Abstracitons" version="0.*" />
+    </dependencies>
+  </metadata>
+</package>

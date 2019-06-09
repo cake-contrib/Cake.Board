@@ -153,23 +153,33 @@ void PublishTestResults(
 void Pack(
     FilePath nuspecPath,
     string configuration,
-    DirectoryPath binDir,
+    DirectoryPath projectDir,
     DirectoryPath outputDir,
     string version,
-    DotNetCoreMSBuildSettings msBuildSettings)
+    FilePath licensePath)
 {
+    projectDir = MakeAbsolute(projectDir);
+    licensePath = MakeAbsolute(licensePath);
+
     NuGetPack(
         nuspecPath,
         new NuGetPackSettings
         {
             Version = version,
             OutputDirectory = outputDir,
-            Files = GetFiles(binDir + "/**/*.*")
+            Files = GetFiles($"{projectDir}/**/bin/{configuration}/**/*.*")
                 .Select(file => 
-                    new NuSpecContent { 
+                    new NuSpecContent 
+                    { 
                         Source = file.FullPath,
-                        Target = file.FullPath.Replace(binDir.FullPath, "") 
-                        })
-                .ToArray()
+                        Target = file.FullPath.Replace(projectDir.FullPath, "lib") 
+                    })
+                .Append(
+                    new NuSpecContent 
+                    {
+                        Source = licensePath.FullPath,
+                        Target = licensePath.FullPath.Replace(licensePath.FullPath, "")
+                    })
+                .ToArray(),
         });
 }
