@@ -6,6 +6,7 @@
 #addin "nuget:?package=Cake.Json&version=3.0.1"
 #addin "nuget:?package=Newtonsoft.Json&version=11.0.2"
 #addin "nuget:?package=Cake.Gitter&version=0.11.0"
+#addin "nuget:?package=Cake.Incubator&version=5.0.1"
 
 /*
  * Install tools.
@@ -27,6 +28,16 @@
  * Variables
  */
 bool publishingError = false;
+
+void TaskErrorReporter(
+    string information,
+    Exception exception,
+    bool isPublishing = true) 
+{
+    Information(information);
+    Error(exception.Dump());
+    publishingError = isPublishing; 
+}
 
 /*
  * Setup
@@ -180,11 +191,36 @@ Task("Release-Notes")
             System.IO.File.WriteAllText(parameters.ArtifactPaths.Files.ReleaseNotes.FullPath, "No issues closed since last release");
     });
 
+Task("Pack-Nuget")
+    .Does<BuildParameters>((parameters) => 
+    {   
+        foreach(var package in GetFiles($"./nuspec/*.nuspec"))
+        {
+            var packageId = package.GetFilenameWithoutExtension();
+
+            Information("Run pack for {0} to {1}", packageId, parameters.ArtifactPaths.Directories.Nuget.Combine($"{packageId}.nupkg")); 
+            Pack(
+                File($"./nuspec/{packageId}.nuspec"),
+                parameters.Configuration,
+                Directory($"./src/{packageId}"),
+                parameters.ArtifactPaths.Directories.Nuget,
+                parameters.Version.SemVersion,
+                parameters.ArtifactPaths.Files.License);
+        }
+    });
+
 Task("Publish-Test-Results-AzurePipelines-UbuntuAgent")
     .WithCriteria<BuildParameters>((context, parameters) => 
         parameters.IsRunningOnAzurePipeline, "Test results are generated only on agents.")
     .WithCriteria<BuildParameters>((context, parameters) => 
         parameters.IsRunningOnLinux, "Test results for Ubuntu agent are generated only on Ubuntu agents.")    
+    .ContinueOnError()
+    .ReportError(exception => 
+        TaskErrorReporter(
+            "Publish-Test-Results-AzurePipelines-UbuntuAgent task failed, but continuing with next Task...",
+            exception,
+            true
+    ))
     .Does<BuildParameters>((parameters) => 
     {
         Information("Publish test results for Ubuntu Agent"); 
@@ -199,6 +235,13 @@ Task("Publish-Test-Results-AzurePipelines-WindowsAgent")
         parameters.IsRunningOnAzurePipeline, "Test results are generated only on agents.")
     .WithCriteria<BuildParameters>((context, parameters) => 
         parameters.IsRunningOnWindows, "Test results for Windows agent are generated only on Windows agents.")
+    .ContinueOnError()
+    .ReportError(exception => 
+        TaskErrorReporter(
+            "Publish-Test-Results-AzurePipelines-WindowsAgent task failed, but continuing with next Task...",
+            exception,
+            true
+    ))
     .Does<BuildParameters>((parameters) => 
     {
         Information("Publish test results for Windows Agent"); 
@@ -226,6 +269,13 @@ Task("Publish-Coverage-Results-AzurePipelines-UbuntuAgent")
         parameters.IsRunningOnAzurePipeline, "Coverage results are generated only on agents.")
     .WithCriteria<BuildParameters>((context, parameters) => 
         parameters.IsRunningOnLinux, "Coverage results for Ubuntu agent are generated only on Ubuntu agents.")    
+    .ContinueOnError()
+    .ReportError(exception => 
+        TaskErrorReporter(
+            "Publish-Coverage-Results-AzurePipelines-UbuntuAgent task failed, but continuing with next Task...",
+            exception,
+            true
+    ))
     .Does<BuildParameters>((parameters) => 
     {
         Information("Publish code coverage results for Ubuntu Agent"); 
@@ -241,6 +291,13 @@ Task("Publish-Coverage-Results-AzurePipelines-WindowsAgent")
         parameters.IsRunningOnAzurePipeline, "Coverage results are generated only on agents.")
     .WithCriteria<BuildParameters>((context, parameters) => 
         parameters.IsRunningOnWindows, "Coverage results for Windows agent are generated only on Windows agents.")
+    .ContinueOnError()
+    .ReportError(exception => 
+        TaskErrorReporter(
+            "Publish-Coverage-Results-AzurePipelines-WindowsAgent task failed, but continuing with next Task...",
+            exception,
+            true
+    ))
     .Does<BuildParameters>((parameters) => 
     {
         Information("Publish code coverage results for Windows Agent"); 
@@ -269,6 +326,13 @@ Task("Publish-Artifacts-AzurePipelines-UbuntuAgent")
         parameters.IsRunningOnAzurePipeline, "Artifacts are published only on agents.")
     .WithCriteria<BuildParameters>((context, parameters) => 
         parameters.IsRunningOnLinux, "Artifacts for Ubuntu agent are published only on Ubuntu agents.")    
+    .ContinueOnError()
+    .ReportError(exception => 
+        TaskErrorReporter(
+            "Publish-Artifacts-AzurePipelines-UbuntuAgent task failed, but continuing with next Task...",
+            exception,
+            true
+    ))
     .Does<BuildParameters>((parameters) => 
     {
         Information("Publish artifacts for Ubuntu Agent"); 
@@ -284,6 +348,13 @@ Task("Publish-Artifacts-AzurePipelines-WindowsAgent")
         parameters.IsRunningOnAzurePipeline, "Artifacts are published only on agents.")
     .WithCriteria<BuildParameters>((context, parameters) => 
         parameters.IsRunningOnWindows, "Artifacts for Windows agent are published only on Windows agents.")
+    .ContinueOnError()
+    .ReportError(exception => 
+        TaskErrorReporter(
+            "Publish-Artifacts-AzurePipelines-WindowsAgent task failed, but continuing with next Task...",
+            exception,
+            true
+    ))
     .Does<BuildParameters>((parameters) => 
     {
         Information("Publish artifacts for Windows Agent"); 
@@ -292,33 +363,6 @@ Task("Publish-Artifacts-AzurePipelines-WindowsAgent")
             "drop",
             "windows-agent",
             GetFiles($"{parameters.ArtifactPaths.Directories.Output}/**/*.nupkg").ToArray());
-    });
-
-Task("Pack-Nuget")
-    .Does<BuildParameters>((parameters) => 
-    {   
-        // var settings = new DotNetCorePackSettings 
-        // {
-        //     NoBuild = true,
-        //     NoRestore = true,
-        //     Configuration = parameters.Configuration,
-        //     OutputDirectory = parameters.ArtifactPaths.Directories.Root,
-        //     MSBuildSettings = parameters.MSBuildSettings
-        // };
-
-        foreach(var package in GetFiles($"./nuspec/*.nuspec"))
-        {
-            var packageId = package.GetFilenameWithoutExtension();
-
-            Information("Run pack for {0} to {1}", packageId, parameters.ArtifactPaths.Directories.Nuget.Combine($"{packageId}.nupkg")); 
-            Pack(
-                File($"./nuspec/{packageId}.nuspec"),
-                parameters.Configuration,
-                Directory($"./src/{packageId}"),
-                parameters.ArtifactPaths.Directories.Nuget,
-                parameters.Version.SemVersion,
-                parameters.ArtifactPaths.Files.License);
-        }
     });
 
 Task("Publish-Artifacts-AzurePipelines")
