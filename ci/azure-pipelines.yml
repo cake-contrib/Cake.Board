@@ -1,4 +1,4 @@
-name: hello-cake-meetup
+name: cake-board
 
 variables:
   artifacts_directory: $(System.DefaultWorkingDirectory)/.artifacts
