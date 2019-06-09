@@ -1,5 +1,5 @@
 <?xml version="1.0"?>
-<package>
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Cake.Board</id>
     <version>$version$</version>
@@ -13,8 +13,7 @@
     <language>en-US</language>
     <tags>cake build azure azure-boards work-item wit board</tags>
     <developmentDependency>true</developmentDependency>
-    <releaseNotes>https://github.com/nicolabiancolini/Cake.Board/releases</releaseNotes>
-    
+    <releaseNotes>https://github.com/nicolabiancolini/Cake.Board/releases</releaseNotes>  
     <dependencies>
       <dependency id="Cake.Board.Abstracitons" version="0.*" />
     </dependencies>

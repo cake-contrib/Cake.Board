@@ -35,7 +35,7 @@ Setup<BuildParameters>(context =>
 {
     var parameters = BuildParameters.GetParameters(Context);
     var gitVersion = GetVersion(parameters);
-    parameters.Setup(context, gitVersion, 60);
+    parameters.Setup(context, gitVersion);
 
     if (parameters.IsMainBranch && (context.Log.Verbosity != Verbosity.Diagnostic)) {
         Information("Increasing verbosity to diagnostic.");
@@ -297,14 +297,14 @@ Task("Publish-Artifacts-AzurePipelines-WindowsAgent")
 Task("Pack-Nuget")
     .Does<BuildParameters>((parameters) => 
     {   
-        var settings = new DotNetCorePackSettings 
-        {
-            NoBuild = true,
-            NoRestore = true,
-            Configuration = parameters.Configuration,
-            OutputDirectory = parameters.ArtifactPaths.Directories.Root,
-            MSBuildSettings = parameters.MSBuildSettings
-        };
+        // var settings = new DotNetCorePackSettings 
+        // {
+        //     NoBuild = true,
+        //     NoRestore = true,
+        //     Configuration = parameters.Configuration,
+        //     OutputDirectory = parameters.ArtifactPaths.Directories.Root,
+        //     MSBuildSettings = parameters.MSBuildSettings
+        // };
 
         foreach(var package in GetFiles($"./nuspec/*.nuspec"))
         {

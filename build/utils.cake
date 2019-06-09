@@ -167,12 +167,12 @@ void Pack(
         {
             Version = version,
             OutputDirectory = outputDir,
-            Files = GetFiles($"{projectDir}/**/bin/{configuration}/**/*.*")
+            Files = GetFiles($"{projectDir}/**/bin/{configuration}/**/{nuspecPath.GetFilenameWithoutExtension()}.*")
                 .Select(file => 
                     new NuSpecContent 
                     { 
                         Source = file.FullPath,
-                        Target = file.FullPath.Replace(projectDir.FullPath, "lib") 
+                        Target = file.FullPath.Replace(projectDir.FullPath, "").Replace($"bin/{configuration}", "lib") 
                     })
                 .Append(
                     new NuSpecContent 
