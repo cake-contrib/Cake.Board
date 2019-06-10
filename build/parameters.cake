@@ -1,6 +1,7 @@
 #load "./paths.cake"
 #load "./version.cake"
 #load "./utils.cake"
+#load "./credentials.cake"
 
 public class BuildParameters
 {
@@ -31,6 +32,7 @@ public class BuildParameters
     public DotNetCoreMSBuildSettings MSBuildSettings { get; private set; }
     public BuildPaths ArtifactPaths { get; private set; }
     public BuildVersion Version { get; private set; }
+    public BuildCredentials Credentials { get; private set; }
 
     public bool IsStableRelease() => !IsLocalBuild && IsMainRepo && IsStableBranch && !IsPullRequest && IsTagged;
     public bool IsPreviewRelease() => !IsLocalBuild && IsMainRepo && IsMainBranch && !IsPullRequest && IsTagged;
@@ -89,6 +91,7 @@ public class BuildParameters
         MSBuildSettings = GetMsBuildSettings(context, Version);
 
         ArtifactPaths = BuildPaths.GetPaths(context, Configuration, Version);
+        Credentials = BuildCredentials.GetCredentials(context);
     }
 
     private DotNetCoreMSBuildSettings GetMsBuildSettings(

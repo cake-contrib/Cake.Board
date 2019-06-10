@@ -209,6 +209,91 @@ Task("Pack-Nuget")
         }
     });
 
+Task("Publish-Nuget")
+    .WithCriteria<BuildParameters>((context, parameters) => 
+        parameters.EnabledPublishNuget, "Publish-NuGet was disabled.")
+    .WithCriteria<BuildParameters>((context, parameters) =>
+        parameters.IsRunningOnWindows, "Publish-NuGet works only on Windows agents.")
+    .WithCriteria<BuildParameters>((context, parameters) => 
+        parameters.IsRunningOnAzurePipeline, "Publish-NuGet works only on AzurePipeline.")
+    .WithCriteria<BuildParameters>((context, parameters) => 
+        parameters.IsStableRelease() || parameters.IsPreviewRelease(), "Publish-NuGet works only for releases.")
+    .IsDependentOn("Pack-NuGet")
+    .ContinueOnError()
+    .ReportError(exception => 
+        TaskErrorReporter(
+            "Publish-Nuget task failed, but continuing with next Task...",
+            exception,
+            true
+    ))
+    .Does<BuildParameters>((parameters) => 
+    {
+        if (string.IsNullOrWhiteSpace(parameters.Credentials.Nuget.ApiKey))
+            throw new InvalidOperationException("Could not resolve NuGet API key.");
+
+        if (string.IsNullOrWhiteSpace(parameters.Credentials.Nuget.ApiUrl))
+            throw new InvalidOperationException("Could not resolve NuGet API url.");
+
+        var settings = new NuGetPushSettings
+        {
+            ApiKey = parameters.Credentials.Nuget.ApiKey,
+            Source = parameters.Credentials.Nuget.ApiUrl
+        };
+
+        foreach(var package in GetFiles($"{parameters.ArtifactPaths.Directories.Nuget}/*.nupkg"))
+        {
+            NuGetPush(package, settings);
+        }
+    });
+
+Task("Publish-GitHub")
+    .WithCriteria<BuildParameters>((context, parameters) =>
+        parameters.IsRunningOnWindows, "Publish-GitHub works only on Windows agents.")
+    .WithCriteria<BuildParameters>((context, parameters) => 
+        parameters.IsRunningOnAzurePipeline, "Publish-GitHub works only on AzurePipeline.")
+    .WithCriteria<BuildParameters>((context, parameters) => 
+        parameters.IsStableRelease() || parameters.IsPreviewRelease(), "Publish-GitHub works only for releases.")
+    .IsDependentOn("Pack-NuGet")
+    .ContinueOnError()
+    .ReportError(exception => 
+        TaskErrorReporter(
+            "Publish-GitHub task failed, but continuing with next Task...",
+            exception,
+            true
+    ))
+    .Does<BuildParameters>((parameters) => 
+    {
+        if (string.IsNullOrWhiteSpace(parameters.Credentials.GitHub.Token))
+            throw new InvalidOperationException("Could not resolve GitHub token.");
+
+        GitReleaseManagerCreate(
+            parameters.Credentials.GitHub.Token,
+            "nicolabiancolini",
+            "Cake.Board",
+            new GitReleaseManagerCreateSettings
+            {
+                Prerelease = !parameters.IsStableRelease() && parameters.IsPreviewRelease(),
+                TargetCommitish = "master"
+            });
+
+        foreach(var package in GetFiles($"{parameters.ArtifactPaths.Directories.Nuget}/*.nupkg"))
+        {
+            GitReleaseManagerAddAssets(
+                parameters.Credentials.GitHub.Token,
+                "nicolabiancolini",
+                "Cake.Board",
+                parameters.Version.SemVersion,
+                package.FullPath);
+        }
+
+        GitReleaseManagerClose(
+            parameters.Credentials.GitHub.Token,
+            "nicolabiancolini",
+            "Cake.Board",
+            parameters.Version.SemVersion);
+    });
+
+
 Task("Publish-Test-Results-AzurePipelines-UbuntuAgent")
     .WithCriteria<BuildParameters>((context, parameters) => 
         parameters.IsRunningOnAzurePipeline, "Test results are generated only on agents.")
@@ -308,6 +393,35 @@ Task("Publish-Coverage-Results-AzurePipelines-WindowsAgent")
             GetFiles($"{parameters.ArtifactPaths.Directories.TestCoverageResults}/**/*").ToArray());
     });
 
+Task("Publish-Coverage-Results-CodeCov")
+    .WithCriteria<BuildParameters>((context, parameters) => 
+        parameters.IsRunningOnAzurePipeline, "Coverage results are generated only on agents.")
+    .WithCriteria<BuildParameters>((context, parameters) => 
+        parameters.IsRunningOnWindows, "Coverage results for Windows agent are generated only on Windows agents.")
+    .ContinueOnError()
+    .ReportError(exception => 
+        TaskErrorReporter(
+            "Publish-Coverage-Results-CodeCov task failed, but continuing with next Task...",
+            exception,
+            true
+    ))
+    .Does<BuildParameters>((parameters) => 
+    {
+        Information("Publish code coverage results for Coverlet"); 
+
+        PublishCodeCoverage(
+            GetFiles($"{parameters.ArtifactPaths.Directories.TestCoverage}/results.*.xml").Single().FullPath,
+            parameters.ArtifactPaths.Directories.TestCoverageResults,
+            GetFiles($"{parameters.ArtifactPaths.Directories.TestCoverageResults}/**/*").ToArray());
+        
+        if (string.IsNullOrWhiteSpace(parameters.Credentials.CodeCov.Token))
+            throw new InvalidOperationException("Could not resolve CodeCov token.");
+
+        Codecov(
+            GetFiles($"{parameters.ArtifactPaths.Directories.TestCoverage}/results.*.xml").Select(file => file.FullPath),
+            parameters.Credentials.CodeCov.Token);
+    });
+
 Task("Publish-Coverage-Results-AzurePipelines")
     .IsDependentOn("Publish-Coverage-Results-AzurePipelines-WindowsAgent") 
     .IsDependentOn("Publish-Coverage-Results-AzurePipelines-UbuntuAgent") 
@@ -317,6 +431,7 @@ Task("Publish-Coverage-Results-AzurePipelines")
 
 Task("Publish-Coverage-Results")
     .IsDependentOn("Publish-Coverage-Results-AzurePipelines")
+    .IsDependentOn("Publish-Coverage-Results-CodeCov")
     .Does(() =>
     {
     });
@@ -399,6 +514,8 @@ Task("Publish")
     .IsDependentOn("Publish-Test-Results")
     .IsDependentOn("Publish-Coverage-Results")
     .IsDependentOn("Publish-Artifacts")
+    .IsDependentOn("Publish-Nuget")
+    .IsDependentOn("Publish-GitHub")
     .Does(()=> 
     {
 
