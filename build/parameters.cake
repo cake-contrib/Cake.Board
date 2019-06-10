@@ -49,6 +49,8 @@ public class BuildParameters
 
         var buildSystem = context.BuildSystem();
 
+        var coverageThreshold = Environment.GetEnvironmentVariable("COVERAGE_THRESHOLD");
+
         return new BuildParameters
         {
             Target = context.Argument("target", "Default"),
@@ -58,7 +60,7 @@ public class BuildParameters
             EnabledUnitTests = IsEnabled(context, "ENABLED_UNIT_TESTS"),
             EnabledPublishNuget = IsEnabled(context, "ENABLED_PUBLISH_NUGET"),
 
-            CoverageThreshold = context.Argument("coverage-threshold", 100),
+            CoverageThreshold = context.Argument("coverage-threshold", string.IsNullOrWhiteSpace(coverageThreshold) ? 100 : int.Parse(coverageThreshold)),
 
             IsRunningOnUnix = context.IsRunningOnUnix(),
             IsRunningOnWindows = context.IsRunningOnWindows(),

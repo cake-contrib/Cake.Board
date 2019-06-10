@@ -144,7 +144,7 @@ Task("Test")
             settings.ArgumentCustomization = args => args
                 .Append("--logger")
                 .AppendQuoted(
-                    $"trx;LogFileName={MakeAbsolute(parameters.ArtifactPaths.Directories.TestCoverage).FullPath}/{projectName}_{timestamp}.trx");
+                    $"trx;LogFileName={MakeAbsolute(parameters.ArtifactPaths.Directories.TestResult).FullPath}/{projectName}_{timestamp}.trx");
 
             DotNetCoreTest(project.FullPath, settings, coverletSettings);
         }
