@@ -129,7 +129,7 @@ public class BuildParameters
         if(!string.IsNullOrWhiteSpace(repositoryName))
             context.Information("Repository Name: {0}", repositoryName);
 
-        return !string.IsNullOrWhiteSpace(repositoryName) && StringComparer.OrdinalIgnoreCase.Equals("nicolabiancolini/Cake.Build", repositoryName);
+        return !string.IsNullOrWhiteSpace(repositoryName) && StringComparer.OrdinalIgnoreCase.Equals("nicolabiancolini/Cake.Board", repositoryName);
     }
 
     private static bool IsOnBranch(
