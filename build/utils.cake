@@ -47,6 +47,8 @@ GitVersion GetVersion(BuildParameters parameters)
         OutputType = GitVersionOutput.Json    
     };
 
+    var version = GitVersion(settings);
+
     if (parameters.IsRunningOnAzurePipeline && !parameters.IsPullRequest)
     {
         settings.UpdateAssemblyInfo = true;
@@ -55,7 +57,7 @@ GitVersion GetVersion(BuildParameters parameters)
 
         GitVersion(settings);
     }
-    return GitVersion(settings);
+    return version;
 }
 
 void Build(
