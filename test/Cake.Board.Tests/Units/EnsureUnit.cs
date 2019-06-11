@@ -16,6 +16,7 @@ namespace Cake.Board.Tests.Units
         /// <summary>
         /// Todo.
         /// </summary>
+        [Fact]
         public void ScenarioWithArgumentNull()
         {
             // Arrange

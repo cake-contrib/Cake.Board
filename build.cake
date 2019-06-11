@@ -181,7 +181,7 @@ Task("Release-Notes")
     .WithCriteria<BuildParameters>((context, parameters) => 
         parameters.IsRunningOnAzurePipeline, "Release notes are generated only on release agents.")
     .WithCriteria<BuildParameters>((context, parameters) => 
-        parameters.IsStableRelease(), "Release notes are generated only for stable releases.")
+        parameters.IsStableRelease() || parameters.IsPreviewRelease(), "Release notes are generated only for releases.")
     .Does<BuildParameters>((parameters) => 
     {
         Information("Generate release notes"); 
