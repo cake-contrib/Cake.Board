@@ -409,11 +409,6 @@ Task("Publish-Coverage-Results-CodeCov")
     {
         Information("Publish code coverage results for Coverlet"); 
 
-        PublishCodeCoverage(
-            GetFiles($"{parameters.ArtifactPaths.Directories.TestCoverage}/results.*.xml").Single().FullPath,
-            parameters.ArtifactPaths.Directories.TestCoverageResults,
-            GetFiles($"{parameters.ArtifactPaths.Directories.TestCoverageResults}/**/*").ToArray());
-        
         if (string.IsNullOrWhiteSpace(parameters.Credentials.CodeCov.Token))
             throw new InvalidOperationException("Could not resolve CodeCov token.");
 
@@ -456,7 +451,7 @@ Task("Publish-Artifacts-AzurePipelines-UbuntuAgent")
             "drop",
             "ubuntu-agent",
             GetFiles($"{parameters.ArtifactPaths.Directories.Output}/**/*.nupkg").ToArray());
-    });
+    }); 
 
 Task("Publish-Artifacts-AzurePipelines-WindowsAgent")
     .WithCriteria<BuildParameters>((context, parameters) =>
