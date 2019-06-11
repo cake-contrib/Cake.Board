@@ -87,6 +87,7 @@ public class CodeCovCredentials
 
     public static CodeCovCredentials GetCodeCovCredentials(ICakeContext context)
     {
-        return new CodeCovCredentials(context.EnvironmentVariable("CODECOV_TOKEN"));
+        return new CodeCovCredentials(
+            context.EnvironmentVariable("CODECOV_TOKEN"));
     }
 }
