@@ -52,6 +52,8 @@ GitVersion GetVersion(BuildParameters parameters)
         settings.UpdateAssemblyInfo = true;
         settings.LogFilePath = "console";
         settings.OutputType = GitVersionOutput.BuildServer;
+
+        GitVersion(settings);
     }
     return GitVersion(settings);
 }
