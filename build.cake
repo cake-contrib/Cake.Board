@@ -69,7 +69,7 @@ Setup<BuildParameters>(context =>
  */
 Teardown<BuildParameters>((context, parameters) =>
 {
-    if(context.Successful)
+    if (context.Successful)
     {
         Information("Finished running tasks. Thanks for your patience :D");
     }
@@ -107,7 +107,7 @@ Task("Test")
         parameters.EnabledUnitTests, "Unit tests were disabled.")
     .IsDependentOn("Build")
     .OnError<BuildParameters>((exception, parameters) => {
-        parameters.ProcessVariables.Add("IsTestsFailed", true);
+        throw new InvalidProgramException("Test failed or code coverage under the minimal threshold.");
     })
     .Does<BuildParameters>((parameters) => 
     {
@@ -124,7 +124,9 @@ Task("Test")
             CollectCoverage = true,
             CoverletOutputDirectory = parameters.ArtifactPaths.Directories.TestCoverage,
             CoverletOutputName = $"results.{timestamp}.xml",
-            Exclude = new List<string>() { "[xunit.*]*", "[*.Specs?]*" }
+            Exclude = new List<string>() { "[xunit.*]*", "[*.Specs?]*" },
+            Threshold = (uint)parameters.CoverageThreshold,
+            ThresholdType = ThresholdType.Line
         };
 
         var projects = GetFiles("./test/**/*.csproj");
