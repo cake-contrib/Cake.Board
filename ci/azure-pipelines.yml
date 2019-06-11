@@ -1,7 +1,7 @@
 name: cake-board
 
 variables:
-  artifacts_directory: $(System.DefaultWorkingDirectory)/.artifacts
+- group: cake-board-group
 
 trigger:
   branches:
