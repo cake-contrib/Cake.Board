@@ -1,6 +1,7 @@
 #load "./paths.cake"
 #load "./version.cake"
 #load "./utils.cake"
+#load "./credentials.cake"
 
 public class BuildParameters
 {
@@ -31,6 +32,7 @@ public class BuildParameters
     public DotNetCoreMSBuildSettings MSBuildSettings { get; private set; }
     public BuildPaths ArtifactPaths { get; private set; }
     public BuildVersion Version { get; private set; }
+    public BuildCredentials Credentials { get; private set; }
 
     public bool IsStableRelease() => !IsLocalBuild && IsMainRepo && IsStableBranch && !IsPullRequest && IsTagged;
     public bool IsPreviewRelease() => !IsLocalBuild && IsMainRepo && IsMainBranch && !IsPullRequest && IsTagged;
@@ -47,6 +49,8 @@ public class BuildParameters
 
         var buildSystem = context.BuildSystem();
 
+        var coverageThreshold = Environment.GetEnvironmentVariable("COVERAGE_THRESHOLD");
+
         return new BuildParameters
         {
             Target = context.Argument("target", "Default"),
@@ -56,7 +60,7 @@ public class BuildParameters
             EnabledUnitTests = IsEnabled(context, "ENABLED_UNIT_TESTS"),
             EnabledPublishNuget = IsEnabled(context, "ENABLED_PUBLISH_NUGET"),
 
-            CoverageThreshold = context.Argument("coverage-threshold", 100),
+            CoverageThreshold = context.Argument("coverage-threshold", string.IsNullOrWhiteSpace(coverageThreshold) ? 100 : int.Parse(coverageThreshold)),
 
             IsRunningOnUnix = context.IsRunningOnUnix(),
             IsRunningOnWindows = context.IsRunningOnWindows(),
@@ -89,6 +93,7 @@ public class BuildParameters
         MSBuildSettings = GetMsBuildSettings(context, Version);
 
         ArtifactPaths = BuildPaths.GetPaths(context, Configuration, Version);
+        Credentials = BuildCredentials.GetCredentials(context);
     }
 
     private DotNetCoreMSBuildSettings GetMsBuildSettings(
