@@ -17,7 +17,7 @@ namespace Cake.Board.AzureBoards.Extensions
         /// <param name="context">Todo1.</param>
         /// <param name="personalAccessToken">Todo2.</param>
         /// <param name="organization">Todo3.</param>
-        public static void WireUp(this ICakeContext context, string personalAccessToken, string organization) => IoC.WireUp<DependencyContainer>(
+        public static void WireUp(this ICakeContext context, string personalAccessToken, string organization) => IoC.WireUp(
             new DependencyContainer(
                 personalAccessToken.ArgumentNotEmptyOrWhitespace(nameof(personalAccessToken)),
                 organization.ArgumentNotEmptyOrWhitespace(nameof(organization))),

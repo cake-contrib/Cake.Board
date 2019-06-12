@@ -127,7 +127,11 @@ Task("Test")
             CollectCoverage = true,
             CoverletOutputDirectory = parameters.ArtifactPaths.Directories.TestCoverage,
             CoverletOutputName = $"results.{timestamp}.xml",
-            Exclude = new List<string>() { "[xunit.*]*", "[*.Specs?]*" },
+            Exclude = GetFiles("./shared/**/*.csproj")
+                .Select(p => $"[{p.GetFilenameWithoutExtension()}]*")
+                .Append("[xunit.*]*")
+                .Append("[*.Tests?]*")
+                .ToList(),
             Threshold = (uint)parameters.CoverageThreshold,
             ThresholdType = ThresholdType.Line
         };

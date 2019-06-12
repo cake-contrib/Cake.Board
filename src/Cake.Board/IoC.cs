@@ -27,7 +27,7 @@ namespace Cake.Board
         /// <typeparam name="TContainer">Todo1.</typeparam>
         /// <param name="container">Todo2.</param>
         /// <param name="context">Todo3.</param>
-        public static void WireUp<TContainer>(IDependencyContainer container, ICakeContext context)
+        public static void WireUp<TContainer>(TContainer container, ICakeContext context)
             where TContainer : IDependencyContainer
         {
             if (IoC._services != null)
