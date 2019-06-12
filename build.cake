@@ -44,6 +44,9 @@ void TaskErrorReporter(
  */
 Setup<BuildParameters>(context =>
 {
+    if(!string.IsNullOrWhiteSpace(EnvironmentVariable("DOTNET_ROOT")))
+        context.Tools.RegisterFile(EnvironmentVariable("DOTNET_ROOT"));
+
     var parameters = BuildParameters.GetParameters(Context);
     var gitVersion = GetVersion(parameters);
     parameters.Setup(context, gitVersion);
@@ -107,7 +110,7 @@ Task("Test")
         parameters.EnabledUnitTests, "Unit tests were disabled.")
     .IsDependentOn("Build")
     .OnError<BuildParameters>((exception, parameters) => {
-        throw new InvalidProgramException("Test failed or code coverage under the minimal threshold.");
+        parameters.ProcessVariables.Add("IsTestsFailed", true);
     })
     .Does<BuildParameters>((parameters) => 
     {
@@ -123,25 +126,22 @@ Task("Test")
         {
             CollectCoverage = true,
             CoverletOutputDirectory = parameters.ArtifactPaths.Directories.TestCoverage,
-            CoverletOutputName = $"results.{timestamp}.xml",
-            Exclude = new List<string>() { "[xunit.*]*", "[*.Specs?]*" },
+            Exclude = GetFiles("./shared/**/*.csproj")
+                .Select(p => $"[{p.GetFilenameWithoutExtension()}]*")
+                .Append("[xunit.*]*")
+                .Append("[*.Tests?]*")
+                .ToList(),
             Threshold = (uint)parameters.CoverageThreshold,
-            ThresholdType = ThresholdType.Line
+            ThresholdType = ThresholdType.Line,
+            CoverletOutputFormat = CoverletOutputFormat.cobertura
         };
 
-        var projects = GetFiles("./test/**/*.csproj");
-
-        if (projects.Count > 1)
-            coverletSettings.MergeWithFile = $"{coverletSettings.CoverletOutputDirectory.FullPath}/{coverletSettings.CoverletOutputName}";
-
-        var i = 1;
-        foreach (var project in projects)
+        foreach (var project in GetFiles("./test/**/*.csproj"))
         {   
-            if (i++ == projects.Count)
-                coverletSettings.CoverletOutputFormat = CoverletOutputFormat.cobertura;
-
             var projectName = project.GetFilenameWithoutExtension();
             Information("Run specs for {0}", projectName);
+
+            coverletSettings.CoverletOutputName = $"results.{projectName}.{timestamp}.xml";
 
             settings.ArgumentCustomization = args => args
                 .Append("--logger")
@@ -368,7 +368,7 @@ Task("Publish-Coverage-Results-AzurePipelines-UbuntuAgent")
         Information("Publish code coverage results for Ubuntu Agent"); 
 
         PublishCodeCoverage(
-            GetFiles($"{parameters.ArtifactPaths.Directories.TestCoverage}/results.*.xml").Single().FullPath,
+            GetFiles($"{parameters.ArtifactPaths.Directories.TestCoverage}/results.*.xml").First().FullPath,
             parameters.ArtifactPaths.Directories.TestCoverageResults,
             GetFiles($"{parameters.ArtifactPaths.Directories.TestCoverageResults}/**/*").ToArray());
     });
@@ -390,7 +390,7 @@ Task("Publish-Coverage-Results-AzurePipelines-WindowsAgent")
         Information("Publish code coverage results for Windows Agent"); 
 
         PublishCodeCoverage(
-            GetFiles($"{parameters.ArtifactPaths.Directories.TestCoverage}/results.*.xml").Single().FullPath,
+            GetFiles($"{parameters.ArtifactPaths.Directories.TestCoverage}/results.*.xml").First().FullPath,
             parameters.ArtifactPaths.Directories.TestCoverageResults,
             GetFiles($"{parameters.ArtifactPaths.Directories.TestCoverageResults}/**/*").ToArray());
     });
@@ -495,8 +495,13 @@ Task("Copy")
     .IsDependentOn("Coverage-Report")
     .IsDependentOn("Copy-Files")   
     .IsDependentOn("Release-Notes")
-    .Does(() =>
+    .OnError<BuildParameters>((exception, parameters) => {
+        throw exception;
+    })
+    .Does<BuildParameters>((parameters) =>
     {
+        if (parameters.ProcessVariables.Contains(new KeyValuePair<string, object>("IsTestsFailed", true)))
+            throw new InvalidProgramException("Test failed or code coverage under the minimal threshold.");
     });
 
 Task("Pack")

@@ -65,13 +65,10 @@ void Build(
     string configuration,
     DotNetCoreMSBuildSettings settings = null)
 {
-    Information("Run restore for {0}", projectPath.GetFilenameWithoutExtension());
-    DotNetCoreRestore(projectPath.FullPath);
     Information("Run build for {0}", projectPath.GetFilenameWithoutExtension());
     DotNetCoreBuild(projectPath.FullPath, new DotNetCoreBuildSettings {
         Configuration = configuration,
         Verbosity = DotNetCoreVerbosity.Minimal,
-        NoRestore = true,
         MSBuildSettings = settings
     });   
 }

@@ -13,7 +13,7 @@ namespace Cake.Board.Extensions
     /// <summary>
     /// Todo.
     /// </summary>
-    public static class HttpPolicy
+    public static class HttpPolicyExtensions
     {
         /// <summary>
         /// Todo.
@@ -77,12 +77,12 @@ namespace Cake.Board.Extensions
         /// <returns>Todo1.</returns>
         public static AsyncPolicyWrap<HttpResponseMessage> WrapAllAsync() => Policy
             .WrapAsync(
-                HttpPolicy.BadGatewayPolicy(),
-                HttpPolicy.GatewayTimeoutPolicy(),
-                HttpPolicy.InternalServerErrorPolicy(),
-                HttpPolicy.NotFoundPolicy(),
-                HttpPolicy.RequestTimeoutPolicy(),
-                HttpPolicy.ServiceUnavailablePolicy(),
-                HttpPolicy.UnauthorizedPolicy());
+                HttpPolicyExtensions.BadGatewayPolicy(),
+                HttpPolicyExtensions.GatewayTimeoutPolicy(),
+                HttpPolicyExtensions.InternalServerErrorPolicy(),
+                HttpPolicyExtensions.NotFoundPolicy(),
+                HttpPolicyExtensions.RequestTimeoutPolicy(),
+                HttpPolicyExtensions.ServiceUnavailablePolicy(),
+                HttpPolicyExtensions.UnauthorizedPolicy());
     }
 }

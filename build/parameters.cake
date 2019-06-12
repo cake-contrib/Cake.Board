@@ -60,7 +60,7 @@ public class BuildParameters
             EnabledUnitTests = IsEnabled(context, "ENABLED_UNIT_TESTS"),
             EnabledPublishNuget = IsEnabled(context, "ENABLED_PUBLISH_NUGET"),
 
-            CoverageThreshold = context.Argument("coverage-threshold", string.IsNullOrWhiteSpace(coverageThreshold) ? 100 : int.Parse(coverageThreshold)),
+            CoverageThreshold = context.Argument("coverage-threshold", string.IsNullOrWhiteSpace(coverageThreshold) ? 0  : int.Parse(coverageThreshold)),
 
             IsRunningOnUnix = context.IsRunningOnUnix(),
             IsRunningOnWindows = context.IsRunningOnWindows(),
@@ -101,12 +101,10 @@ public class BuildParameters
         BuildVersion version)
     {
         var msBuildSettings = new DotNetCoreMSBuildSettings()
-                                .WithProperty("Version", version.SemVersion)
-                                .WithProperty("AssemblyVersion", version.Version)
-                                .WithProperty("PackageVersion", version.SemVersion)
-                                .WithProperty("FileVersion", version.Version);
+                                .WithProperty("Version", version.GitVersion.AssemblySemVer)
+                                .WithProperty("IsBeta", (!IsStableBranch).ToString());
 
-        if(!IsRunningOnWindows)
+        if (!IsRunningOnWindows)
         {
             var frameworkPathOverride = new FilePath(typeof(object).Assembly.Location).GetDirectory().FullPath + "/";
 

@@ -1,6 +1,5 @@
 <Project>
-  <PropertyGroup>  
-    <VersionSuffix Condition="$(Beta) == 'true'">-beta</VersionSuffix>
+  <PropertyGroup>
     <Root>$(MSBuildThisFileDirectory)</Root>
   </PropertyGroup>
   <ItemGroup>
@@ -11,12 +10,14 @@
   <PropertyGroup>
     <Authors>Nicola Biancolini</Authors>
     <Company>React Consulting S.r.l.</Company>
-    <CodeAnalysisRuleSet>$(Root)Cake.Board.ruleset</CodeAnalysisRuleSet>
     <Copyright>Copyright (c) Nicola Biancolini $([System.DateTime]::Now.ToString(yyyy))</Copyright>
+    <CodeAnalysisRuleSet>$(Root)Cake.Board.ruleset</CodeAnalysisRuleSet>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
-    <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <LangVersion>latest</LangVersion>
     <NeutralLanguage>en-US</NeutralLanguage>
     <TreatWarningsAsErrors>True</TreatWarningsAsErrors>
+    <AssemblyVersion>$(Version)</AssemblyVersion>
+    <VersionSuffix Condition=" '$(IsBeta)' == '' ">beta</VersionSuffix>
+    <FileVersion>$(Version)</FileVersion>
   </PropertyGroup>
 </Project>

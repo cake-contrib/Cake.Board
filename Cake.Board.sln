@@ -13,6 +13,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cake.Board.AzureBoards", "s
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "test", "test", "{9EEB3FE9-CCCB-4882-9BE7-0C71693D48CE}"
 	ProjectSection(SolutionItems) = preProject
+		test\Cake.Board.Test.ruleset = test\Cake.Board.Test.ruleset
 		test\Directory.Build.props = test\Directory.Build.props
 	EndProjectSection
 EndProject
@@ -24,10 +25,15 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cake.Board.Abstractions.Tes
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "misc", "misc", "{6ADA077A-1114-4694-9F76-ED2E23BBC296}"
 	ProjectSection(SolutionItems) = preProject
+		.editorconfig = .editorconfig
 		Cake.Board.ruleset = Cake.Board.ruleset
 		Directory.Build.props = Directory.Build.props
 		Directory.Build.targets = Directory.Build.targets
 	EndProjectSection
+EndProject
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Cake.Board.Testing", "shared\Cake.Board.Testing\Cake.Board.Testing.csproj", "{3374DBA6-5715-40C8-BCA9-014ACFD26A58}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "shared", "shared", "{9898AD7E-2357-42E5-A3BD-D4281E8847A3}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -111,6 +117,18 @@ Global
 		{9E00698E-D590-46C7-B65E-8696C0AB258C}.Release|x64.Build.0 = Release|Any CPU
 		{9E00698E-D590-46C7-B65E-8696C0AB258C}.Release|x86.ActiveCfg = Release|Any CPU
 		{9E00698E-D590-46C7-B65E-8696C0AB258C}.Release|x86.Build.0 = Release|Any CPU
+		{3374DBA6-5715-40C8-BCA9-014ACFD26A58}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3374DBA6-5715-40C8-BCA9-014ACFD26A58}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3374DBA6-5715-40C8-BCA9-014ACFD26A58}.Debug|x64.ActiveCfg = Debug|Any CPU
+		{3374DBA6-5715-40C8-BCA9-014ACFD26A58}.Debug|x64.Build.0 = Debug|Any CPU
+		{3374DBA6-5715-40C8-BCA9-014ACFD26A58}.Debug|x86.ActiveCfg = Debug|Any CPU
+		{3374DBA6-5715-40C8-BCA9-014ACFD26A58}.Debug|x86.Build.0 = Debug|Any CPU
+		{3374DBA6-5715-40C8-BCA9-014ACFD26A58}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3374DBA6-5715-40C8-BCA9-014ACFD26A58}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3374DBA6-5715-40C8-BCA9-014ACFD26A58}.Release|x64.ActiveCfg = Release|Any CPU
+		{3374DBA6-5715-40C8-BCA9-014ACFD26A58}.Release|x64.Build.0 = Release|Any CPU
+		{3374DBA6-5715-40C8-BCA9-014ACFD26A58}.Release|x86.ActiveCfg = Release|Any CPU
+		{3374DBA6-5715-40C8-BCA9-014ACFD26A58}.Release|x86.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -122,6 +140,7 @@ Global
 		{F55427CE-0A21-49FA-B034-E0939E0F5598} = {9EEB3FE9-CCCB-4882-9BE7-0C71693D48CE}
 		{C8BA3BA5-B83E-44E3-9BF2-F304FBFE106A} = {9EEB3FE9-CCCB-4882-9BE7-0C71693D48CE}
 		{9E00698E-D590-46C7-B65E-8696C0AB258C} = {9EEB3FE9-CCCB-4882-9BE7-0C71693D48CE}
+		{3374DBA6-5715-40C8-BCA9-014ACFD26A58} = {9898AD7E-2357-42E5-A3BD-D4281E8847A3}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {7183ED0B-7674-4279-B6D3-04A8C85E6BBE}
