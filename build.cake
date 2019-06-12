@@ -44,6 +44,9 @@ void TaskErrorReporter(
  */
 Setup<BuildParameters>(context =>
 {
+    if(!string.IsNullOrWhiteSpace(EnvironmentVariable("DOTNET_ROOT")))
+        context.Tools.RegisterFile(EnvironmentVariable("DOTNET_ROOT"));
+
     var parameters = BuildParameters.GetParameters(Context);
     var gitVersion = GetVersion(parameters);
     parameters.Setup(context, gitVersion);
