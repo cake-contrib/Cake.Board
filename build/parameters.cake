@@ -60,7 +60,7 @@ public class BuildParameters
             EnabledUnitTests = IsEnabled(context, "ENABLED_UNIT_TESTS"),
             EnabledPublishNuget = IsEnabled(context, "ENABLED_PUBLISH_NUGET"),
 
-            CoverageThreshold = context.Argument("coverage-threshold", string.IsNullOrWhiteSpace(coverageThreshold) ? 100 : int.Parse(coverageThreshold)),
+            CoverageThreshold = context.Argument("coverage-threshold", string.IsNullOrWhiteSpace(coverageThreshold) ? 0  : int.Parse(coverageThreshold)),
 
             IsRunningOnUnix = context.IsRunningOnUnix(),
             IsRunningOnWindows = context.IsRunningOnWindows(),

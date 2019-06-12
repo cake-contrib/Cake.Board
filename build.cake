@@ -107,7 +107,7 @@ Task("Test")
         parameters.EnabledUnitTests, "Unit tests were disabled.")
     .IsDependentOn("Build")
     .OnError<BuildParameters>((exception, parameters) => {
-        throw new InvalidProgramException("Test failed or code coverage under the minimal threshold.");
+        parameters.ProcessVariables.Add("IsTestsFailed", true);
     })
     .Does<BuildParameters>((parameters) => 
     {
@@ -495,8 +495,13 @@ Task("Copy")
     .IsDependentOn("Coverage-Report")
     .IsDependentOn("Copy-Files")   
     .IsDependentOn("Release-Notes")
-    .Does(() =>
+    .OnError<BuildParameters>((exception, parameters) => {
+        throw exception;
+    })
+    .Does<BuildParameters>((parameters) =>
     {
+        if (parameters.ProcessVariables.Contains(new KeyValuePair<string, object>("IsTestsFailed", true)))
+            throw new InvalidProgramException("Test failed or code coverage under the minimal threshold.");
     });
 
 Task("Pack")
