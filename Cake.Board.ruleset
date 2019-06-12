@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RuleSet Name="Cake.Board Rules" Description="This rule set contains rules for the Cake Board solution." ToolsVersion="15.0">
+<RuleSet Name="Cake.Board Rules" Description="This rule set contains rules for the Cake Board projects." ToolsVersion="15.0">
   <IncludeAll Action="Warning" />
   <Rules AnalyzerId="StyleCop.Analyzers" RuleNamespace="StyleCop.Analyzers">
     <Rule Id="SA1309" Action="None" />

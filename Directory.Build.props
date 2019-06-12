@@ -11,8 +11,8 @@
   <PropertyGroup>
     <Authors>Nicola Biancolini</Authors>
     <Company>React Consulting S.r.l.</Company>
-    <CodeAnalysisRuleSet>$(Root)Cake.Board.ruleset</CodeAnalysisRuleSet>
     <Copyright>Copyright (c) Nicola Biancolini $([System.DateTime]::Now.ToString(yyyy))</Copyright>
+    <CodeAnalysisRuleSet>$(Root)Cake.Board.ruleset</CodeAnalysisRuleSet>
     <GenerateDocumentationFile>true</GenerateDocumentationFile>
     <GenerateAssemblyInfo>false</GenerateAssemblyInfo>
     <LangVersion>latest</LangVersion>
