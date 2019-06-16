@@ -96,14 +96,14 @@ function GetProxyEnabledWebClient {
 function Remove-PathVariable([string]$VariableToRemove) {
     $path = [Environment]::GetEnvironmentVariable("PATH", "User")
     if ($null -ne $path) {
-        $newItems = $path.Split(";", [StringSplitOptions]::RemoveEmptyEntries) | Where-Object { "$($_)" -inotlike $VariableToRemove }
-        [Environment]::SetEnvironmentVariable("PATH", [System.String]::Join(";", $newItems), "User")
+        $newItems = $path.Split($PathSplitChar, [StringSplitOptions]::RemoveEmptyEntries) | Where-Object { "$($_)" -inotlike $VariableToRemove }
+        [Environment]::SetEnvironmentVariable("PATH", [System.String]::Join($PathSplitChar, $newItems), "User")
     }
 
     $path = [Environment]::GetEnvironmentVariable("PATH", "Process")
     if ($null -ne $path) {
-        $newItems = $path.Split(";", [StringSplitOptions]::RemoveEmptyEntries) | Where-Object { "$($_)" -inotlike $VariableToRemove }
-        [Environment]::SetEnvironmentVariable("PATH", [System.String]::Join(";", $newItems), "Process")
+        $newItems = $path.Split($PathSplitChar, [StringSplitOptions]::RemoveEmptyEntries) | Where-Object { "$($_)" -inotlike $VariableToRemove }
+        [Environment]::SetEnvironmentVariable("PATH", [System.String]::Join($PathSplitChar, $newItems), "Process")
     }
 }
 
@@ -111,6 +111,11 @@ Write-Host "Preparing to run build script..."
 
 if ($PSEdition -eq "Desktop") { 
     $IsWindows = $true 
+}
+
+$PathSplitChar = ";" 
+if (!$IsWindows) {
+    $PathSplitChar = ":" 
 }
 
 if (!$PSScriptRoot) {
@@ -184,7 +189,7 @@ if ($InstalledDotNetVersion -notcontains $FoundDotNetCliVersion) {
 if (Test-Path $DOTNET_DIR) {
     # Ensure the installed .NET Core CLI is always used but putting it on the front of the path.
     Remove-PathVariable "$InstallPath"
-    $ENV:PATH = "$InstallPath;$ENV:PATH"
+    $ENV:PATH = "$InstallPath$PathSplitChar$ENV:PATH"
     $ENV:DOTNET_ROOT = "$InstallPath"
 }
 
@@ -195,7 +200,7 @@ if (Test-Path $DOTNET_DIR) {
 if (!(Test-Path $NUGET_EXE)) {
     Write-Verbose -Message "Trying to find nuget.exe in PATH..."
     $existingPaths = $Env:Path -Split ';' | Where-Object { (![string]::IsNullOrEmpty($_)) -and (Test-Path $_ -PathType Container) }
-    $NUGET_EXE_IN_PATH = Get-ChildItem -Path $existingPaths -Filter "nuget.exe" | Select-Object -First 1
+    $NUGET_EXE_IN_PATH = Get-ChildItem -Path $existingPaths -Filter "nuget" | Select-Object -First 1
     if ($null -ne $NUGET_EXE_IN_PATH -and (Test-Path $NUGET_EXE_IN_PATH.FullName)) {
         Write-Verbose -Message "Found in PATH at $($NUGET_EXE_IN_PATH.FullName)."
         $NUGET_EXE = $NUGET_EXE_IN_PATH.FullName
