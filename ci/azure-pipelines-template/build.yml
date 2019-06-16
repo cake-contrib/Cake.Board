@@ -5,7 +5,7 @@
         continueOnError: 'false'
 
       # Build, test and generate artifact output
-      - powershell: .\build.ps1
+      - powershell: .\build.ps1 -Verbose
         displayName: 'Build, test and generate artifact output on working directory'
         continueOnError: 'false'
         env:
