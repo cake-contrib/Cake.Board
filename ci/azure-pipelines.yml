@@ -17,7 +17,7 @@ jobs:
       vmImage: vs2017-win2016
           
     steps:
-      - template: azure-pipelines-templat/build.yml
+      - template: azure-pipelines-template/build.yml
 
   - job: ubuntu_build_agent
     displayName: Ubuntu Agent
@@ -25,4 +25,4 @@ jobs:
       vmImage: ubuntu-16.04
 
     steps:
-      - template: azure-pipelines-templat/build.yml
+      - template: azure-pipelines-template/build.yml
