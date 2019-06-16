@@ -232,7 +232,9 @@ if (-Not $SkipToolPackageRestore.IsPresent) {
     }
 
     Write-Verbose -Message "Restoring tools from NuGet..."
-    $NuGetOutput = Invoke-Expression "&`"$NUGET_EXE`" install -ExcludeVersion -OutputDirectory `"$TOOLS_DIR`""
+    $Cmd = "`"$NUGET_EXE`" install -ExcludeVersion -OutputDirectory `"$TOOLS_DIR`""
+    if (!$IsWindows) { $Cmd = "mono $Cmd" }
+    $NuGetOutput = Invoke-Expression "& $Cmd"
 
     if ($LASTEXITCODE -ne 0) {
         Throw "An error occurred while restoring NuGet tools."
