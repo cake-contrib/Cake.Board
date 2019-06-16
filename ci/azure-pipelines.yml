@@ -17,31 +17,7 @@ jobs:
       vmImage: vs2017-win2016
           
     steps:
-      # Install required .NET Code SDK version
-      - task: UseDotNet@2
-        displayName: 'Use .NET Core SDK 2.2.300'
-        inputs:
-          packageType: sdk
-          version: 2.2.300
-          installationPath: $(Agent.ToolsDirectory)/dotnet
-
-      # Clean and checkout
-      - checkout: self
-        clean: all
-        continueOnError: 'false'
-
-      # Build, test and generate artifact output
-      - powershell: .\build.ps1
-        displayName: 'Build, test and generate artifact output on working directory'
-        continueOnError: 'false'
-        env:
-          CODECOV_TOKEN: $(CODECOV_TOKEN)
-          COVERAGE_THRESHOLD: $(COVERAGE_THRESHOLD)
-          GITHUB_TOKEN: $(GITHUB_TOKEN)
-          GITTER_ROOM_ID: $(GITTER_ROOM_ID)
-          GITTER_TOKEN: $(GITTER_TOKEN)
-          NUGET_API_KEY: $(NUGET_API_KEY)
-          NUGET_API_URL: $(NUGET_API_URL)
+      - template: azure-pipelines-template/build.yml
 
   - job: ubuntu_build_agent
     displayName: Ubuntu Agent
@@ -49,33 +25,4 @@ jobs:
       vmImage: ubuntu-16.04
 
     steps:
-      # Install required .NET Code SDK version
-      - task: UseDotNet@2
-        displayName: 'Use .NET Core SDK 2.2.300'
-        inputs:
-          packageType: sdk
-          version: 2.2.300
-          installationPath: $(Agent.ToolsDirectory)/dotnet
-
-      # Install Cake.Tool dotnet tool
-      - bash: dotnet tool install --global Cake.Tool --version 0.33.0
-        displayName: 'Install dotnet Cake.Tool on global path'
-        continueOnError: 'false'
-
-      # Clean and checkout
-      - checkout: self
-        clean: all
-        continueOnError: 'false'
-
-      # Build, test and generate artifact output
-      - bash: dotnet cake build.cake
-        displayName: 'Build, test and generate artifact output on working directory'
-        continueOnError: 'false'
-        env:
-          CODECOV_TOKEN: $(CODECOV_TOKEN)
-          COVERAGE_THRESHOLD: $(COVERAGE_THRESHOLD)
-          GITHUB_TOKEN: $(GITHUB_TOKEN)
-          GITTER_ROOM_ID: $(GITTER_ROOM_ID)
-          GITTER_TOKEN: $(GITTER_TOKEN)
-          NUGET_API_KEY: $(NUGET_API_KEY)
-          NUGET_API_URL: $(NUGET_API_URL)
+      - template: azure-pipelines-template/build.yml
