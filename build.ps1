@@ -251,7 +251,9 @@ if (Test-Path $ADDINS_PACKAGES_CONFIG) {
     Set-Location $ADDINS_DIR
 
     Write-Verbose -Message "Restoring addins from NuGet..."
-    $NuGetOutput = Invoke-Expression "&`"$NUGET_EXE`" install -ExcludeVersion -OutputDirectory `"$ADDINS_DIR`""
+    $Cmd = "`"$NUGET_EXE`" install -ExcludeVersion -OutputDirectory `"$ADDINS_DIR`""
+    if (!$IsWindows) { $Cmd = "mono $Cmd" }
+    $NuGetOutput = Invoke-Expression "& $Cmd"
 
     if ($LASTEXITCODE -ne 0) {
         Throw "An error occurred while restoring NuGet addins."
@@ -268,7 +270,9 @@ if (Test-Path $MODULES_PACKAGES_CONFIG) {
     Set-Location $MODULES_DIR
 
     Write-Verbose -Message "Restoring modules from NuGet..."
-    $NuGetOutput = Invoke-Expression "&`"$NUGET_EXE`" install -ExcludeVersion -OutputDirectory `"$MODULES_DIR`""
+    $Cmd = "`"$NUGET_EXE`" install -ExcludeVersion -OutputDirectory `"$MODULES_DIR`""
+    if (!$IsWindows) { $Cmd = "mono $Cmd" }
+    $NuGetOutput = Invoke-Expression "& $Cmd"
 
     if ($LASTEXITCODE -ne 0) {
         Throw "An error occurred while restoring NuGet modules."
@@ -295,5 +299,7 @@ $cakeArguments += $ScriptArgs
 
 # Start Cake
 Write-Host "Running build script..."
-&$CAKE_EXE $cakeArguments
+$Cmd = "$CAKE_EXE $cakeArguments"
+if (!$IsWindows) { $Cmd = "mono $Cmd" }
+Invoke-Expression $Cmd
 exit $LASTEXITCODE
