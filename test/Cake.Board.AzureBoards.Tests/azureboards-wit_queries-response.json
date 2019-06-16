@@ -1,0 +1,53 @@
+{
+  "id": "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy",
+  "name": "someone-query",
+  "path": "Shared Queries/someone-query",
+  "createdDate": "2019-05-29T17:42:55.753Z",
+  "lastModifiedBy": {
+    "id": "zzzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz",
+    "name": "Some One <some.one@run.all>",
+    "displayName": "Some One",
+    "url": "https://spsprodweu1.vssps.visualstudio.com/zzzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz/_apis/Identities/zzzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz",
+    "_links": {
+      "avatar": {
+        "href": "https://dev.azure.com/someone/_apis/GraphProfile/MemberAvatars/msa.ZWQ1Mjk2ZmQtMmZkZC03MjhmLTllZTMtNTg5NTg5MWJkMzIy"
+      }
+    },
+    "uniqueName": "some.one@run.all",
+    "imageUrl": "https://dev.azure.com/someone/_apis/GraphProfile/MemberAvatars/msa.ZWQ1Mjk2ZmQtMmZkZC03MjhmLTllZTMtNTg5NTg5MWJkMzIy",
+    "descriptor": "msa.ZWQ1Mjk2ZmQtMmZkZC03MjhmLTllZTMtNTg5NTg5MWJkMzIy"
+  },
+  "lastModifiedDate": "2019-05-29T17:57:07.463Z",
+  "queryType": "oneHop",
+  "isPublic": true,
+  "lastExecutedBy": {
+    "id": "zzzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz",
+    "name": "Some One <some.one@run.all>",
+    "displayName": "Some One",
+    "url": "https://spsprodweu1.vssps.visualstudio.com/zzzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz/_apis/Identities/zzzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz",
+    "_links": {
+      "avatar": {
+        "href": "https://dev.azure.com/someone/_apis/GraphProfile/MemberAvatars/msa.ZWQ1Mjk2ZmQtMmZkZC03MjhmLTllZTMtNTg5NTg5MWJkMzIy"
+      }
+    },
+    "uniqueName": "some.one@run.all",
+    "imageUrl": "https://dev.azure.com/someone/_apis/GraphProfile/MemberAvatars/msa.ZWQ1Mjk2ZmQtMmZkZC03MjhmLTllZTMtNTg5NTg5MWJkMzIy",
+    "descriptor": "msa.ZWQ1Mjk2ZmQtMmZkZC03MjhmLTllZTMtNTg5NTg5MWJkMzIy"
+  },
+  "lastExecutedDate": "2019-06-04T19:27:37.963Z",
+  "_links": {
+    "self": {
+      "href": "https://dev.azure.com/someone/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/_apis/wit/queries/yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"
+    },
+    "html": {
+      "href": "https://dev.azure.com/someone/web/qr.aspx?pguid=xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx&qid=yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"
+    },
+    "parent": {
+      "href": "https://dev.azure.com/someone/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/_apis/wit/queries/zzzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz"
+    },
+    "wiql": {
+      "href": "https://dev.azure.com/someone/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/_apis/wit/wiql/yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"
+    }
+  },
+  "url": "https://dev.azure.com/someone/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/_apis/wit/queries/yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy"
+}

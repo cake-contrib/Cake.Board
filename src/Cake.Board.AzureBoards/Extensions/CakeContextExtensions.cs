@@ -1,4 +1,4 @@
-// Copyright (c) Nicola Biancolini, 2019. All rights reserved.
+﻿// Copyright (c) Nicola Biancolini, 2019. All rights reserved.
 // Licensed under the MIT license. See the LICENSE file in the project root for full license information.
 
 using Cake.Board.Extensions;
@@ -9,7 +9,7 @@ namespace Cake.Board.AzureBoards.Extensions
     /// <summary>
     /// Todo.
     /// </summary>
-    internal static class CakeContext
+    internal static class CakeContextExtensions
     {
         /// <summary>
         /// Todo.
