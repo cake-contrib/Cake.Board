@@ -128,7 +128,7 @@ $PACKAGES_CONFIG_MD5 = Join-Path $TOOLS_DIR "packages.config.md5sum"
 $ADDINS_PACKAGES_CONFIG = Join-Path $ADDINS_DIR "packages.config"
 $MODULES_PACKAGES_CONFIG = Join-Path $MODULES_DIR "packages.config"
 
-$DOTNET_DIR = "./.dotnet"
+$DOTNET_DIR = Join-Path $PSScriptRoot ".dotnet"
 $DOTNET_CHANNEL = "Current"
 $DOTNET_INSTALLER = if ($IsWindows) { "dotnet-install.ps1" } else { "dotnet-install.sh" }
 $DOTNET_INSTALLER_URI = "https://dot.net/v1/$DOTNET_INSTALLER"
@@ -179,7 +179,9 @@ if ($InstalledDotNetVersion -notcontains $FoundDotNetCliVersion) {
         if (!$IsWindows) { $Cmd = "bash $Cmd" }
         Invoke-Expression "& $Cmd"
     }
+}
 
+if (Test-Path $DOTNET_DIR) {
     # Ensure the installed .NET Core CLI is always used but putting it on the front of the path.
     Remove-PathVariable "$InstallPath"
     $ENV:PATH = "$InstallPath;$ENV:PATH"

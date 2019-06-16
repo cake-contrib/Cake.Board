@@ -17,14 +17,6 @@ jobs:
       vmImage: vs2017-win2016
           
     steps:
-      # Install required .NET Code SDK version
-      - task: UseDotNet@2
-        displayName: 'Use .NET Core SDK 2.2.300'
-        inputs:
-          packageType: sdk
-          version: 2.2.300
-          installationPath: $(Agent.ToolsDirectory)/dotnet
-
       # Clean and checkout
       - checkout: self
         clean: all
@@ -49,14 +41,6 @@ jobs:
       vmImage: ubuntu-16.04
 
     steps:
-      # Install required .NET Code SDK version
-      - task: UseDotNet@2
-        displayName: 'Use .NET Core SDK 2.2.300'
-        inputs:
-          packageType: sdk
-          version: 2.2.300
-          installationPath: $(Agent.ToolsDirectory)/dotnet
-
       # Install Cake.Tool dotnet tool
       - bash: dotnet tool install --global Cake.Tool --version 0.33.0
         displayName: 'Install dotnet Cake.Tool on global path'
