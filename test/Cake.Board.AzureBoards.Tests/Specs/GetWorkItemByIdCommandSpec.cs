@@ -28,18 +28,18 @@ THEN it must be able to obtain the content sought")]
         public async Task Scenario_SearchWorkItemById()
         {
             // Arrange
-            var witContent = JObject.Parse(await File.ReadAllTextAsync($"{Environment.CurrentDirectory}/azureboards-wit-response.json"));
-            string witId = witContent.Value<string>("id");
-            string witType = witContent.Value<JObject>("fields").Value<string>("System.WorkItemType");
-            string witTitle = witContent.Value<JObject>("fields").Value<string>("System.Title");
-            string witDescription = witContent.Value<JObject>("fields").Value<string>("System.Description");
-            string witState = witContent.Value<JObject>("fields").Value<string>("System.State");
-            string witUrl = witContent.Value<string>("url");
+            var fileContent = JObject.Parse(await File.ReadAllTextAsync($"{Environment.CurrentDirectory}/azureboards-wit-response.json"));
+            string witId = fileContent.Value<string>("id");
+            string witType = fileContent.Value<JObject>("fields").Value<string>("System.WorkItemType");
+            string witTitle = fileContent.Value<JObject>("fields").Value<string>("System.Title");
+            string witDescription = fileContent.Value<JObject>("fields").Value<string>("System.Description");
+            string witState = fileContent.Value<JObject>("fields").Value<string>("System.State");
+            string witUrl = fileContent.Value<string>("url");
 
             var fakeResponse = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = new StringContent(JsonConvert.SerializeObject(witContent), Encoding.UTF8, "application/json")
+                Content = new StringContent(JsonConvert.SerializeObject(fileContent), Encoding.UTF8, "application/json")
             };
             var fakeCakeContext = new FakeCakeContext(logBehaviour: () => new FakeCakeLog());
             var fakeClient = new HttpClient(new FakeHttpMessageHandler(fakeResponse))
