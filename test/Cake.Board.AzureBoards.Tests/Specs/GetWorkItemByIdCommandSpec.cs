@@ -49,7 +49,7 @@ THEN it must be able to obtain the content sought")]
             var board = new AzureBoards(fakeClient);
 
             // Act
-            IWorkItem wit = await board.GetWorkItemByIdAsync(witId);
+            IWorkItem wit = await fakeCakeContext.GetWorkItemByIdAsync(board, witId);
 
             // Assert
             Assert.Equal(witId, wit.Id);

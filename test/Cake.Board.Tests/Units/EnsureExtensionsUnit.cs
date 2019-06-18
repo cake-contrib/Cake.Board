@@ -9,7 +9,7 @@ using Xunit;
 
 namespace Cake.Board.Tests.Units
 {
-    public class EnsureUnit
+    public class EnsureExtensionsUnit
     {
         [Fact]
         [Trait(TraitNames.TEST_CATEGORY, TraitValues.UNIT_TEST)]

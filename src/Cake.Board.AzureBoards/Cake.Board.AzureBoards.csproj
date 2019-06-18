@@ -14,4 +14,8 @@
     <ProjectReference Include="..\Cake.Board\Cake.Board.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Extensions\" />
+  </ItemGroup>
+
 </Project>

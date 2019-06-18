@@ -3,16 +3,16 @@
 
 using System;
 
+using Cake.Board.Testing;
+
 namespace Cake.Board.AzureBoards.Tests.Fixtures
 {
     public class WorkItemCommandFixture : IDisposable
     {
-        public WorkItemCommandFixture()
-        {
-        }
+        private FakeCakeContext _context;
 
-        public void Dispose()
-        {
-        }
+        public WorkItemCommandFixture() => this._context = new FakeCakeContext(logBehaviour: () => new FakeCakeLog());
+
+        public void Dispose() => this._context = null;
     }
 }
