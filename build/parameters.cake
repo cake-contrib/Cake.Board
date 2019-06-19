@@ -34,8 +34,8 @@ public class BuildParameters
     public BuildVersion Version { get; private set; }
     public BuildCredentials Credentials { get; private set; }
 
-    public bool IsStableRelease() => !IsLocalBuild && IsMainRepo && IsStableBranch && !IsPullRequest && IsTagged;
-    public bool IsPreviewRelease() => !IsLocalBuild && IsMainRepo && IsMainBranch && !IsPullRequest && IsTagged;
+    public bool IsStableRelease() => !IsLocalBuild && IsMainRepo && IsStableBranch && !IsPullRequest;
+    public bool IsPreviewRelease() => !IsLocalBuild && IsMainRepo && IsMainBranch && !IsPullRequest;
 
     public Dictionary<string, object> ProcessVariables { get; private set; }
 
@@ -101,8 +101,8 @@ public class BuildParameters
         BuildVersion version)
     {
         var msBuildSettings = new DotNetCoreMSBuildSettings()
-                                .WithProperty("Version", version.GitVersion.AssemblySemVer)
-                                .WithProperty("IsBeta", (!IsStableBranch).ToString());
+                                .WithProperty("Version", version.SemVersion)
+                                .WithProperty("IsBeta", version.Version.Contains("beta").ToString());
 
         if (!IsRunningOnWindows)
         {

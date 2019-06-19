@@ -9,19 +9,16 @@ public class BuildVersion
 
     public static BuildVersion Calculate(ICakeContext context, BuildParameters parameters, GitVersion gitVersion)
     {
-        var version = gitVersion.MajorMinorPatch;
-        var semVersion = gitVersion.LegacySemVer;
-
-        if (!string.IsNullOrWhiteSpace(gitVersion.BuildMetaData)) {
-            semVersion += "-" + gitVersion.BuildMetaData;
-        }
+        var versionSuffix = parameters.IsStableBranch ? "" : "-beta";
+        var version = $"{gitVersion.MajorMinorPatch}{versionSuffix}";
+        var semVersion = gitVersion.MajorMinorPatch;
 
         return new BuildVersion
         {
             GitVersion = gitVersion,
             Version = version,
             SemVersion = semVersion,
-            NuGetVersion = gitVersion.NuGetVersion,
+            NuGetVersion = version,
         };
     }
 }
