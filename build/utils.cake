@@ -53,9 +53,7 @@ GitVersion GetVersion(BuildParameters parameters)
     {
         var serverBuildVersion = version.SemVer;
 
-        if(parameters.IsPullRequest)
-            serverBuildVersion = $"{serverBuildVersion}-{version.BranchName}";
-        else if(parameters.IsStableRelease())
+        if(!parameters.IsPullRequest && parameters.IsStableRelease())
             serverBuildVersion = $"{serverBuildVersion}-{version.Sha}";
 
         Console.WriteLine($"##vso[build.updatebuildnumber]{serverBuildVersion}");
