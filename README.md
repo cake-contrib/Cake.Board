@@ -10,6 +10,13 @@ Cake Addin for work with work items boards.
 | __Windows x64__ | [![Build Status](https://dev.azure.com/nicolabiancolini/Cake.Board/_apis/build/status/nicolabiancolini.Cake.Board?branchName=master&jobName=Windows%20Agent)](https://dev.azure.com/nicolabiancolini/Cake.Board/_build/latest?definitionId=8&branchName=master) |
 | __Linux x64__ | [![Build Status](https://dev.azure.com/nicolabiancolini/Cake.Board/_apis/build/status/nicolabiancolini.Cake.Board?branchName=master&jobName=Ubuntu%20Agent)](https://dev.azure.com/nicolabiancolini/Cake.Board/_build/latest?definitionId=8&branchName=master) |
 
+### Publish packages status
+| Package | NuGet | NuGet Pre-Release |
+| :---: | :---: | :---: |
+| __Cake.Board.Abstractions__ | [![Nuget (with prereleases)](https://img.shields.io/nuget/v/Cake.Board.Abstractions.svg)](https://www.nuget.org/packages/Cake.Board.Abstractions) | [![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Cake.Board.Abstractions.svg)](https://www.nuget.org/packages/Cake.Board.Abstractions) |
+| __Cake.Board__ | [![Nuget (with prereleases)](https://img.shields.io/nuget/v/Cake.Board.svg)](https://www.nuget.org/packages/Cake.Board) | [![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Cake.Board.svg)](https://www.nuget.org/packages/Cake.Board)
+| __Cake.Board.AzureBoards__ | [![Nuget (with prereleases)](https://img.shields.io/nuget/v/Cake.Board.AzureBoards.svg)](https://www.nuget.org/packages/Cake.Board.AzureBoards) | [![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Cake.Board.AzureBoards.svg)](https://www.nuget.org/packages/Cake.Board.AzureBoards)
+
 ## Usage
 ### Azure Boards
 In order to usage this _addin_, add to your Cake script.
