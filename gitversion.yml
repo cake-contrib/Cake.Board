@@ -1,6 +1,7 @@
-# assembly-versioning-scheme: None
-# assembly-file-versioning-scheme: None
-# assembly-informational-format: None
+mode: Mainline
+assembly-versioning-scheme: None
+assembly-file-versioning-scheme: None
+assembly-informational-format: None
 # branches:
 #   master:
 #     regex: master
@@ -19,10 +20,6 @@
 #     mode: ContinuousDelivery
 #     track-merge-target: true
 #     tag-number-pattern: '[/-](?<number>\d+)[-/]'
-#   preview:
-#     regex: preview[/-]
-#     tag: beta
-#     increment: None
 #   stable:
 #     regex: stable[/-]
 #     tag: ''

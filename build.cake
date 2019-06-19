@@ -17,6 +17,7 @@
 #tool "nuget:?package=xunit.runner.console&version=2.4.1"
 #tool "nuget:?package=Codecov&version=1.5.0"
 #tool "nuget:?package=NuGet.CommandLine&version=5.0.2"
+#tool "nuget:?package=gitreleasemanager&version=0.8.0"
 
 /*
  * Load other scripts.
@@ -208,7 +209,7 @@ Task("Pack-Nuget")
                 parameters.Configuration,
                 Directory($"./src/{packageId}"),
                 parameters.ArtifactPaths.Directories.Nuget,
-                parameters.Version.SemVersion,
+                parameters.Version.NuGetVersion,
                 parameters.ArtifactPaths.Files.License);
         }
     });
@@ -286,7 +287,7 @@ Task("Publish-GitHub")
                 parameters.Credentials.GitHub.Token,
                 "nicolabiancolini",
                 "Cake.Board",
-                parameters.Version.SemVersion,
+                parameters.Version.Version,
                 package.FullPath);
         }
 
@@ -294,7 +295,7 @@ Task("Publish-GitHub")
             parameters.Credentials.GitHub.Token,
             "nicolabiancolini",
             "Cake.Board",
-            parameters.Version.SemVersion);
+            parameters.Version.Version);
     });
 
 
