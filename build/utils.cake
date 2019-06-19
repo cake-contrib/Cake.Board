@@ -49,14 +49,18 @@ GitVersion GetVersion(BuildParameters parameters)
 
     var version = GitVersion(settings);
 
-    if (parameters.IsRunningOnAzurePipeline && !parameters.IsPullRequest)
+    if (parameters.IsRunningOnAzurePipeline)
     {
-        settings.UpdateAssemblyInfo = true;
-        settings.LogFilePath = "console";
-        settings.OutputType = GitVersionOutput.BuildServer;
+        var serverBuildVersion = version.SemVer;
 
-        GitVersion(settings);
+        if(parameters.IsPullRequest)
+            serverBuildVersion = $"{serverBuildVersion}-{version.BranchName}";
+        else if(parameters.IsStableRelease())
+            serverBuildVersion = $"{serverBuildVersion}-{version.Sha}";
+
+        Console.WriteLine($"##vso[build.updatebuildnumber]{serverBuildVersion}");
     }
+        
     return version;
 }
 
