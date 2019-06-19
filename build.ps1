@@ -164,7 +164,7 @@ if (!(Test-Path $PACKAGES_CONFIG)) {
 $FoundDotNetCliVersion = $null;
 if (Get-Command dotnet -ErrorAction SilentlyContinue) {
     $FoundDotNetCliVersion = dotnet --version;
-    $InstalledDotNetVersion = (Get-ChildItem (Get-Command dotnet).Path.Replace('dotnet.exe', 'sdk')).Name -split " ";
+    $InstalledDotNetVersion = dotnet --list-sdks | Foreach-Object { ($_ -split " ")[0] } # (Get-ChildItem (Get-Command dotnet).Path.Replace('dotnet.exe', 'sdk')).Name -split " ";
 }
 
 if ($InstalledDotNetVersion -notcontains $FoundDotNetCliVersion) {

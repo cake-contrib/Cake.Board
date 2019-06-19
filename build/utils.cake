@@ -162,25 +162,27 @@ void Pack(
     projectDir = MakeAbsolute(projectDir);
     licensePath = MakeAbsolute(licensePath);
 
+    var files = GetFiles($"{projectDir}/**/bin/{configuration}/**/{nuspecPath.GetFilenameWithoutExtension()}.*")
+        .Select(file => 
+            new NuSpecContent 
+            { 
+                Source = file.FullPath,
+                Target = file.FullPath.Replace(projectDir.FullPath, "").Replace($"bin/{configuration}", "lib") 
+            })
+        .ToList();
+
+    files.Add(new NuSpecContent 
+        {
+            Source = licensePath.FullPath,
+            Target = licensePath.FullPath.Replace(licensePath.FullPath, "")
+        });
+    
     NuGetPack(
         nuspecPath,
         new NuGetPackSettings
         {
             Version = version,
             OutputDirectory = outputDir,
-            Files = GetFiles($"{projectDir}/**/bin/{configuration}/**/{nuspecPath.GetFilenameWithoutExtension()}.*")
-                .Select(file => 
-                    new NuSpecContent 
-                    { 
-                        Source = file.FullPath,
-                        Target = file.FullPath.Replace(projectDir.FullPath, "").Replace($"bin/{configuration}", "lib") 
-                    })
-                .Append(
-                    new NuSpecContent 
-                    {
-                        Source = licensePath.FullPath,
-                        Target = licensePath.FullPath.Replace(licensePath.FullPath, "")
-                    })
-                .ToArray(),
+            Files = files,
         });
 }

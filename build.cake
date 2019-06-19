@@ -25,7 +25,7 @@
 #load "./build/utils.cake"
 
 /*
- * Variables
+ * Variables.
  */
 bool publishingError = false;
 
@@ -122,15 +122,17 @@ Task("Test")
 
         var timestamp = $"{DateTime.UtcNow:dd-MM-yyyy-HH-mm-ss-FFF}";
 
+        var exclude = GetFiles("./shared/**/*.csproj")
+                .Select(p => $"[{p.GetFilenameWithoutExtension()}]*")
+                .ToList();
+        exclude.Add("[xunit.*]*");
+        exclude.Add("[*.Tests?]*");
+
         var coverletSettings = new CoverletSettings 
         {
             CollectCoverage = true,
             CoverletOutputDirectory = parameters.ArtifactPaths.Directories.TestCoverage,
-            Exclude = GetFiles("./shared/**/*.csproj")
-                .Select(p => $"[{p.GetFilenameWithoutExtension()}]*")
-                .Append("[xunit.*]*")
-                .Append("[*.Tests?]*")
-                .ToList(),
+            Exclude = exclude,
             Threshold = (uint)parameters.CoverageThreshold,
             ThresholdType = ThresholdType.Line,
             CoverletOutputFormat = CoverletOutputFormat.cobertura
