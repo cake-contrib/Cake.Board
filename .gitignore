@@ -54,6 +54,7 @@ StyleCopReport.xml
 *.scc
 *.nupkg
 *.snupkg
+*.deb
 **/[Pp]ackages/*
 !**/[Pp]ackages/build/
 *.nuget.props
