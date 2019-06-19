@@ -1,0 +1,95 @@
+{
+  "queryType": "oneHop",
+  "queryResultType": "workItemLink",
+  "asOf": "2019-06-17T17:05:03.567Z",
+  "columns": [
+    {
+      "referenceName": "System.Id",
+      "name": "ID",
+      "url": "https://dev.azure.com/someone/_apis/wit/fields/System.Id"
+    },
+    {
+      "referenceName": "System.WorkItemType",
+      "name": "Work Item Type",
+      "url": "https://dev.azure.com/someone/_apis/wit/fields/System.WorkItemType"
+    },
+    {
+      "referenceName": "System.Title",
+      "name": "Title",
+      "url": "https://dev.azure.com/someone/_apis/wit/fields/System.Title"
+    },
+    {
+      "referenceName": "System.AssignedTo",
+      "name": "Assigned To",
+      "url": "https://dev.azure.com/someone/_apis/wit/fields/System.AssignedTo"
+    },
+    {
+      "referenceName": "System.State",
+      "name": "State",
+      "url": "https://dev.azure.com/someone/_apis/wit/fields/System.State"
+    },
+    {
+      "referenceName": "System.Tags",
+      "name": "Tags",
+      "url": "https://dev.azure.com/someone/_apis/wit/fields/System.Tags"
+    }
+  ],
+  "sortColumns": [
+    {
+      "field": {
+        "referenceName": "System.Id",
+        "name": "ID",
+        "url": "https://dev.azure.com/someone/_apis/wit/fields/System.Id"
+      },
+      "descending": false
+    },
+    {
+      "field": {
+        "referenceName": "System.Id",
+        "name": "ID",
+        "url": "https://dev.azure.com/someone/_apis/wit/fields/System.Id"
+      },
+      "descending": false
+    }
+  ],
+  "workItemRelations": [
+    {
+      "rel": null,
+      "source": null,
+      "target": {
+        "id": 8,
+        "url": "https://dev.azure.com/someone/_apis/wit/workItems/8"
+      }
+    },
+    {
+      "rel": "System.LinkTypes.Hierarchy-Forward",
+      "source": {
+        "id": 8,
+        "url": "https://dev.azure.com/someone/_apis/wit/workItems/8"
+      },
+      "target": {
+        "id": 6,
+        "url": "https://dev.azure.com/someone/_apis/wit/workItems/6"
+      }
+    },
+    {
+      "rel": null,
+      "source": null,
+      "target": {
+        "id": 9,
+        "url": "https://dev.azure.com/someone/_apis/wit/workItems/9"
+      }
+    },
+    {
+      "rel": "System.LinkTypes.Hierarchy-Forward",
+      "source": {
+        "id": 9,
+        "url": "https://dev.azure.com/someone/_apis/wit/workItems/9"
+      },
+      "target": {
+        "id": 7,
+        "url": "https://dev.azure.com/someone/_apis/wit/workItems/7"
+      }
+    }
+  ]
+}

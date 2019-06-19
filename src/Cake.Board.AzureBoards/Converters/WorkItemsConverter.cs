@@ -19,15 +19,15 @@ namespace Cake.Board.AzureBoards.Converters
                 return null;
 
             JObject root = JObject.Load(reader);
-            IEnumerable<JObject> items = root["workItemRelations"].Values<JObject>().AsEnumerable().Where(item => item["target"] != null);
+            IEnumerable<JToken> items = root["workItemRelations"].Values<JObject>().AsEnumerable().Select(item => item["target"]);
 
             ICollection<WorkItem> workItems = new List<WorkItem>();
 
             foreach (JObject item in items)
             {
-                WorkItem workItem = existingValue.SingleOrDefault(i => i.Id == item["id"].Value<string>()) ?? new WorkItem();
+                WorkItem workItem = existingValue?.SingleOrDefault(i => i.Id == item["id"].Value<string>()) ?? new WorkItem();
                 workItem.Id = string.IsNullOrEmpty(workItem?.Id) ? item["id"].Value<string>() : workItem.Id;
-                workItem.Id = string.IsNullOrEmpty(workItem?.Id) ? item["url"].Value<string>() : workItem.Id;
+                workItem.Url = string.IsNullOrEmpty(workItem?.Url) ? item["url"].Value<string>() : workItem.Url;
 
                 workItems.Add(workItem);
             }

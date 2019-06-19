@@ -8,7 +8,7 @@ namespace Cake.Board.Extensions
     /// <summary>
     /// Todo.
     /// </summary>
-    public static class Ensure
+    public static class EnsureExtensions
     {
         /// <summary>
         /// Todo.

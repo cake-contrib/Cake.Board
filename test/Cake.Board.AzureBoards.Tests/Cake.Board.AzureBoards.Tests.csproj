@@ -7,7 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\..\shared\Cake.Board.Testing\Cake.Board.Testing.csproj" />
     <ProjectReference Include="..\..\src\Cake.Board.AzureBoards\Cake.Board.AzureBoards.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <None Update="azureboards-wit-response.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="azureboards-wit_queries-response.json">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 
 </Project>

@@ -1,0 +1,116 @@
+{
+  "id": 8,
+  "rev": 4,
+  "fields": {
+    "System.AreaPath": "SomeOneProject",
+    "System.TeamProject": "SomeOneProject",
+    "System.IterationPath": "SomeOneProject\\Iteration 1",
+    "System.WorkItemType": "Feature",
+    "System.State": "Closed",
+    "System.Reason": "Acceptance tests pass",
+    "System.CreatedDate": "2019-05-29T17:51:04.12Z",
+    "System.CreatedBy": {
+      "displayName": "Some One",
+      "url": "https://spsprodweu1.vssps.visualstudio.com/zzzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz/_apis/Identities/yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy",
+      "_links": {
+        "avatar": {
+          "href": "https://dev.azure.com/someone/_apis/GraphProfile/MemberAvatars/msa.ZWQ1Mjk2ZmQtMmZkZC03MjhmLTllZTMtNTg5NTg5MWJkMzIy"
+        }
+      },
+      "id": "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy",
+      "uniqueName": "some.one@run.all",
+      "imageUrl": "https://dev.azure.com/someone/_apis/GraphProfile/MemberAvatars/msa.ZWQ1Mjk2ZmQtMmZkZC03MjhmLTllZTMtNTg5NTg5MWJkMzIy",
+      "descriptor": "msa.ZWQ1Mjk2ZmQtMmZkZC03MjhmLTllZTMtNTg5NTg5MWJkMzIy"
+    },
+    "System.ChangedDate": "2019-05-29T17:56:10.2Z",
+    "System.ChangedBy": {
+      "displayName": "Some One",
+      "url": "https://spsprodweu1.vssps.visualstudio.com/zzzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz/_apis/Identities/yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy",
+      "_links": {
+        "avatar": {
+          "href": "https://dev.azure.com/someone/_apis/GraphProfile/MemberAvatars/msa.ZWQ1Mjk2ZmQtMmZkZC03MjhmLTllZTMtNTg5NTg5MWJkMzIy"
+        }
+      },
+      "id": "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy",
+      "uniqueName": "some.one@run.all",
+      "imageUrl": "https://dev.azure.com/someone/_apis/GraphProfile/MemberAvatars/msa.ZWQ1Mjk2ZmQtMmZkZC03MjhmLTllZTMtNTg5NTg5MWJkMzIy",
+      "descriptor": "msa.ZWQ1Mjk2ZmQtMmZkZC03MjhmLTllZTMtNTg5NTg5MWJkMzIy"
+    },
+    "System.CommentCount": 0,
+    "System.Title": "Users want eat pizza",
+    "System.BoardColumn": "Closed",
+    "System.BoardColumnDone": false,
+    "Microsoft.VSTS.Common.Priority": 2,
+    "Microsoft.VSTS.Common.StateChangeDate": "2019-05-29T17:56:10.2Z",
+    "Microsoft.VSTS.Common.ClosedDate": "2019-05-29T17:56:10.2Z",
+    "Microsoft.VSTS.Common.ValueArea": "Business",
+    "Microsoft.VSTS.Common.ClosedBy": {
+      "displayName": "Some One",
+      "url": "https://spsprodweu1.vssps.visualstudio.com/zzzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz/_apis/Identities/yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy",
+      "_links": {
+        "avatar": {
+          "href": "https://dev.azure.com/someone/_apis/GraphProfile/MemberAvatars/msa.ZWQ1Mjk2ZmQtMmZkZC03MjhmLTllZTMtNTg5NTg5MWJkMzIy"
+        }
+      },
+      "id": "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy",
+      "uniqueName": "some.one@run.all",
+      "imageUrl": "https://dev.azure.com/someone/_apis/GraphProfile/MemberAvatars/msa.ZWQ1Mjk2ZmQtMmZkZC03MjhmLTllZTMtNTg5NTg5MWJkMzIy",
+      "descriptor": "msa.ZWQ1Mjk2ZmQtMmZkZC03MjhmLTllZTMtNTg5NTg5MWJkMzIy"
+    },
+    "Microsoft.VSTS.Common.ActivatedDate": "2019-05-29T17:56:10.2Z",
+    "Microsoft.VSTS.Common.ActivatedBy": {
+      "displayName": "Some One",
+      "url": "https://spsprodweu1.vssps.visualstudio.com/zzzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz/_apis/Identities/yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy",
+      "_links": {
+        "avatar": {
+          "href": "https://dev.azure.com/someone/_apis/GraphProfile/MemberAvatars/msa.ZWQ1Mjk2ZmQtMmZkZC03MjhmLTllZTMtNTg5NTg5MWJkMzIy"
+        }
+      },
+      "id": "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy",
+      "uniqueName": "some.one@run.all",
+      "imageUrl": "https://dev.azure.com/someone/_apis/GraphProfile/MemberAvatars/msa.ZWQ1Mjk2ZmQtMmZkZC03MjhmLTllZTMtNTg5NTg5MWJkMzIy",
+      "descriptor": "msa.ZWQ1Mjk2ZmQtMmZkZC03MjhmLTllZTMtNTg5NTg5MWJkMzIy"
+    },
+    "Microsoft.VSTS.Common.ResolvedDate": "2019-05-29T17:56:10.2Z",
+    "Microsoft.VSTS.Common.ResolvedBy": {
+      "displayName": "Some One",
+      "url": "https://spsprodweu1.vssps.visualstudio.com/zzzzzzzzz-zzzz-zzzz-zzzz-zzzzzzzzzzzz/_apis/Identities/yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy",
+      "_links": {
+        "avatar": {
+          "href": "https://dev.azure.com/someone/_apis/GraphProfile/MemberAvatars/msa.ZWQ1Mjk2ZmQtMmZkZC03MjhmLTllZTMtNTg5NTg5MWJkMzIy"
+        }
+      },
+      "id": "yyyyyyyy-yyyy-yyyy-yyyy-yyyyyyyyyyyy",
+      "uniqueName": "some.one@run.all",
+      "imageUrl": "https://dev.azure.com/someone/_apis/GraphProfile/MemberAvatars/msa.ZWQ1Mjk2ZmQtMmZkZC03MjhmLTllZTMtNTg5NTg5MWJkMzIy",
+      "descriptor": "msa.ZWQ1Mjk2ZmQtMmZkZC03MjhmLTllZTMtNTg5NTg5MWJkMzIy"
+    },
+    "WEF_A670326BC8524A3B98A02FE07CE762B3_Kanban.Column": "Closed",
+    "WEF_A670326BC8524A3B98A02FE07CE762B3_Kanban.Column.Done": false,
+    "System.Description": "Foolish some far busy minimal and up through sympathetic more komodo some forbidding busily wow some alas crud some far one canny more far fabulous this thankfully ordered close ably less iguanodon gorilla well alas one via much however cow llama."
+  },
+  "_links": {
+    "self": {
+      "href": "https://dev.azure.com/someone/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/_apis/wit/workItems/8"
+    },
+    "workItemUpdates": {
+      "href": "https://dev.azure.com/someone/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/_apis/wit/workItems/8/updates"
+    },
+    "workItemRevisions": {
+      "href": "https://dev.azure.com/someone/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/_apis/wit/workItems/8/revisions"
+    },
+    "workItemComments": {
+      "href": "https://dev.azure.com/someone/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/_apis/wit/workItems/8/comments"
+    },
+    "html": {
+      "href": "https://dev.azure.com/someone/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/_workitems/edit/8"
+    },
+    "workItemType": {
+      "href": "https://dev.azure.com/someone/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/_apis/wit/workItemTypes/Feature"
+    },
+    "fields": {
+      "href": "https://dev.azure.com/someone/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/_apis/wit/fields"
+    }
+  },
+  "url": "https://dev.azure.com/someone/xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx/_apis/wit/workItems/8"
+}

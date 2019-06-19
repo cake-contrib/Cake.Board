@@ -65,13 +65,10 @@ void Build(
     string configuration,
     DotNetCoreMSBuildSettings settings = null)
 {
-    Information("Run restore for {0}", projectPath.GetFilenameWithoutExtension());
-    DotNetCoreRestore(projectPath.FullPath);
     Information("Run build for {0}", projectPath.GetFilenameWithoutExtension());
     DotNetCoreBuild(projectPath.FullPath, new DotNetCoreBuildSettings {
         Configuration = configuration,
         Verbosity = DotNetCoreVerbosity.Minimal,
-        NoRestore = true,
         MSBuildSettings = settings
     });   
 }
@@ -165,25 +162,27 @@ void Pack(
     projectDir = MakeAbsolute(projectDir);
     licensePath = MakeAbsolute(licensePath);
 
+    var files = GetFiles($"{projectDir}/**/bin/{configuration}/**/{nuspecPath.GetFilenameWithoutExtension()}.*")
+        .Select(file => 
+            new NuSpecContent 
+            { 
+                Source = file.FullPath,
+                Target = file.FullPath.Replace(projectDir.FullPath, "").Replace($"bin/{configuration}", "lib") 
+            })
+        .ToList();
+
+    files.Add(new NuSpecContent 
+        {
+            Source = licensePath.FullPath,
+            Target = licensePath.FullPath.Replace(licensePath.FullPath, "")
+        });
+    
     NuGetPack(
         nuspecPath,
         new NuGetPackSettings
         {
             Version = version,
             OutputDirectory = outputDir,
-            Files = GetFiles($"{projectDir}/**/bin/{configuration}/**/{nuspecPath.GetFilenameWithoutExtension()}.*")
-                .Select(file => 
-                    new NuSpecContent 
-                    { 
-                        Source = file.FullPath,
-                        Target = file.FullPath.Replace(projectDir.FullPath, "").Replace($"bin/{configuration}", "lib") 
-                    })
-                .Append(
-                    new NuSpecContent 
-                    {
-                        Source = licensePath.FullPath,
-                        Target = licensePath.FullPath.Replace(licensePath.FullPath, "")
-                    })
-                .ToArray(),
+            Files = files,
         });
 }

@@ -4,6 +4,8 @@
 using System;
 using System.Collections.Generic;
 using System.Net.Http;
+using System.Net.Http.Headers;
+using System.Text;
 using System.Threading.Tasks;
 
 using Cake.Board.Abstractions;
@@ -24,7 +26,23 @@ namespace Cake.Board.AzureBoards
         /// <summary>
         /// Initializes a new instance of the <see cref="AzureBoards"/> class.
         /// </summary>
-        /// <param name="client">Todo2.</param>
+        /// <param name="personalAccessToken">Personal Access Token <see href="https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate">Authenticate access with personal access tokens</see>.</param>
+        /// <param name="organization">The Azure DevOps Organization.</param>
+        public AzureBoards(string personalAccessToken, string organization)
+        {
+            HttpClient client = new HttpClient
+            {
+                BaseAddress = new Uri($"https://dev.azure.com/{organization.ArgumentNotEmptyOrWhitespace(nameof(organization))}")
+            };
+            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes($":{personalAccessToken.ArgumentNotEmptyOrWhitespace(nameof(personalAccessToken))}")));
+
+            this._client = client;
+        }
+
+        /// <summary>
+        /// Initializes a new instance of the <see cref="AzureBoards"/> class.
+        /// </summary>
+        /// <param name="client">The preconfigured <see cref="HttpClient"/> with. TODO.</param>
         public AzureBoards(HttpClient client) => this._client = client.NotNull(nameof(client));
 
         /// <summary>
@@ -45,7 +63,7 @@ namespace Cake.Board.AzureBoards
         /// <inheritdoc/>
         public async Task<IWorkItem> GetWorkItemByIdAsync(string id)
         {
-            HttpResponseMessage response = await HttpPolicy.WrapAllAsync()
+            HttpResponseMessage response = await HttpPolicyExtensions.WrapAllAsync()
                 .ExecuteAsync(async () =>
                     await this._client.GetAsync($"{this._client.BaseAddress}/_apis/wit/wiql/{id.ArgumentNotEmptyOrWhitespace(nameof(id))}"));
 
@@ -61,7 +79,7 @@ namespace Cake.Board.AzureBoards
         /// <inheritdoc/>
         public async Task<IEnumerable<IWorkItem>> GetWorkItemsByQueryIdAsync(string queryId, string project, string team)
         {
-            HttpResponseMessage response = await HttpPolicy.WrapAllAsync()
+            HttpResponseMessage response = await HttpPolicyExtensions.WrapAllAsync()
                 .ExecuteAsync(async () =>
                     await this._client.GetAsync($"{this._client.BaseAddress}/{project.ArgumentNotEmptyOrWhitespace(nameof(project))}/{team.ArgumentNotEmptyOrWhitespace(nameof(team))}/_apis/wit/wiql/{queryId.ArgumentNotEmptyOrWhitespace(nameof(queryId))}"));
 
