@@ -12,18 +12,18 @@ using Cake.Core.Annotations;
 namespace Cake.Board.AzureBoards.Commands
 {
     /// <summary>
-    /// Todo.
+    /// Provides a set of methods for extends <see cref="ICakeContext"/>.
     /// </summary>
     [CakeAliasCategory("Board")]
     public static class WorkItemCommand
     {
         /// <summary>
-        /// Todo.
+        /// Fetch the <see cref="IWorkItem"/> by Id.
         /// </summary>
-        /// <param name="context">Todo1.</param>
-        /// <param name="board">Todo4.</param>
-        /// <param name="id">Todo2.</param>
-        /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
+        /// <param name="context">The <see cref="ICakeContext"/> of precess.</param>
+        /// <param name="board">The <see cref="IBoard"/>.</param>
+        /// <param name="id">The work item id.</param>
+        /// <returns>A <see cref="Task{IWorkItem}"/> representing the result of the asynchronous operation.</returns>
         [CakeMethodAlias]
         public static async Task<IWorkItem> GetWorkItemByIdAsync(
             this ICakeContext context,
@@ -32,13 +32,13 @@ namespace Cake.Board.AzureBoards.Commands
                 id.ArgumentNotEmptyOrWhitespace(nameof(id)));
 
         /// <summary>
-        /// Todo.
+        /// Fetch the <see cref="IWorkItem"/> by Id.
         /// </summary>
-        /// <param name="context">Todo1.</param>
-        /// <param name="personalAccessToken">Todo2.</param>
-        /// <param name="organization">Todo3.</param>
-        /// <param name="id">Todo4.</param>
-        /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
+        /// <param name="context">The <see cref="ICakeContext"/> of precess.</param>
+        /// <param name="personalAccessToken">The personal access token.</param>
+        /// <param name="organization">The organization where the board is placed.</param>
+        /// <param name="id">The work item id.</param>
+        /// <returns>A <see cref="Task{IWorkItem}"/> representing the result of the asynchronous operation.</returns>
         public static async Task<IWorkItem> GetWorkItemByIdAsync(
             this ICakeContext context,
             string personalAccessToken,
@@ -50,35 +50,29 @@ namespace Cake.Board.AzureBoards.Commands
                 id);
 
         /// <summary>
-        /// Todo.
+        /// Fetch the <see cref="IEnumerable{IWorkItem}"/> by query Id.
         /// </summary>
-        /// <param name="context">Todo1.</param>
-        /// <param name="board">Todo7.</param>
-        /// <param name="id">Todo2.</param>
-        /// <param name="project">Todo4.</param>
-        /// <param name="team">Todo5.</param>
-        /// <returns>Todo9.</returns>
+        /// <param name="context">The <see cref="ICakeContext"/> of precess.</param>
+        /// <param name="board">The <see cref="IBoard"/>.</param>
+        /// <param name="id">The query id.</param>
+        /// <returns>An <see cref="IEnumerable{IWorkItem}"/>.</returns>
         [CakeMethodAlias]
         public static async Task<IEnumerable<IWorkItem>> GetWorkItemsByQueryIdAsync(
             this ICakeContext context,
             IBoard board,
-            string id,
-            string project,
-            string team) => await board.GetWorkItemsByQueryIdAsync(
-                id.ArgumentNotEmptyOrWhitespace(nameof(id)),
-                project.ArgumentNotEmptyOrWhitespace(nameof(project)),
-                team.ArgumentNotEmptyOrWhitespace(nameof(team)));
+            string id) => await board.GetWorkItemsByQueryIdAsync(
+                id.ArgumentNotEmptyOrWhitespace(nameof(id)));
 
         /// <summary>
-        /// Todo.
+        /// Fetch the <see cref="IEnumerable{IWorkItem}"/> by query Id.
         /// </summary>
-        /// <param name="context">Todo1.</param>
-        /// <param name="personalAccessToken">Todo6.</param>
-        /// <param name="organization">Todo10.</param>
-        /// <param name="id">Todo2.</param>
-        /// <param name="project">Todo4.</param>
-        /// <param name="team">Todo5.</param>
-        /// <returns>Todo9.</returns>
+        /// <param name="context">The <see cref="ICakeContext"/> of precess.</param>
+        /// <param name="personalAccessToken">The personal access token.</param>
+        /// <param name="organization">The organization where the board is placed.</param>
+        /// <param name="id">The query id.</param>
+        /// <param name="project">The project where the board is placed.</param>
+        /// <param name="team">The target team.</param>
+        /// <returns>An <see cref="IEnumerable{IWorkItem}"/>.</returns>
         [CakeMethodAlias]
         public static async Task<IEnumerable<IWorkItem>> GetWorkItemsByQueryIdAsync(
             this ICakeContext context,
@@ -86,12 +80,19 @@ namespace Cake.Board.AzureBoards.Commands
             string organization,
             string id,
             string project,
-            string team) => await context.GetWorkItemsByQueryIdAsync(
-                new AzureBoards(
+            string team)
+        {
+            var board = new AzureBoards(
                     personalAccessToken.ArgumentNotEmptyOrWhitespace(nameof(personalAccessToken)),
-                    organization.ArgumentNotEmptyOrWhitespace(nameof(organization))),
-                id.ArgumentNotEmptyOrWhitespace(nameof(id)),
-                project.ArgumentNotEmptyOrWhitespace(nameof(project)),
-                team.ArgumentNotEmptyOrWhitespace(nameof(team)));
+                    organization.ArgumentNotEmptyOrWhitespace(nameof(organization)))
+            {
+                Project = project.ArgumentNotEmptyOrWhitespace(nameof(project)),
+                Team = team.ArgumentNotEmptyOrWhitespace(nameof(team))
+            };
+
+            return await context.GetWorkItemsByQueryIdAsync(
+                    board,
+                    id.ArgumentNotEmptyOrWhitespace(nameof(id)));
+        }
     }
 }

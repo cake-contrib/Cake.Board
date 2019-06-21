@@ -17,7 +17,7 @@ using Newtonsoft.Json;
 namespace Cake.Board.AzureBoards
 {
     /// <summary>
-    /// Todo.
+    /// Provides an object representation of <see href="https://docs.microsoft.com/azure/devops/boards/boards">Azure Boards</see>.
     /// </summary>
     public class AzureBoards : IBoard
     {
@@ -42,13 +42,19 @@ namespace Cake.Board.AzureBoards
         /// <summary>
         /// Initializes a new instance of the <see cref="AzureBoards"/> class.
         /// </summary>
-        /// <param name="client">The preconfigured <see cref="HttpClient"/> with. TODO.</param>
+        /// <param name="client">The preconfigured <see cref="HttpClient"/> with sets <see cref="AuthenticationHeaderValue"/>.</param>
+        /// <example>
+        /// <code>
+        /// var client = new HttpClient
+        /// {
+        ///     BaseAddress = new Uri($"https://dev.azure.com/{organization.ArgumentNotEmptyOrWhitespace(nameof(organization))}")
+        /// };
+        /// client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes($":{personalAccessToken}")));
+        ///
+        /// var board = new AzureBoards(client);
+        /// </code>
+        /// </example>
         public AzureBoards(HttpClient client) => this._client = client.NotNull(nameof(client));
-
-        /// <summary>
-        /// Gets or sets Azure DevOps organization name.
-        /// </summary>
-        public string Organization { get; set; }
 
         /// <summary>
         /// Gets or sets Azure DevOps project name.

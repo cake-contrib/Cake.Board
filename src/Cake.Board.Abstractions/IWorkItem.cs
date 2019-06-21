@@ -4,7 +4,7 @@
 namespace Cake.Board.Abstractions
 {
     /// <summary>
-    /// Work item.
+    /// Represents a part of your team's development history.
     /// </summary>
     public interface IWorkItem
     {
