@@ -2,6 +2,7 @@
 // Licensed under the MIT license. See the LICENSE file in the project root for full license information.
 
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 using Cake.Board.Abstractions;

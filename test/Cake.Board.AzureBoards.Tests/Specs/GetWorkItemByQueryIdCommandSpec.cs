@@ -14,7 +14,6 @@ using Cake.Board.Abstractions;
 using Cake.Board.AzureBoards.Commands;
 using Cake.Board.AzureBoards.Models;
 using Cake.Board.Testing;
-using Microsoft.Extensions.DependencyInjection;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
@@ -23,50 +22,95 @@ namespace Cake.Board.AzureBoards.Tests.Specs
 {
     public class GetWorkItemByQueryIdCommandSpec
     {
-        [Fact(DisplayName = @"GIVEN a DevOps engineer with a work item query Id
-WHEN he wants to fetch all work items by query in Azure Boards
-THEN it must be able to obtain the content sought")]
-        [Trait(TraitNames.TEST_CATEGORY, TraitValues.ACCEPTANCE_TEST)]
-        public async Task Scenario_SearchWorkItemByQueryId()
-        {
-            // Arrange
-            string queryId = "someone-query";
-            string project = "someone-project";
-            string team = "someone-team";
-            var fileContent = JObject.Parse(await File.ReadAllTextAsync($"{Environment.CurrentDirectory}/azureboards-wit_queries-response.json"));
+        private readonly string _queryId;
+        private readonly string _organization;
+        private readonly string _project;
+        private readonly string _team;
+        private readonly JObject _fileContent;
+        private List<WorkItem> _workItems;
 
-            IEnumerable<WorkItem> workItems = fileContent["workItemRelations"].Values<JObject>().AsEnumerable()
+        public GetWorkItemByQueryIdCommandSpec()
+        {
+            this._fileContent = JObject.Parse(File.ReadAllText($"{Environment.CurrentDirectory}/azureboards-wit_queries-response.json"));
+            this._workItems = this._fileContent["workItemRelations"].Values<JObject>().AsEnumerable()
                 .Select(item => new WorkItem()
                 {
                     Id = item["target"]["id"].Value<string>(),
                     Url = item["target"]["url"].Value<string>()
                 }).ToList();
+            this._queryId = "someone-query";
+            this._organization = "someoune-organization";
+            this._project = "someone-project";
+            this._team = "someone-team";
+        }
 
+        [Fact(DisplayName = @"GIVEN a DevOps engineer with a work item query Id
+WHEN he wants to fetch all work items by query in Azure Boards
+THEN it must be able to obtain the content sought")]
+        [Trait(TraitNames.TEST_CATEGORY, TraitValues.ACCEPTANCE_TEST)]
+        public async Task ScenarioFromBoardExtension_SearchWorkItemByQueryId()
+        {
+            // Arrange
             var fakeResponse = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
-                Content = new StringContent(JsonConvert.SerializeObject(fileContent), Encoding.UTF8, "application/json")
+                Content = new StringContent(JsonConvert.SerializeObject(this._fileContent), Encoding.UTF8, "application/json")
             };
             var fakeCakeContext = new FakeCakeContext(logBehaviour: () => new FakeCakeLog());
             var fakeClient = new HttpClient(new FakeHttpMessageHandler(fakeResponse))
             {
-                BaseAddress = new Uri("https://dev.azure.com/someone")
+                BaseAddress = new Uri($"https://dev.azure.com/{this._organization}")
             };
             var board = new AzureBoards(fakeClient)
             {
-                Project = project,
-                Team = team
+                Project = this._project,
+                Team = this._team
             };
 
             // Act
-            IEnumerable<IWorkItem> wits = await board.GetWorkItemsByQueryIdAsync(queryId);
+            IEnumerable<IWorkItem> wits = await board.GetWorkItemsByQueryIdAsync(this._queryId);
 
             // Assert
             IEnumerable<WorkItem> concreteWits = wits.Select(wit => Assert.IsType<WorkItem>(wit)).ToList();
-            for (int i = 0; i < workItems.Count(); i++)
+            for (int i = 0; i < this._workItems.Count(); i++)
             {
-                Assert.Equal(workItems.ElementAt(i).Id, concreteWits.ElementAt(i).Id);
-                Assert.Equal(workItems.ElementAt(i).Url, concreteWits.ElementAt(i).Url);
+                Assert.Equal(this._workItems.ElementAt(i).Id, concreteWits.ElementAt(i).Id);
+                Assert.Equal(this._workItems.ElementAt(i).Url, concreteWits.ElementAt(i).Url);
+            }
+        }
+
+        [Fact(DisplayName = @"GIVEN a DevOps engineer with a work item query Id
+WHEN he wants to fetch all work items by query in Azure Boards
+THEN it must be able to obtain the content sought")]
+        [Trait(TraitNames.TEST_CATEGORY, TraitValues.ACCEPTANCE_TEST)]
+        public async Task ScenarioFromCakeContextExtension_SearchWorkItemByQueryId()
+        {
+            // Arrange
+            var fakeResponse = new HttpResponseMessage
+            {
+                StatusCode = HttpStatusCode.OK,
+                Content = new StringContent(JsonConvert.SerializeObject(this._fileContent), Encoding.UTF8, "application/json")
+            };
+            var fakeCakeContext = new FakeCakeContext(logBehaviour: () => new FakeCakeLog());
+            var fakeClient = new HttpClient(new FakeHttpMessageHandler(fakeResponse))
+            {
+                BaseAddress = new Uri($"https://dev.azure.com/{this._organization}")
+            };
+            var board = new AzureBoards(fakeClient)
+            {
+                Project = this._project,
+                Team = this._team
+            };
+
+            // Act
+            IEnumerable<IWorkItem> wits = await fakeCakeContext.GetWorkItemsByQueryIdAsync(board, this._queryId);
+
+            // Assert
+            IEnumerable<WorkItem> concreteWits = wits.Select(wit => Assert.IsType<WorkItem>(wit)).ToList();
+            for (int i = 0; i < this._workItems.Count(); i++)
+            {
+                Assert.Equal(this._workItems.ElementAt(i).Id, concreteWits.ElementAt(i).Id);
+                Assert.Equal(this._workItems.ElementAt(i).Url, concreteWits.ElementAt(i).Url);
             }
         }
     }
