@@ -1,7 +1,9 @@
 // Copyright (c) Nicola Biancolini, 2019. All rights reserved.
 // Licensed under the MIT license. See the LICENSE file in the project root for full license information.
 
+using System;
 using System.Collections.Generic;
+using System.Net.Http;
 using System.Threading.Tasks;
 
 using Cake.Board.Abstractions;
@@ -17,6 +19,12 @@ namespace Cake.Board.AzureBoards.Commands
     [CakeAliasCategory("Board")]
     public static class WorkItemCommand
     {
+        private static Func<IBoard, string, Task<IWorkItem>> _getWorkItemByIdBehaviourAsync = (board, id)
+            => board.NotNull(nameof(board)).GetWorkItemByIdAsync(id.ArgumentNotEmptyOrWhitespace(nameof(id)));
+
+        private static Func<IBoard, string, Task<IEnumerable<IWorkItem>>> _getWorkItemsByQueryIdBehaviourAsync = (board, id)
+            => board.NotNull(nameof(board)).GetWorkItemsByQueryIdAsync(id.ArgumentNotEmptyOrWhitespace(nameof(id)));
+
         /// <summary>
         /// Fetch the <see cref="IWorkItem"/> by Id.
         /// </summary>
@@ -28,7 +36,8 @@ namespace Cake.Board.AzureBoards.Commands
         public static async Task<IWorkItem> GetWorkItemByIdAsync(
             this ICakeContext context,
             IBoard board,
-            string id) => await board.GetWorkItemByIdAsync(
+            string id) => await WorkItemCommand._getWorkItemByIdBehaviourAsync(
+                board.NotNull(nameof(board)),
                 id.ArgumentNotEmptyOrWhitespace(nameof(id)));
 
         /// <summary>
@@ -60,7 +69,8 @@ namespace Cake.Board.AzureBoards.Commands
         public static async Task<IEnumerable<IWorkItem>> GetWorkItemsByQueryIdAsync(
             this ICakeContext context,
             IBoard board,
-            string id) => await board.GetWorkItemsByQueryIdAsync(
+            string id) => await WorkItemCommand._getWorkItemsByQueryIdBehaviourAsync(
+                board.NotNull(nameof(board)),
                 id.ArgumentNotEmptyOrWhitespace(nameof(id)));
 
         /// <summary>

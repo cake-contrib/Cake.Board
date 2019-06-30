@@ -29,14 +29,13 @@ namespace Cake.Board.AzureBoards
         /// <param name="personalAccessToken">Personal Access Token <see href="https://docs.microsoft.com/en-us/azure/devops/organizations/accounts/use-personal-access-tokens-to-authenticate">Authenticate access with personal access tokens</see>.</param>
         /// <param name="organization">The Azure DevOps Organization.</param>
         public AzureBoards(string personalAccessToken, string organization)
+            : this(new HttpClient())
         {
-            HttpClient client = new HttpClient
-            {
-                BaseAddress = new Uri($"https://dev.azure.com/{organization.ArgumentNotEmptyOrWhitespace(nameof(organization))}")
-            };
-            client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes($":{personalAccessToken.ArgumentNotEmptyOrWhitespace(nameof(personalAccessToken))}")));
-
-            this._client = client;
+            this._client.BaseAddress = new Uri($"https://dev.azure.com/{organization.ArgumentNotEmptyOrWhitespace(nameof(organization))}");
+            this._client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue(
+                "Basic",
+                Convert.ToBase64String(
+                    Encoding.UTF8.GetBytes($":{personalAccessToken.ArgumentNotEmptyOrWhitespace(nameof(personalAccessToken))}")));
         }
 
         /// <summary>

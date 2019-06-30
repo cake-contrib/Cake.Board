@@ -15,7 +15,7 @@
     <developmentDependency>true</developmentDependency>
     <releaseNotes>https://github.com/nicolabiancolini/Cake.Board/releases</releaseNotes>
     <dependencies>
-      <dependency id="Cake.Board" version="0.*" />
+      <dependency id="Cake.Board" version="$version$" />
     </dependencies>
   </metadata>
 </package>

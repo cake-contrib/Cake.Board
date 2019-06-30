@@ -164,7 +164,7 @@ void Pack(
     projectDir = MakeAbsolute(projectDir);
     licensePath = MakeAbsolute(licensePath);
 
-    var files = GetFiles($"{projectDir}/**/bin/{configuration}/**/{nuspecPath.GetFilenameWithoutExtension()}.*")
+    var files = GetFiles($"{projectDir}/**/bin/{configuration}/**/{nuspecPath.GetFilenameWithoutExtension()}" + ".{dll,pdb,xml}")
         .Select(file => 
             new NuSpecContent 
             { 
