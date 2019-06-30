@@ -3,8 +3,11 @@
 
 using System;
 using System.IO;
+using System.Linq;
+using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
+using System.Reflection;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -115,7 +118,7 @@ THEN it must be able to obtain the content sought")]
 WHEN he wants to look for a work item in Azure Boards
 THEN it must be able to obtain the content sought")]
         [Trait(TraitNames.TEST_CATEGORY, TraitValues.ACCEPTANCE_TEST)]
-        public void ScenarioFromCakeContextExtensionWithPatAndOrganization_SearchWorkItemById()
+        public async Task ScenarioFromCakeContextExtensionWithPatAndOrganization_SearchWorkItemById()
         {
             // Arrange
             var fakeResponse = new HttpResponseMessage
@@ -129,15 +132,14 @@ THEN it must be able to obtain the content sought")]
                 BaseAddress = new Uri($"https://dev.azure.com/{this._organization}")
             };
             var board = new AzureBoards(fakeClient);
-            Shim shimWorkItemCommand = Shim.Replace(() => WorkItemCommand.GetWorkItemByIdAsync(Is.A<FakeCakeContext>(), Is.A<AzureBoards>(), Is.A<string>()))
-                .With((ICakeContext context, IBoard azureBoards, string id) => Task.Factory.StartNew<IWorkItem>(() => this._fileContent.ToObject<WorkItem>()));
 
-            // Act Todo
-            IWorkItem wit = null;
+            FieldInfo commandBehaviour = typeof(WorkItemCommand).GetRuntimeFields().Single(p => p.Name == "_getWorkItemByIdBehaviourAsync");
+            object originBehaviour = commandBehaviour.GetValue(typeof(WorkItemCommand));
 
-            PoseContext.Isolate(
-                () => wit = fakeCakeContext.GetWorkItemByIdAsync(this._pat, this._organization, this._witId).Result,
-                shimWorkItemCommand);
+            // Act
+            commandBehaviour.SetValue(typeof(WorkItemCommand), (Func<IBoard, string, Task<IWorkItem>>)((azureBoard, id) => board.GetWorkItemByIdAsync(id)));
+            IWorkItem wit = await fakeCakeContext.GetWorkItemByIdAsync(this._pat, this._organization, this._witId);
+            commandBehaviour.SetValue(typeof(WorkItemCommand), originBehaviour);
 
             // Assert
             Assert.IsType<WorkItem>(wit);
