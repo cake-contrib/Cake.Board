@@ -70,7 +70,7 @@ namespace Cake.Board.AzureBoards
         {
             HttpResponseMessage response = await HttpPolicyExtensions.WrapAllAsync()
                 .ExecuteAsync(async () =>
-                    await this._client.GetAsync($"{this._client.BaseAddress}/_apis/wit/wiql/{id.ArgumentNotEmptyOrWhitespace(nameof(id))}"));
+                    await this._client.GetAsync($"{this._client.BaseAddress}/_apis/wit/workItems/{id.ArgumentNotEmptyOrWhitespace(nameof(id))}"));
 
             return JsonConvert.DeserializeObject<WorkItem>(await response.Content.ReadAsStringAsync(), new WorkItemConverter());
         }
