@@ -16,6 +16,7 @@
     <releaseNotes>https://github.com/nicolabiancolini/Cake.Board/releases</releaseNotes>  
     <dependencies>
       <dependency id="Cake.Board.Abstractions" version="$version$" />
+      <dependency id="Polly" version="3.*" />
     </dependencies>
   </metadata>
 </package>

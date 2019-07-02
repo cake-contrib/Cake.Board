@@ -185,6 +185,6 @@ void Pack(
         {
             Version = version,
             OutputDirectory = outputDir,
-            Files = files,
+            Files = files
         });
 }
