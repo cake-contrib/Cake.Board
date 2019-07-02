@@ -100,7 +100,7 @@ Task("Build")
     .IsDependentOn("Clean")
     .Does<BuildParameters>((parameters) =>
     {
-        foreach (var project in GetFiles("./src/**/*.csproj"))
+        foreach (var project in GetFiles("./**/*.csproj"))
         {
             Build(project, parameters.Configuration, parameters.MSBuildSettings);        
         }
@@ -118,7 +118,7 @@ Task("Test")
         var settings = new DotNetCoreTestSettings 
         {
             Configuration = parameters.Configuration,
-            NoBuild = false
+            NoBuild = true
         };
 
         var timestamp = $"{DateTime.UtcNow:dd-MM-yyyy-HH-mm-ss-FFF}";
