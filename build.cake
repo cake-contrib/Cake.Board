@@ -272,6 +272,7 @@ Task("Publish-GitHub")
     .WithCriteria<BuildParameters>((context, parameters) => 
         parameters.IsStableRelease() || parameters.IsPreviewRelease(), "Publish-GitHub works only for releases.")
     .IsDependentOn("Pack-NuGet")
+    .ContinueOnError()
     .ReportError(exception => 
         TaskErrorReporter(
             "Publish-GitHub task failed, but continuing with next Task...",

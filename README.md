@@ -5,10 +5,10 @@ Cake Addin for work with work items boards.
 [![codecov](https://codecov.io/gh/nicolabiancolini/Cake.Board/branch/master/graph/badge.svg)](https://codecov.io/gh/nicolabiancolini/Cake.Board)
 
 ### Build status
-| OS | Build & Test |
-| :---: | :---: |
-| __Windows x64__ | [![Build Status](https://dev.azure.com/nicolabiancolini/Cake.Board/_apis/build/status/nicolabiancolini.Cake.Board?branchName=master&jobName=Windows%20Agent)](https://dev.azure.com/nicolabiancolini/Cake.Board/_build/latest?definitionId=8&branchName=master) |
-| __Linux x64__ | [![Build Status](https://dev.azure.com/nicolabiancolini/Cake.Board/_apis/build/status/nicolabiancolini.Cake.Board?branchName=master&jobName=Ubuntu%20Agent)](https://dev.azure.com/nicolabiancolini/Cake.Board/_build/latest?definitionId=8&branchName=master) |
+| OS | Build | Deploy
+| :---: | :---: |  :---: | 
+| __Windows x64__ | [![Build Status](https://dev.azure.com/nicolabiancolini/Cake.Board/_apis/build/status/nicolabiancolini.Cake.Board?branchName=master&jobName=Windows%20Agent)](https://dev.azure.com/nicolabiancolini/Cake.Board/_build/latest?definitionId=8&branchName=master) |  |
+| __Linux x64__ | [![Build Status](https://dev.azure.com/nicolabiancolini/Cake.Board/_apis/build/status/nicolabiancolini.Cake.Board?branchName=master&jobName=Ubuntu%20Agent)](https://dev.azure.com/nicolabiancolini/Cake.Board/_build/latest?definitionId=8&branchName=master) |  |
 
 ### Publish packages status
 | Package | NuGet | NuGet Pre-Release |

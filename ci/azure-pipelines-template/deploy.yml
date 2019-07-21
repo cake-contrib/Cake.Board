@@ -4,6 +4,10 @@ steps:
     clean: all
     continueOnError: 'false'
 
+  - task: DownloadPipelineArtifact@1
+    inputs:
+      targetPath: $(Build.SourcesDirectory)
+
   # Build, test and generate artifact output
   - powershell: .\build.ps1 -target Stage-Deploy -Verbose
     displayName: 'Build, test and generate artifact output on working directory'
