@@ -21,7 +21,8 @@ Cake Addin for work with work items boards.
 ### Azure Boards
 In order to usage this _addin_, add to your Cake script.
 ``` csharp
-#addin "nuget:?package=Cake.Board"
+#addin "nuget:?package=Cake.Board.AzureBoards&loaddependencies=true"
+#addin "nuget:?package=Polly"
 ```
 ``` csharp
 Task("GetWorkItemById")
@@ -52,5 +53,28 @@ Task("GetWorkItemsByQueryIdAsync")
       queryId);
   });
 ```
+
+## Contributing
+So you’re thinking about contributing to Cake? Great! It’s really appreciated.
+
+
+Fork the repository.
+Create a branch to work in.
+Make your feature addition or bug fix.
+Don't forget the unit tests.
+Send a pull request.
+
+## Contributing
+You’re thinking about contributing to Cake.Board? Great! It’s really appreciated.
+Please make small changes focused on the purpose of the branch in order to make the changes easily integrable.
+All you have to do to get started is this!
+``` bash
+git clone https://github.com/nicolabiancolini/Cake.Board.git
+git checkout -b <YOUR_BRANCH_NAME>
+```
+For major changes, please open an issue first to discuss what you would like to change.
+
+Please make sure to update tests as appropriate.
+
 ## License
 [![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/nicolabiancolini/Cake.Board/blob/master/LICENSE)
