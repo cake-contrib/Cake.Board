@@ -259,7 +259,6 @@ Task("Publish-GitHub")
     .WithCriteria<BuildParameters>((context, parameters) => 
         parameters.IsStableRelease() || parameters.IsPreviewRelease(), "Publish-GitHub works only for releases.")
     .IsDependentOn("Pack-NuGet")
-    .ContinueOnError()
     .ReportError(exception => 
         TaskErrorReporter(
             "Publish-GitHub task failed, but continuing with next Task...",
@@ -271,31 +270,39 @@ Task("Publish-GitHub")
         if (string.IsNullOrWhiteSpace(parameters.Credentials.GitHub.Token))
             throw new InvalidOperationException("Could not resolve GitHub token.");
 
+        Information("Create compressed asset.");
+        Zip(parameters.ArtifactPaths.Directories.Nuget, $"{parameters.ArtifactPaths.Directories.Output}/nuget-packages.zip");
+
+        var owner = "nicolabiancolini";
+        var repository = "Cake.Board";
+
         GitReleaseManagerCreate(
             parameters.Credentials.GitHub.Token,
-            "nicolabiancolini",
-            "Cake.Board",
+            owner,
+            repository,
             new GitReleaseManagerCreateSettings
             {
+                Name = parameters.Version.Version,
                 Prerelease = !parameters.IsStableRelease() && parameters.IsPreviewRelease(),
                 TargetCommitish = "master"
             });
 
-        foreach(var package in GetFiles($"{parameters.ArtifactPaths.Directories.Nuget}/*.nupkg"))
-        {
-            Information("Add {0} to release.", package.FullPath);
-            GitReleaseManagerAddAssets(
-                parameters.Credentials.GitHub.Token,
-                "nicolabiancolini",
-                "Cake.Board",
-                parameters.Version.Version,
-                package.FullPath);
-        }
-
+        GitReleaseManagerAddAssets(
+            parameters.Credentials.GitHub.Token,
+            owner,
+            repository,
+            parameters.Version.Version,
+            $"{parameters.ArtifactPaths.Directories.Output}/nuget-packages.zip");
+        GitReleaseManagerAddAssets(
+            parameters.Credentials.GitHub.Token,
+            owner,
+            repository,
+            parameters.Version.Version,
+            $"{parameters.ArtifactPaths.Directories.Output}/LICENSE.txt");
         GitReleaseManagerClose(
             parameters.Credentials.GitHub.Token,
-            "nicolabiancolini",
-            "Cake.Board",
+            owner,
+            repository,
             parameters.Version.Version);
     });
 
