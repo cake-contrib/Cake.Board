@@ -283,6 +283,7 @@ Task("Publish-GitHub")
 
         foreach(var package in GetFiles($"{parameters.ArtifactPaths.Directories.Nuget}/*.nupkg"))
         {
+            Information("Add {0} to release.", package.FullPath);
             GitReleaseManagerAddAssets(
                 parameters.Credentials.GitHub.Token,
                 "nicolabiancolini",

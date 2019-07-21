@@ -72,7 +72,7 @@ public class BuildParameters
 
             IsMainRepo = IsOnMainRepo(context),
             IsMainBranch = IsOnBranch(context, "master"),
-            IsStableBranch = IsOnBranch(context, "stable/"),
+            IsStableBranch = IsOnBranch(context, "stable"),
             IsPullRequest = IsPullRequestBuild(context),
             IsTagged = IsBuildTagged(context),
 
