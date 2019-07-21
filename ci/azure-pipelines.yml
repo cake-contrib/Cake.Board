@@ -10,7 +10,11 @@ trigger:
       - preview/*
       - stable/*
 
-jobs:
+stages:
+- stage:
+  displayName: Build
+
+  jobs:
   - job: windows_build_agent
     displayName: Windows Agent
     pool:
@@ -26,3 +30,16 @@ jobs:
 
     steps:
       - template: azure-pipelines-template/build.yml
+
+- stage:
+  displayName: Deploy
+  dependsOn: Build
+  
+  jobs:
+  - job: windows_build_agent
+    displayName: Windows Agent
+    pool:
+      vmImage: vs2017-win2016
+          
+    steps:
+      - template: azure-pipelines-template/deploy.yml
