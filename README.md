@@ -66,6 +66,7 @@ Send a pull request.
 
 ## Contributing
 You’re thinking about contributing to Cake.Board? Great! It’s really appreciated.
+Please make small changes focused on the purpose of the branch in order to make the changes easily integrable.
 All you have to do to get started is this!
 ``` bash
 git clone https://github.com/nicolabiancolini/Cake.Board.git
