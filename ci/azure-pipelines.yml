@@ -11,7 +11,7 @@ trigger:
       - stable/*
 
 stages:
-- stage:
+- stage: Build
   displayName: Build
 
   jobs:
@@ -31,7 +31,7 @@ stages:
     steps:
       - template: azure-pipelines-template/build.yml
 
-- stage:
+- stage: Deploy
   displayName: Deploy
   dependsOn: Build
   
