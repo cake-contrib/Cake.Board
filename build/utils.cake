@@ -1,6 +1,8 @@
 #load "./parameters.cake"
 #load "./paths.cake"
 
+Exception publishingException = null;
+
 FilePath FindToolInPath(string tool)
 {
     var pathEnv = EnvironmentVariable("PATH");
@@ -44,7 +46,7 @@ GitVersion GetVersion(BuildParameters parameters)
 {
     var settings = new GitVersionSettings
     {
-        OutputType = GitVersionOutput.Json    
+        OutputType = GitVersionOutput.Json  
     };
 
     var version = GitVersion(settings);
@@ -187,4 +189,14 @@ void Pack(
             OutputDirectory = outputDir,
             Files = files
         });
+}
+
+void TaskErrorReporter(
+    string information,
+    Exception exception,
+    bool isPublishing = true) 
+{
+    publishingException = exception;
+    Information(information);
+    Error(exception.Dump());
 }

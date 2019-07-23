@@ -26,21 +26,6 @@
 #load "./build/utils.cake"
 
 /*
- * Variables.
- */
-Exception publishingException = null;
-
-void TaskErrorReporter(
-    string information,
-    Exception exception,
-    bool isPublishing = true) 
-{
-    publishingException = exception;
-    Information(information);
-    Error(exception.Dump());
-}
-
-/*
  * Setup
  */
 Setup<BuildParameters>(context =>

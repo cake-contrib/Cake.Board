@@ -7,8 +7,8 @@ Cake Addin for work with work items boards.
 ### Build status
 | OS | Build | Deploy
 | :---: | :---: |  :---: | 
-| __Windows x64__ | [![Build Status](https://dev.azure.com/nicolabiancolini/Cake.Board/_apis/build/status/nicolabiancolini.Cake.Board?branchName=master&jobName=Windows%20Agent)](https://dev.azure.com/nicolabiancolini/Cake.Board/_build/latest?definitionId=8&branchName=master) |  |
-| __Linux x64__ | [![Build Status](https://dev.azure.com/nicolabiancolini/Cake.Board/_apis/build/status/nicolabiancolini.Cake.Board?branchName=master&jobName=Ubuntu%20Agent)](https://dev.azure.com/nicolabiancolini/Cake.Board/_build/latest?definitionId=8&branchName=master) |  |
+| __Windows x64__ | [![Build Status](https://dev.azure.com/nicolabiancolini/Cake.Board/_apis/build/status/nicolabiancolini.Cake.Board?branchName=stable&jobName=Windows%20Agent)](https://dev.azure.com/nicolabiancolini/Cake.Board/_build/latest?definitionId=8&branchName=master) |  |
+| __Linux x64__ | [![Build Status](https://dev.azure.com/nicolabiancolini/Cake.Board/_apis/build/status/nicolabiancolini.Cake.Board?branchName=stable&jobName=Ubuntu%20Agent)](https://dev.azure.com/nicolabiancolini/Cake.Board/_build/latest?definitionId=8&branchName=master) |  |
 
 ### Publish packages status
 | Package | NuGet | NuGet Pre-Release |
