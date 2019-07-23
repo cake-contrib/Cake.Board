@@ -6,7 +6,7 @@ steps:
 
   - task: DownloadPipelineArtifact@1
     inputs:
-      targetPath: $(Build.SourcesDirectory)
+      targetPath: $(System.ArtifactsDirectory)
 
   # Build, test and generate artifact output
   - powershell: .\build.ps1 -target Stage-Deploy -Verbose
