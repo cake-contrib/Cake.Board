@@ -34,7 +34,7 @@ namespace Cake.Board.AzureBoards.Tests.Specs
 
         public GetWorkItemByQueryIdCommandSpec()
         {
-            this._fileContent = JObject.Parse(File.ReadAllText($"{Environment.CurrentDirectory}/azureboards-wit_queries-response.json"));
+            this._fileContent = JObject.Parse(File.ReadAllText($"{Environment.CurrentDirectory}/wit_queries-response.json"));
             this._workItems = this._fileContent["workItemRelations"].Values<JObject>().AsEnumerable()
                 .Select(item => new WorkItem()
                 {

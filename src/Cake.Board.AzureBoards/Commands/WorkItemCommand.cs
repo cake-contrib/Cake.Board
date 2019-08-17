@@ -7,9 +7,11 @@ using System.Net.Http;
 using System.Threading.Tasks;
 
 using Cake.Board.Abstractions;
+using Cake.Board.AzureBoards.Models;
 using Cake.Board.Extensions;
 using Cake.Core;
 using Cake.Core.Annotations;
+using Cake.Core.IO;
 
 namespace Cake.Board.AzureBoards.Commands
 {
@@ -103,6 +105,28 @@ namespace Cake.Board.AzureBoards.Commands
             return await context.GetWorkItemsByQueryIdAsync(
                     board,
                     id.ArgumentNotEmptyOrWhitespace(nameof(id)));
+        }
+
+        /// <summary>
+        /// Produces release notes based on the work items provided.
+        /// </summary>
+        /// <param name="context">The <see cref="ICakeContext"/> of precess.</param>
+        /// <param name="releaseNotes">The <see cref="FilePath"/> where save release notes.</param>
+        /// <param name="workItems">The work items.</param>
+        /// <returns>A <see cref="Task"/> representing the result of the asynchronous operation.</returns>
+        public static Task GenerateReleaseNotesAsync(
+            this ICakeContext context,
+            FilePath releaseNotes,
+            IEnumerable<WorkItem> workItems)
+        {
+            var notes = new ReleaseNotes();
+
+            foreach (WorkItem workItem in workItems)
+            {
+                workItem.ToReleaseNotes<WorkItem>(ref notes);
+            }
+
+            
         }
     }
 }

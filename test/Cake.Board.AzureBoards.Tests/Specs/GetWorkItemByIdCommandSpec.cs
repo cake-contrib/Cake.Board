@@ -37,7 +37,7 @@ namespace Cake.Board.AzureBoards.Tests.Specs
 
         public GetWorkItemByIdCommandSpec()
         {
-            this._fileContent = JObject.Parse(File.ReadAllText($"{Environment.CurrentDirectory}/azureboards-wit-response.json"));
+            this._fileContent = JObject.Parse(File.ReadAllText($"{Environment.CurrentDirectory}/wit-response.json"));
             this._witId = this._fileContent.Value<string>("id");
             this._witType = this._fileContent.Value<JObject>("fields").Value<string>("System.WorkItemType");
             this._witTitle = this._fileContent.Value<JObject>("fields").Value<string>("System.Title");

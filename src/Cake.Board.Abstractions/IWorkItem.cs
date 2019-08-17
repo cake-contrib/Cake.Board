@@ -32,5 +32,13 @@ namespace Cake.Board.Abstractions
         /// Gets or sets work item description.
         /// </summary>
         string Description { get; set; }
+
+        /// <summary>
+        /// Add work item to release note.
+        /// </summary>
+        /// <typeparam name="T">Concrete impelmentation of <see cref="IWorkItem"/>.</typeparam>
+        /// <param name="releaseNote">Reference to release note.</param>
+        void ToReleaseNotes<T>(ref IReleaseNotes<T> releaseNote)
+            where T : IWorkItem;
     }
 }
