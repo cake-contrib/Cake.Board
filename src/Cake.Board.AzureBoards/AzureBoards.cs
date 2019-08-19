@@ -90,5 +90,8 @@ namespace Cake.Board.AzureBoards
 
             return JsonConvert.DeserializeObject<IEnumerable<WorkItem>>(await response.Content.ReadAsStringAsync(), new WorkItemsConverter());
         }
+
+        /// <inheritdoc/>
+        public Task<string> ExecuteBatch(string commands) => throw new NotImplementedException();
     }
 }

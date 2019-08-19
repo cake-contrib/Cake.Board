@@ -7,28 +7,17 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Pose" Version="1.2.1" />
-  </ItemGroup>
-
-  <ItemGroup>
     <ProjectReference Include="..\..\shared\Cake.Board.Testing\Cake.Board.Testing.csproj" />
     <ProjectReference Include="..\..\src\Cake.Board.AzureBoards\Cake.Board.AzureBoards.csproj" />
   </ItemGroup>
 
   <ItemGroup>
-    <None Update="azureboards-wit-response.json">
+    <None Update="wit-response.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="azureboards-wit_queries-response.json">
+    <None Update="wit_queries-response.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-  </ItemGroup>
-
-  <ItemGroup>
-    <PackageReference Update="coverlet.msbuild" Version="2.6.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
   </ItemGroup>
 
 </Project>

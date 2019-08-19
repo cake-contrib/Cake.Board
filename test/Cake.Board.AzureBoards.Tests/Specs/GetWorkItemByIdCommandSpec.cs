@@ -4,7 +4,6 @@
 using System;
 using System.IO;
 using System.Linq;
-using System.Linq.Expressions;
 using System.Net;
 using System.Net.Http;
 using System.Reflection;
@@ -15,10 +14,8 @@ using Cake.Board.Abstractions;
 using Cake.Board.AzureBoards.Commands;
 using Cake.Board.AzureBoards.Models;
 using Cake.Board.Testing;
-using Cake.Core;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
-using Pose;
 using Xunit;
 
 namespace Cake.Board.AzureBoards.Tests.Specs
@@ -37,7 +34,7 @@ namespace Cake.Board.AzureBoards.Tests.Specs
 
         public GetWorkItemByIdCommandSpec()
         {
-            this._fileContent = JObject.Parse(File.ReadAllText($"{Environment.CurrentDirectory}/azureboards-wit-response.json"));
+            this._fileContent = JObject.Parse(File.ReadAllText($"{Environment.CurrentDirectory}/wit-response.json"));
             this._witId = this._fileContent.Value<string>("id");
             this._witType = this._fileContent.Value<JObject>("fields").Value<string>("System.WorkItemType");
             this._witTitle = this._fileContent.Value<JObject>("fields").Value<string>("System.Title");
@@ -74,7 +71,7 @@ THEN it must be able to obtain the content sought")]
             Assert.IsType<WorkItem>(wit);
 
             Assert.Equal(this._witId, wit.Id);
-            Assert.Equal(this._witState, wit.State);
+            Assert.Equal(this._witState, ((WorkItem)wit).State);
             Assert.Equal(this._witTitle, wit.Title);
             Assert.Equal(this._witType, wit.Type);
             Assert.Equal(this._witDescription, wit.Description);
@@ -107,7 +104,7 @@ THEN it must be able to obtain the content sought")]
             Assert.IsType<WorkItem>(wit);
 
             Assert.Equal(this._witId, wit.Id);
-            Assert.Equal(this._witState, wit.State);
+            Assert.Equal(this._witState, ((WorkItem)wit).State);
             Assert.Equal(this._witTitle, wit.Title);
             Assert.Equal(this._witType, wit.Type);
             Assert.Equal(this._witDescription, wit.Description);
@@ -133,19 +130,19 @@ THEN it must be able to obtain the content sought")]
             };
             var board = new AzureBoards(fakeClient);
 
-            FieldInfo commandBehaviour = typeof(WorkItemCommand).GetRuntimeFields().Single(p => p.Name == "_getWorkItemByIdBehaviourAsync");
-            object originBehaviour = commandBehaviour.GetValue(typeof(WorkItemCommand));
+            FieldInfo commandBehaviour = typeof(BoardCommand).GetRuntimeFields().Single(p => p.Name == "_getWorkItemByIdBehaviourAsync");
+            object originBehaviour = commandBehaviour.GetValue(typeof(BoardCommand));
 
             // Act
-            commandBehaviour.SetValue(typeof(WorkItemCommand), (Func<IBoard, string, Task<IWorkItem>>)((azureBoard, id) => board.GetWorkItemByIdAsync(id)));
+            commandBehaviour.SetValue(typeof(BoardCommand), (Func<IBoard, string, Task<IWorkItem>>)((azureBoard, id) => board.GetWorkItemByIdAsync(id)));
             IWorkItem wit = await fakeCakeContext.GetWorkItemByIdAsync(this._pat, this._organization, this._witId);
-            commandBehaviour.SetValue(typeof(WorkItemCommand), originBehaviour);
+            commandBehaviour.SetValue(typeof(BoardCommand), originBehaviour);
 
             // Assert
             Assert.IsType<WorkItem>(wit);
 
             Assert.Equal(this._witId, wit.Id);
-            Assert.Equal(this._witState, wit.State);
+            Assert.Equal(this._witState, ((WorkItem)wit).State);
             Assert.Equal(this._witTitle, wit.Title);
             Assert.Equal(this._witType, wit.Type);
             Assert.Equal(this._witDescription, wit.Description);

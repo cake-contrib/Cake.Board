@@ -6,8 +6,4 @@
     <IsPackable>false</IsPackable>
   </PropertyGroup>
 
-  <ItemGroup>
-    <ProjectReference Include="..\..\src\Cake.Board.Abstractions\Cake.Board.Abstractions.csproj" />
-  </ItemGroup>
-
 </Project>

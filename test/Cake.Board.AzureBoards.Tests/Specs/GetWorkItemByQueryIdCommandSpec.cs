@@ -34,7 +34,7 @@ namespace Cake.Board.AzureBoards.Tests.Specs
 
         public GetWorkItemByQueryIdCommandSpec()
         {
-            this._fileContent = JObject.Parse(File.ReadAllText($"{Environment.CurrentDirectory}/azureboards-wit_queries-response.json"));
+            this._fileContent = JObject.Parse(File.ReadAllText($"{Environment.CurrentDirectory}/wit_queries-response.json"));
             this._workItems = this._fileContent["workItemRelations"].Values<JObject>().AsEnumerable()
                 .Select(item => new WorkItem()
                 {
@@ -87,6 +87,7 @@ THEN it must be able to obtain the content sought")]
 WHEN he wants to fetch all work items by query in Azure Boards
 THEN it must be able to obtain the content sought")]
         [Trait(TraitNames.TEST_CATEGORY, TraitValues.ACCEPTANCE_TEST)]
+        [Obsolete]
         public async Task ScenarioFromCakeContextExtension_SearchWorkItemByQueryId()
         {
             // Arrange
@@ -122,6 +123,7 @@ THEN it must be able to obtain the content sought")]
 WHEN he wants to fetch all work items by query in Azure Boards
 THEN it must be able to obtain the content sought")]
         [Trait(TraitNames.TEST_CATEGORY, TraitValues.ACCEPTANCE_TEST)]
+        [Obsolete]
         public async Task ScenarioFromCakeContextExtensionWithPatAndOrganization_SearchWorkItemByQueryId()
         {
             // Arrange
