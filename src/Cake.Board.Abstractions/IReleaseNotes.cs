@@ -1,4 +1,4 @@
-﻿// Copyright (c) Nicola Biancolini, 2019. All rights reserved.
+// Copyright (c) Nicola Biancolini, 2019. All rights reserved.
 // Licensed under the MIT license. See the LICENSE file in the project root for full license information.
 
 using System.Collections.Generic;
@@ -28,8 +28,8 @@ namespace Cake.Board.Abstractions
         /// <summary>
         /// Generate release notes.
         /// </summary>
-        /// <returns>A list of bytes representing the contents of the release notes.</returns>
-        Task<byte[]> GenerateAsync();
+        /// <returns>A string representing the contents of the release notes.</returns>
+        string Generate();
 
         /// <summary>
         /// Generate release notes.

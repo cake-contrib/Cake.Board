@@ -3,6 +3,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using System.Net.Http;
 using System.Threading.Tasks;
 
@@ -111,6 +112,16 @@ namespace Cake.Board.AzureBoards.Commands
         /// Produces release notes based on the work items provided.
         /// </summary>
         /// <param name="context">The <see cref="ICakeContext"/> of precess.</param>
+        /// <param name="workItems">The work items.</param>
+        /// <returns>A string that conteins release notes.</returns>
+        public static string GenerateReleaseNotes(
+            this ICakeContext context,
+            IEnumerable<WorkItem> workItems) => new ReleaseNotes(workItems.Select(wit => (IWorkItem)wit).ToList()).Generate();
+
+        /// <summary>
+        /// Produces release notes based on the work items provided.
+        /// </summary>
+        /// <param name="context">The <see cref="ICakeContext"/> of precess.</param>
         /// <param name="releaseNotes">The <see cref="FilePath"/> where save release notes.</param>
         /// <param name="workItems">The work items.</param>
         /// <returns>A <see cref="Task"/> representing the result of the asynchronous operation.</returns>
@@ -119,14 +130,8 @@ namespace Cake.Board.AzureBoards.Commands
             FilePath releaseNotes,
             IEnumerable<WorkItem> workItems)
         {
-            var notes = new ReleaseNotes();
-
-            foreach (WorkItem workItem in workItems)
-            {
-                workItem.ToReleaseNotes<WorkItem>(ref notes);
-            }
-
-            
+            _ = context.GenerateReleaseNotes(workItems);
+            throw new NotImplementedException();
         }
     }
 }
