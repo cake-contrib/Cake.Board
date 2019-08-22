@@ -8,14 +8,14 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\shared\Cake.Board.Testing\Cake.Board.Testing.csproj" />
-    <ProjectReference Include="..\..\src\Cake.Board.AzureBoards\Cake.Board.AzureBoards.csproj" />
+    <ProjectReference Include="..\..\src\Cake.Board.Asana\Cake.Board.Asana.csproj" />
   </ItemGroup>
-
+  
   <ItemGroup>
-    <None Update="wit-response.json">
+    <None Update="task-response.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="wit_queries-response.json">
+    <None Update="project_tasks-response.json">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -11,11 +11,4 @@
     <ProjectReference Include="..\..\src\Cake.Board\Cake.Board.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <PackageReference Update="coverlet.msbuild" Version="2.6.2">
-      <PrivateAssets>all</PrivateAssets>
-      <IncludeAssets>runtime; build; native; contentfiles; analyzers</IncludeAssets>
-    </PackageReference>
-  </ItemGroup>
-
 </Project>
