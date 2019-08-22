@@ -53,7 +53,7 @@ namespace Cake.Board.Asana
         /// <summary>
         /// Gets or sets Asana project name.
         /// </summary>
-        public string Project { get; set; }
+        public string ProjectId { get; set; }
 
         /// <inheritdoc/>
         public Task<string> ExecuteBatch(string commands) => throw new NotImplementedException();
@@ -71,15 +71,15 @@ namespace Cake.Board.Asana
         /// Fetch all work items by project.
         /// </summary>
         /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
-        public async Task<IEnumerable<IWorkItem>> GetWorkItemsByProjectAsync() => await this.GetWorkItemsByProjectAsync(
-            string.IsNullOrWhiteSpace(this.Project) ? throw new InvalidOperationException($"{nameof(this.Project)} is null, empty or whitespace") : this.Project);
+        public async Task<IEnumerable<IWorkItem>> GetWorkItemsByProjectIdAsync() => await this.GetWorkItemsByProjectIdAsync(
+            string.IsNullOrWhiteSpace(this.ProjectId) ? throw new InvalidOperationException($"{nameof(this.ProjectId)} is null, empty or whitespace") : this.ProjectId);
 
         /// <summary>
         /// Fetch all work items by project.
         /// </summary>
         /// <param name="project">The project name.</param>
         /// <returns>A <see cref="Task{TResult}"/> representing the result of the asynchronous operation.</returns>
-        public async Task<IEnumerable<IWorkItem>> GetWorkItemsByProjectAsync(string project)
+        public async Task<IEnumerable<IWorkItem>> GetWorkItemsByProjectIdAsync(string project)
         {
             HttpResponseMessage response = await HttpPolicyExtensions.WrapAllAsync()
                 .ExecuteAsync(async () => await this._client.GetAsync($"{this._client.BaseAddress}/projects/{project.ArgumentNotEmptyOrWhitespace(nameof(project))}/tasks"));

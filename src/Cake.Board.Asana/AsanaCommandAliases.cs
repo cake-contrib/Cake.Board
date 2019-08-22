@@ -19,8 +19,8 @@ namespace Cake.Board.Asana
     public static class AsanaCommandAliases
     {
         [Obsolete]
-        private static Func<IBoard, string, Task<IEnumerable<IWorkItem>>> _getTasksByProjectBehaviourAsync = (board, project)
-            => ((Asana)board.NotNull(nameof(board))).GetWorkItemsByProjectAsync(project.ArgumentNotEmptyOrWhitespace(nameof(project)));
+        private static Func<IBoard, string, Task<IEnumerable<IWorkItem>>> _getTasksByProjectIdBehaviourAsync = (board, project)
+            => ((Asana)board.NotNull(nameof(board))).GetWorkItemsByProjectIdAsync(project.ArgumentNotEmptyOrWhitespace(nameof(project)));
 
         /// <summary>
         /// Fetch the <see cref="IWorkItem"/> by Id.
@@ -29,6 +29,7 @@ namespace Cake.Board.Asana
         /// <param name="personalAccessToken">The personal access token.</param>
         /// <param name="id">The task id.</param>
         /// <returns>A <see cref="Task{IWorkItem}"/> representing the result of the asynchronous operation.</returns>
+        [CakeMethodAlias]
         public static async Task<IWorkItem> GetTaskByIdAsync(
             this ICakeContext context,
             string personalAccessToken,
@@ -41,37 +42,37 @@ namespace Cake.Board.Asana
         /// </summary>
         /// <param name="context">The <see cref="ICakeContext"/> of precess.</param>
         /// <param name="board">The <see cref="IBoard"/>.</param>
-        /// <param name="project">The project name.</param>
+        /// <param name="projectId">The project id.</param>
         /// <returns>An <see cref="IEnumerable{IWorkItem}"/>.</returns>
         [CakeMethodAlias]
         [Obsolete]
-        public static async Task<IEnumerable<IWorkItem>> GetTasksByProjectAsync(
+        public static async Task<IEnumerable<IWorkItem>> GetTasksByProjectIdAsync(
             this ICakeContext context,
             IBoard board,
-            string project) => await AsanaCommandAliases._getTasksByProjectBehaviourAsync(
+            string projectId) => await AsanaCommandAliases._getTasksByProjectIdBehaviourAsync(
                 board.NotNull(nameof(board)),
-                project.ArgumentNotEmptyOrWhitespace(nameof(project)));
+                projectId.ArgumentNotEmptyOrWhitespace(nameof(projectId)));
 
         /// <summary>
         /// Fetch the <see cref="IEnumerable{IWorkItem}"/> by query Id.
         /// </summary>
         /// <param name="context">The <see cref="ICakeContext"/> of precess.</param>
         /// <param name="personalAccessToken">The personal access token.</param>
-        /// <param name="project">The project where the board is placed.</param>
+        /// <param name="projectId">The project id.</param>
         /// <returns>An <see cref="IEnumerable{IWorkItem}"/>.</returns>
         [CakeMethodAlias]
         [Obsolete]
-        public static async Task<IEnumerable<IWorkItem>> GetTasksByProjectAsync(
+        public static async Task<IEnumerable<IWorkItem>> GetTasksByProjectIdAsync(
             this ICakeContext context,
             string personalAccessToken,
-            string project)
+            string projectId)
         {
             Asana board = new Asana(personalAccessToken.ArgumentNotEmptyOrWhitespace(nameof(personalAccessToken)))
             {
-                Project = project.ArgumentNotEmptyOrWhitespace(nameof(project))
+                ProjectId = projectId.ArgumentNotEmptyOrWhitespace(nameof(projectId))
             };
 
-            return await context.GetTasksByProjectAsync(board, board.Project);
+            return await context.GetTasksByProjectIdAsync(board, board.ProjectId);
         }
     }
 }

@@ -1,4 +1,4 @@
-// Copyright (c) Nicola Biancolini, 2019. All rights reserved.
+﻿// Copyright (c) Nicola Biancolini, 2019. All rights reserved.
 // Licensed under the MIT license. See the LICENSE file in the project root for full license information.
 
 using System;
@@ -19,14 +19,14 @@ using Xunit;
 
 namespace Cake.Board.Asana.Tests.Specs
 {
-    public class GetTasksByProjectCommandSpec
+    public class GetTasksByProjectIdCommandSpec
     {
         private readonly string _pat;
-        private readonly string _project;
+        private readonly string _projectId;
         private readonly JObject _fileContent;
         private List<Models.Task> _workItems;
 
-        public GetTasksByProjectCommandSpec()
+        public GetTasksByProjectIdCommandSpec()
         {
             this._fileContent = JObject.Parse(File.ReadAllText($"{Environment.CurrentDirectory}/project_tasks-response.json"));
             this._workItems = this._fileContent["data"].Values<JObject>().AsEnumerable()
@@ -34,15 +34,15 @@ namespace Cake.Board.Asana.Tests.Specs
                 {
                     Id = item["id"].Value<long>().ToString()
                 }).ToList();
-            this._project = "someone-project";
+            this._projectId = "someone-project";
             this._pat = "someone-pat";
         }
 
-        [Fact(DisplayName = @"GIVEN a DevOps engineer with a project name
+        [Fact(DisplayName = @"GIVEN a DevOps engineer with a project id
 WHEN he wants to fetch all work items by query in Asana
 THEN it must be able to obtain the content sought")]
         [Trait(TraitNames.TEST_CATEGORY, TraitValues.ACCEPTANCE_TEST)]
-        public async Task ScenarioFromBoardExtension_SearchTasksByProject()
+        public async Task ScenarioFromBoardExtension_SearchTasksByProjectId()
         {
             // Arrange
             HttpResponseMessage fakeResponse = new HttpResponseMessage
@@ -57,11 +57,11 @@ THEN it must be able to obtain the content sought")]
             };
             Asana board = new Asana(fakeClient)
             {
-                Project = this._project
+                ProjectId = this._projectId
             };
 
             // Act
-            IEnumerable<IWorkItem> wits = await board.GetWorkItemsByProjectAsync();
+            IEnumerable<IWorkItem> wits = await board.GetWorkItemsByProjectIdAsync();
 
             // Assert
             IEnumerable<Models.Task> concreteWits = wits.Select(wit => Assert.IsType<Models.Task>(wit)).ToList();
@@ -71,12 +71,12 @@ THEN it must be able to obtain the content sought")]
             }
         }
 
-        [Fact(DisplayName = @"GIVEN a DevOps engineer with a project name
+        [Fact(DisplayName = @"GIVEN a DevOps engineer with a project id
 WHEN he wants to fetch all work items by query in Asana
 THEN it must be able to obtain the content sought")]
         [Trait(TraitNames.TEST_CATEGORY, TraitValues.ACCEPTANCE_TEST)]
         [Obsolete]
-        public async Task ScenarioFromCakeContextExtension_SearchTasksByProject()
+        public async Task ScenarioFromCakeContextExtension_SearchTasksByProjectId()
         {
             // Arrange
             HttpResponseMessage fakeResponse = new HttpResponseMessage
@@ -91,11 +91,11 @@ THEN it must be able to obtain the content sought")]
             };
             Asana board = new Asana(fakeClient)
             {
-                Project = this._project
+                ProjectId = this._projectId
             };
 
             // Act
-            IEnumerable<IWorkItem> wits = await fakeCakeContext.GetTasksByProjectAsync(board, this._project);
+            IEnumerable<IWorkItem> wits = await fakeCakeContext.GetTasksByProjectIdAsync(board, this._projectId);
 
             // Assert
             IEnumerable<Models.Task> concreteWits = wits.Select(wit => Assert.IsType<Models.Task>(wit)).ToList();
@@ -105,7 +105,7 @@ THEN it must be able to obtain the content sought")]
             }
         }
 
-        [Fact(DisplayName = @"GIVEN a DevOps engineer with a project name
+        [Fact(DisplayName = @"GIVEN a DevOps engineer with a project id
 WHEN he wants to fetch all work items by query in Asana
 THEN it must be able to obtain the content sought")]
         [Trait(TraitNames.TEST_CATEGORY, TraitValues.ACCEPTANCE_TEST)]
@@ -125,15 +125,15 @@ THEN it must be able to obtain the content sought")]
             };
             Asana board = new Asana(fakeClient)
             {
-                Project = this._project
+                ProjectId = this._projectId
             };
 
-            FieldInfo commandBehaviour = typeof(AsanaCommandAliases).GetRuntimeFields().Single(p => p.Name == "_getTasksByProjectBehaviourAsync");
+            FieldInfo commandBehaviour = typeof(AsanaCommandAliases).GetRuntimeFields().Single(p => p.Name == "_getTasksByProjectIdBehaviourAsync");
             object originBehaviour = commandBehaviour.GetValue(typeof(AsanaCommandAliases));
 
             // Act
-            commandBehaviour.SetValue(typeof(AsanaCommandAliases), (Func<IBoard, string, Task<IEnumerable<IWorkItem>>>)((azureBoard, id) => ((Asana)board).GetWorkItemsByProjectAsync(id)));
-            IEnumerable<IWorkItem> wits = await fakeCakeContext.GetTasksByProjectAsync(this._pat, this._project);
+            commandBehaviour.SetValue(typeof(AsanaCommandAliases), (Func<IBoard, string, Task<IEnumerable<IWorkItem>>>)((azureBoard, id) => ((Asana)board).GetWorkItemsByProjectIdAsync(id)));
+            IEnumerable<IWorkItem> wits = await fakeCakeContext.GetTasksByProjectIdAsync(this._pat, this._projectId);
             commandBehaviour.SetValue(typeof(AsanaCommandAliases), originBehaviour);
 
             // Assert

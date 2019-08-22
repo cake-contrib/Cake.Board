@@ -31,6 +31,7 @@ namespace Cake.Board.AzureBoards
         /// <param name="organization">The organization where the board is placed.</param>
         /// <param name="id">The work item id.</param>
         /// <returns>A <see cref="Task{IWorkItem}"/> representing the result of the asynchronous operation.</returns>
+        [CakeMethodAlias]
         public static async Task<IWorkItem> GetWorkItemByIdAsync(
             this ICakeContext context,
             string personalAccessToken,
