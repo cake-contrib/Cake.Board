@@ -1,0 +1,65 @@
+{
+  "data": {
+    "id": 1136634053423273,
+    "gid": "1136634053423273",
+    "assignee": null,
+    "assignee_status": "upcoming",
+    "completed": false,
+    "completed_at": null,
+    "created_at": "2019-08-21T19:53:08.978Z",
+    "due_at": null,
+    "due_on": null,
+    "followers": [
+      {
+        "id": 1136255221753438,
+        "gid": "1136255221753438",
+        "name": "Nicola Biancolini",
+        "resource_type": "user"
+      }
+    ],
+    "hearted": false,
+    "hearts": [],
+    "liked": false,
+    "likes": [],
+    "memberships": [
+      {
+        "project": {
+          "id": 1136254959406436,
+          "gid": "1136254959406436",
+          "name": "Cake.Board",
+          "resource_type": "project"
+        },
+        "section": {
+          "id": 1136254959406437,
+          "gid": "1136254959406437",
+          "name": "To Do",
+          "resource_type": "section"
+        }
+      }
+    ],
+    "modified_at": "2019-08-21T19:53:15.507Z",
+    "name": "As a a manager, I want to control cost, so that I can control cost, because I'd like to control cost",
+    "notes": "Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Tempor orci dapibus ultrices in iaculis nunc sed augue. Dignissim enim sit amet venenatis urna cursus. Nisl purus in mollis nunc sed id. Arcu cursus euismod quis viverra nibh cras pulvinar mattis nunc. Eget duis at tellus at urna condimentum mattis. Donec massa sapien faucibus et molestie ac. Massa ultricies mi quis hendrerit dolor magna. Amet mattis vulputate enim nulla aliquet porttitor. Quis ipsum suspendisse ultrices gravida dictum fusce ut. Gravida neque convallis a cras semper auctor neque.\n\nViverra aliquet eget sit amet tellus cras. Metus aliquam eleifend mi in nulla posuere sollicitudin. Tempor orci eu lobortis elementum. Urna duis convallis convallis tellus id. Mattis nunc sed blandit libero volutpat. Mollis nunc sed id semper risus in hendrerit. Lorem dolor sed viverra ipsum nunc aliquet. Elit at imperdiet dui accumsan. Posuere ac ut consequat semper viverra nam libero justo. Ac turpis egestas sed tempus urna et pharetra.",
+    "num_hearts": 0,
+    "num_likes": 0,
+    "parent": null,
+    "projects": [
+      {
+        "id": 1136254959406436,
+        "gid": "1136254959406436",
+        "name": "Cake.Board",
+        "resource_type": "project"
+      }
+    ],
+    "resource_type": "task",
+    "start_on": null,
+    "tags": [],
+    "resource_subtype": "default_task",
+    "workspace": {
+      "id": 1136255222816638,
+      "gid": "1136255222816638",
+      "name": "IT",
+      "resource_type": "workspace"
+    }
+  }
+}

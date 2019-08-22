@@ -7,7 +7,7 @@ using Newtonsoft.Json;
 namespace Cake.Board.AzureBoards.Models
 {
     /// <summary>
-    /// Azure board work item.
+    /// Represents an Azure Boards work item.
     /// </summary>
     public class WorkItem : IWorkItem
     {

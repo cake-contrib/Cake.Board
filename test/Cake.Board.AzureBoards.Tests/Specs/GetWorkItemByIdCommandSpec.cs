@@ -11,7 +11,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Cake.Board.Abstractions;
-using Cake.Board.AzureBoards.Commands;
 using Cake.Board.AzureBoards.Models;
 using Cake.Board.Testing;
 using Newtonsoft.Json;
@@ -52,17 +51,17 @@ THEN it must be able to obtain the content sought")]
         public async Task ScenarioFromBoardExtension_SearchWorkItemById()
         {
             // Arrange
-            var fakeResponse = new HttpResponseMessage
+            HttpResponseMessage fakeResponse = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
                 Content = new StringContent(JsonConvert.SerializeObject(this._fileContent), Encoding.UTF8, "application/json")
             };
-            var fakeCakeContext = new FakeCakeContext(logBehaviour: () => new FakeCakeLog());
-            var fakeClient = new HttpClient(new FakeHttpMessageHandler(fakeResponse))
+            FakeCakeContext fakeCakeContext = new FakeCakeContext(logBehaviour: () => new FakeCakeLog());
+            HttpClient fakeClient = new HttpClient(new FakeHttpMessageHandler(fakeResponse))
             {
                 BaseAddress = new Uri($"https://dev.azure.com/{this._organization}")
             };
-            var board = new AzureBoards(fakeClient);
+            AzureBoards board = new AzureBoards(fakeClient);
 
             // Act
             IWorkItem wit = await board.GetWorkItemByIdAsync(this._witId);
@@ -85,17 +84,17 @@ THEN it must be able to obtain the content sought")]
         public async Task ScenarioFromCakeContextExtensionWithBoard_SearchWorkItemById()
         {
             // Arrange
-            var fakeResponse = new HttpResponseMessage
+            HttpResponseMessage fakeResponse = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
                 Content = new StringContent(JsonConvert.SerializeObject(this._fileContent), Encoding.UTF8, "application/json")
             };
-            var fakeCakeContext = new FakeCakeContext(logBehaviour: () => new FakeCakeLog());
-            var fakeClient = new HttpClient(new FakeHttpMessageHandler(fakeResponse))
+            FakeCakeContext fakeCakeContext = new FakeCakeContext(logBehaviour: () => new FakeCakeLog());
+            HttpClient fakeClient = new HttpClient(new FakeHttpMessageHandler(fakeResponse))
             {
                 BaseAddress = new Uri($"https://dev.azure.com/{this._organization}")
             };
-            var board = new AzureBoards(fakeClient);
+            AzureBoards board = new AzureBoards(fakeClient);
 
             // Act
             IWorkItem wit = await fakeCakeContext.GetWorkItemByIdAsync(board, this._witId);
@@ -118,25 +117,25 @@ THEN it must be able to obtain the content sought")]
         public async Task ScenarioFromCakeContextExtensionWithPatAndOrganization_SearchWorkItemById()
         {
             // Arrange
-            var fakeResponse = new HttpResponseMessage
+            HttpResponseMessage fakeResponse = new HttpResponseMessage
             {
                 StatusCode = HttpStatusCode.OK,
                 Content = new StringContent(JsonConvert.SerializeObject(this._fileContent), Encoding.UTF8, "application/json")
             };
-            var fakeCakeContext = new FakeCakeContext(logBehaviour: () => new FakeCakeLog());
-            var fakeClient = new HttpClient(new FakeHttpMessageHandler(fakeResponse))
+            FakeCakeContext fakeCakeContext = new FakeCakeContext(logBehaviour: () => new FakeCakeLog());
+            HttpClient fakeClient = new HttpClient(new FakeHttpMessageHandler(fakeResponse))
             {
                 BaseAddress = new Uri($"https://dev.azure.com/{this._organization}")
             };
-            var board = new AzureBoards(fakeClient);
+            AzureBoards board = new AzureBoards(fakeClient);
 
-            FieldInfo commandBehaviour = typeof(BoardCommand).GetRuntimeFields().Single(p => p.Name == "_getWorkItemByIdBehaviourAsync");
-            object originBehaviour = commandBehaviour.GetValue(typeof(BoardCommand));
+            FieldInfo commandBehaviour = typeof(BoardCommandAliases).GetRuntimeFields().Single(p => p.Name == "_getWorkItemByIdBehaviourAsync");
+            object originBehaviour = commandBehaviour.GetValue(typeof(BoardCommandAliases));
 
             // Act
-            commandBehaviour.SetValue(typeof(BoardCommand), (Func<IBoard, string, Task<IWorkItem>>)((azureBoard, id) => board.GetWorkItemByIdAsync(id)));
+            commandBehaviour.SetValue(typeof(BoardCommandAliases), (Func<IBoard, string, Task<IWorkItem>>)((azureBoard, id) => board.GetWorkItemByIdAsync(id)));
             IWorkItem wit = await fakeCakeContext.GetWorkItemByIdAsync(this._pat, this._organization, this._witId);
-            commandBehaviour.SetValue(typeof(BoardCommand), originBehaviour);
+            commandBehaviour.SetValue(typeof(BoardCommandAliases), originBehaviour);
 
             // Assert
             Assert.IsType<WorkItem>(wit);

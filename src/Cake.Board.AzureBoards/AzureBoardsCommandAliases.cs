@@ -11,13 +11,13 @@ using Cake.Board.Extensions;
 using Cake.Core;
 using Cake.Core.Annotations;
 
-namespace Cake.Board.AzureBoards.Commands
+namespace Cake.Board.AzureBoards
 {
     /// <summary>
     /// Provides a set of methods for extends <see cref="ICakeContext"/>.
     /// </summary>
-    [CakeAliasCategory("Board")]
-    public static class WorkItemCommand
+    [CakeAliasCategory("AzureBoardsCommand")]
+    public static class AzureBoardsCommandAliases
     {
         [Obsolete]
         private static Func<IBoard, string, Task<IEnumerable<IWorkItem>>> _getWorkItemsByQueryIdBehaviourAsync = (board, id)
@@ -53,7 +53,7 @@ namespace Cake.Board.AzureBoards.Commands
         public static async Task<IEnumerable<IWorkItem>> GetWorkItemsByQueryIdAsync(
             this ICakeContext context,
             IBoard board,
-            string id) => await WorkItemCommand._getWorkItemsByQueryIdBehaviourAsync(
+            string id) => await AzureBoardsCommandAliases._getWorkItemsByQueryIdBehaviourAsync(
                 board.NotNull(nameof(board)),
                 id.ArgumentNotEmptyOrWhitespace(nameof(id)));
 
@@ -77,7 +77,7 @@ namespace Cake.Board.AzureBoards.Commands
             string project,
             string team)
         {
-            var board = new AzureBoards(
+            AzureBoards board = new AzureBoards(
                     personalAccessToken.ArgumentNotEmptyOrWhitespace(nameof(personalAccessToken)),
                     organization.ArgumentNotEmptyOrWhitespace(nameof(organization)))
             {

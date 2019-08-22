@@ -46,7 +46,7 @@ namespace Cake.Board.AzureBoards
         /// <code>
         /// var client = new HttpClient
         /// {
-        ///     BaseAddress = new Uri($"https://dev.azure.com/{organization.ArgumentNotEmptyOrWhitespace(nameof(organization))}")
+        ///     BaseAddress = new Uri($"https://dev.azure.com/{organization}")
         /// };
         /// client.DefaultRequestHeaders.Authorization = new AuthenticationHeaderValue("Basic", Convert.ToBase64String(Encoding.UTF8.GetBytes($":{personalAccessToken}")));
         ///

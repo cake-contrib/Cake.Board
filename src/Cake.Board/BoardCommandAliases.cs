@@ -1,4 +1,4 @@
-// Copyright (c) Nicola Biancolini, 2019. All rights reserved.
+﻿// Copyright (c) Nicola Biancolini, 2019. All rights reserved.
 // Licensed under the MIT license. See the LICENSE file in the project root for full license information.
 
 using System;
@@ -14,7 +14,8 @@ namespace Cake.Board
     /// <summary>
     /// Provides a set of methods for extends <see cref="ICakeContext"/>.
     /// </summary>
-    public static class BoardCommand
+    [CakeAliasCategory("BoardCommand")]
+    public static class BoardCommandAliases
     {
         private static Func<IBoard, string, Task<IWorkItem>> _getWorkItemByIdBehaviourAsync = (board, id)
             => board.NotNull(nameof(board)).GetWorkItemByIdAsync(id.ArgumentNotEmptyOrWhitespace(nameof(id)));
@@ -30,7 +31,7 @@ namespace Cake.Board
         public static async Task<IWorkItem> GetWorkItemByIdAsync(
             this ICakeContext context,
             IBoard board,
-            string id) => await BoardCommand._getWorkItemByIdBehaviourAsync(
+            string id) => await BoardCommandAliases._getWorkItemByIdBehaviourAsync(
                 board.NotNull(nameof(board)),
                 id.ArgumentNotEmptyOrWhitespace(nameof(id)));
 
