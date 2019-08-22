@@ -1,4 +1,4 @@
-// Copyright (c) Nicola Biancolini, 2019. All rights reserved.
+﻿// Copyright (c) Nicola Biancolini, 2019. All rights reserved.
 // Licensed under the MIT license. See the LICENSE file in the project root for full license information.
 
 using System;
@@ -13,7 +13,6 @@ using System.Text;
 using System.Threading.Tasks;
 
 using Cake.Board.Abstractions;
-using Cake.Board.AzureBoards.Commands;
 using Cake.Board.AzureBoards.Models;
 using Cake.Board.Testing;
 using Newtonsoft.Json;
@@ -22,7 +21,7 @@ using Xunit;
 
 namespace Cake.Board.AzureBoards.Tests.Specs
 {
-    public class GetWorkItemByQueryIdCommandSpec
+    public class GetWorkItemsByQueryIdCommandSpec
     {
         private readonly string _queryId;
         private readonly string _organization;
@@ -32,9 +31,9 @@ namespace Cake.Board.AzureBoards.Tests.Specs
         private readonly JObject _fileContent;
         private List<WorkItem> _workItems;
 
-        public GetWorkItemByQueryIdCommandSpec()
+        public GetWorkItemsByQueryIdCommandSpec()
         {
-            this._fileContent = JObject.Parse(File.ReadAllText($"{Environment.CurrentDirectory}/azureboards-wit_queries-response.json"));
+            this._fileContent = JObject.Parse(File.ReadAllText($"{Environment.CurrentDirectory}/wit_queries-response.json"));
             this._workItems = this._fileContent["workItemRelations"].Values<JObject>().AsEnumerable()
                 .Select(item => new WorkItem()
                 {
@@ -87,6 +86,7 @@ THEN it must be able to obtain the content sought")]
 WHEN he wants to fetch all work items by query in Azure Boards
 THEN it must be able to obtain the content sought")]
         [Trait(TraitNames.TEST_CATEGORY, TraitValues.ACCEPTANCE_TEST)]
+        [Obsolete]
         public async Task ScenarioFromCakeContextExtension_SearchWorkItemByQueryId()
         {
             // Arrange
@@ -122,6 +122,7 @@ THEN it must be able to obtain the content sought")]
 WHEN he wants to fetch all work items by query in Azure Boards
 THEN it must be able to obtain the content sought")]
         [Trait(TraitNames.TEST_CATEGORY, TraitValues.ACCEPTANCE_TEST)]
+        [Obsolete]
         public async Task ScenarioFromCakeContextExtensionWithPatAndOrganization_SearchWorkItemByQueryId()
         {
             // Arrange
@@ -141,13 +142,13 @@ THEN it must be able to obtain the content sought")]
                 Team = this._team
             };
 
-            FieldInfo commandBehaviour = typeof(WorkItemCommand).GetRuntimeFields().Single(p => p.Name == "_getWorkItemsByQueryIdBehaviourAsync");
-            object originBehaviour = commandBehaviour.GetValue(typeof(WorkItemCommand));
+            FieldInfo commandBehaviour = typeof(AzureBoardsCommandAliases).GetRuntimeFields().Single(p => p.Name == "_getWorkItemsByQueryIdBehaviourAsync");
+            object originBehaviour = commandBehaviour.GetValue(typeof(AzureBoardsCommandAliases));
 
             // Act
-            commandBehaviour.SetValue(typeof(WorkItemCommand), (Func<IBoard, string, Task<IEnumerable<IWorkItem>>>)((azureBoard, id) => board.GetWorkItemsByQueryIdAsync(id)));
+            commandBehaviour.SetValue(typeof(AzureBoardsCommandAliases), (Func<IBoard, string, Task<IEnumerable<IWorkItem>>>)((azureBoard, id) => board.GetWorkItemsByQueryIdAsync(id)));
             IEnumerable<IWorkItem> wits = await fakeCakeContext.GetWorkItemsByQueryIdAsync(this._pat, this._organization, this._queryId, this._project, this._team);
-            commandBehaviour.SetValue(typeof(WorkItemCommand), originBehaviour);
+            commandBehaviour.SetValue(typeof(AzureBoardsCommandAliases), originBehaviour);
 
             // Assert
             IEnumerable<WorkItem> concreteWits = wits.Select(wit => Assert.IsType<WorkItem>(wit)).ToList();

@@ -11,34 +11,17 @@ using Cake.Board.Extensions;
 using Cake.Core;
 using Cake.Core.Annotations;
 
-namespace Cake.Board.AzureBoards.Commands
+namespace Cake.Board.AzureBoards
 {
     /// <summary>
     /// Provides a set of methods for extends <see cref="ICakeContext"/>.
     /// </summary>
-    [CakeAliasCategory("Board")]
-    public static class WorkItemCommand
+    [CakeAliasCategory("AzureBoardsCommand")]
+    public static class AzureBoardsCommandAliases
     {
-        private static Func<IBoard, string, Task<IWorkItem>> _getWorkItemByIdBehaviourAsync = (board, id)
-            => board.NotNull(nameof(board)).GetWorkItemByIdAsync(id.ArgumentNotEmptyOrWhitespace(nameof(id)));
-
+        [Obsolete]
         private static Func<IBoard, string, Task<IEnumerable<IWorkItem>>> _getWorkItemsByQueryIdBehaviourAsync = (board, id)
             => board.NotNull(nameof(board)).GetWorkItemsByQueryIdAsync(id.ArgumentNotEmptyOrWhitespace(nameof(id)));
-
-        /// <summary>
-        /// Fetch the <see cref="IWorkItem"/> by Id.
-        /// </summary>
-        /// <param name="context">The <see cref="ICakeContext"/> of precess.</param>
-        /// <param name="board">The <see cref="IBoard"/>.</param>
-        /// <param name="id">The work item id.</param>
-        /// <returns>A <see cref="Task{IWorkItem}"/> representing the result of the asynchronous operation.</returns>
-        [CakeMethodAlias]
-        public static async Task<IWorkItem> GetWorkItemByIdAsync(
-            this ICakeContext context,
-            IBoard board,
-            string id) => await WorkItemCommand._getWorkItemByIdBehaviourAsync(
-                board.NotNull(nameof(board)),
-                id.ArgumentNotEmptyOrWhitespace(nameof(id)));
 
         /// <summary>
         /// Fetch the <see cref="IWorkItem"/> by Id.
@@ -48,6 +31,7 @@ namespace Cake.Board.AzureBoards.Commands
         /// <param name="organization">The organization where the board is placed.</param>
         /// <param name="id">The work item id.</param>
         /// <returns>A <see cref="Task{IWorkItem}"/> representing the result of the asynchronous operation.</returns>
+        [CakeMethodAlias]
         public static async Task<IWorkItem> GetWorkItemByIdAsync(
             this ICakeContext context,
             string personalAccessToken,
@@ -66,10 +50,11 @@ namespace Cake.Board.AzureBoards.Commands
         /// <param name="id">The query id.</param>
         /// <returns>An <see cref="IEnumerable{IWorkItem}"/>.</returns>
         [CakeMethodAlias]
+        [Obsolete]
         public static async Task<IEnumerable<IWorkItem>> GetWorkItemsByQueryIdAsync(
             this ICakeContext context,
             IBoard board,
-            string id) => await WorkItemCommand._getWorkItemsByQueryIdBehaviourAsync(
+            string id) => await AzureBoardsCommandAliases._getWorkItemsByQueryIdBehaviourAsync(
                 board.NotNull(nameof(board)),
                 id.ArgumentNotEmptyOrWhitespace(nameof(id)));
 
@@ -84,6 +69,7 @@ namespace Cake.Board.AzureBoards.Commands
         /// <param name="team">The target team.</param>
         /// <returns>An <see cref="IEnumerable{IWorkItem}"/>.</returns>
         [CakeMethodAlias]
+        [Obsolete]
         public static async Task<IEnumerable<IWorkItem>> GetWorkItemsByQueryIdAsync(
             this ICakeContext context,
             string personalAccessToken,
@@ -92,7 +78,7 @@ namespace Cake.Board.AzureBoards.Commands
             string project,
             string team)
         {
-            var board = new AzureBoards(
+            AzureBoards board = new AzureBoards(
                     personalAccessToken.ArgumentNotEmptyOrWhitespace(nameof(personalAccessToken)),
                     organization.ArgumentNotEmptyOrWhitespace(nameof(organization)))
             {
