@@ -7,6 +7,7 @@
 #addin "nuget:?package=Newtonsoft.Json&version=11.0.2"
 #addin "nuget:?package=Cake.Gitter&version=0.11.0"
 #addin "nuget:?package=Cake.Incubator&version=5.0.1"
+#addin "nuget:?package=Octokit&version=0.32.0"
 
 /*
  * Install tools.
@@ -17,7 +18,6 @@
 #tool "nuget:?package=xunit.runner.console&version=2.4.1"
 #tool "nuget:?package=Codecov&version=1.5.0"
 #tool "nuget:?package=NuGet.CommandLine&version=5.0.2"
-#tool "nuget:?package=gitreleasemanager&version=0.8.0"
 
 /*
  * Load other scripts.
@@ -265,45 +265,56 @@ Task("Publish-GitHub")
             exception,
             true
     ))
-    .Does<BuildParameters>((parameters) => 
+    .Does<BuildParameters>(async (parameters) => 
     {
         if (string.IsNullOrWhiteSpace(parameters.Credentials.GitHub.Token))
             throw new InvalidOperationException("Could not resolve GitHub token.");
 
-        Information("Create compressed asset.");
-        Zip(parameters.ArtifactPaths.Directories.Nuget, $"{parameters.ArtifactPaths.Directories.Output}/nuget-packages.zip");
-
-        var owner = "nicolabiancolini";
+        var owner = "cake-contrib";
         var repository = "Cake.Board";
 
-        GitReleaseManagerCreate(
-            parameters.Credentials.GitHub.Token,
+        var client = new Octokit.GitHubClient(new Octokit.ProductHeaderValue($"{owner}_{repository}"))
+        {
+            Credentials = new Octokit.Credentials(parameters.Credentials.GitHub.Token)
+        };
+
+        var result = client.Repository.Release.Create(
             owner,
             repository,
-            new GitReleaseManagerCreateSettings
+            new Octokit.NewRelease(parameters.Version.Version)
             {
-                Name = parameters.Version.Version,
+                Draft = true,
                 Prerelease = !parameters.IsStableRelease() && parameters.IsPreviewRelease(),
-                TargetCommitish = "master"
             });
 
-        GitReleaseManagerAddAssets(
-            parameters.Credentials.GitHub.Token,
-            owner,
-            repository,
-            parameters.Version.Version,
-            $"{parameters.ArtifactPaths.Directories.Output}/nuget-packages.zip");
-        GitReleaseManagerAddAssets(
-            parameters.Credentials.GitHub.Token,
-            owner,
-            repository,
-            parameters.Version.Version,
-            $"{parameters.ArtifactPaths.Directories.Output}/LICENSE.txt");
-        GitReleaseManagerClose(
-            parameters.Credentials.GitHub.Token,
-            owner,
-            repository,
-            parameters.Version.Version);
+        var targetRelease = (await client.Repository.Release.GetAll(owner, repository)).Single(r => r.TagName == parameters.Version.Version);
+
+        foreach(var package in GetFiles($"{parameters.ArtifactPaths.Directories.Nuget}/*.nupkg"))
+        {
+            using(var content = System.IO.File.OpenRead(package.FullPath)) 
+            {
+                await client.Repository.Release.UploadAsset(
+                    targetRelease,
+                    new Octokit.ReleaseAssetUpload() 
+                    {
+                        FileName = $"{package.GetFilename()}",
+                        ContentType = "application/zip",
+                        RawData = content
+                    });
+            }
+        }
+
+        using(var content = System.IO.File.OpenRead($"{parameters.ArtifactPaths.Directories.Output}/LICENSE.txt")) 
+        {
+            await client.Repository.Release.UploadAsset(
+                targetRelease,
+                new Octokit.ReleaseAssetUpload() 
+                {
+                    FileName = "LICENSE.txt",
+                    ContentType = "text/plain",
+                    RawData = content
+                });
+        }
     });
 
 
