@@ -278,7 +278,7 @@ Task("Publish-GitHub")
             Credentials = new Octokit.Credentials(parameters.Credentials.GitHub.Token)
         };
 
-        var result = client.Repository.Release.Create(
+        var release = await client.Repository.Release.Create(
             owner,
             repository,
             new Octokit.NewRelease(parameters.Version.Version)
@@ -287,14 +287,12 @@ Task("Publish-GitHub")
                 Prerelease = !parameters.IsStableRelease() && parameters.IsPreviewRelease(),
             });
 
-        var targetRelease = (await client.Repository.Release.GetAll(owner, repository)).Single(r => r.TagName == parameters.Version.Version);
-
         foreach(var package in GetFiles($"{parameters.ArtifactPaths.Directories.Nuget}/*.nupkg"))
         {
             using(var content = System.IO.File.OpenRead(package.FullPath)) 
             {
                 await client.Repository.Release.UploadAsset(
-                    targetRelease,
+                    release,
                     new Octokit.ReleaseAssetUpload() 
                     {
                         FileName = $"{package.GetFilename()}",
@@ -307,13 +305,19 @@ Task("Publish-GitHub")
         using(var content = System.IO.File.OpenRead($"{parameters.ArtifactPaths.Directories.Output}/LICENSE.txt")) 
         {
             await client.Repository.Release.UploadAsset(
-                targetRelease,
+                release,
                 new Octokit.ReleaseAssetUpload() 
                 {
                     FileName = "LICENSE.txt",
                     ContentType = "text/plain",
                     RawData = content
                 });
+        }
+
+        if(!parameters.IsStableRelease()) {
+            var updateRelease = release.ToUpdate();
+            updateRelease.Draft = false;
+            await client.Repository.Release.Edit(owner, repository, release.Id, updateRelease);
         }
     });
 
