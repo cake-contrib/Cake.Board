@@ -6,7 +6,6 @@ branches:
     mode: ContinuousDelivery
     regex: ^master
     source-branches: ['other']
-    increment: Minor
     is-mainline: true
   stable:
     mode: ContinuousDelivery
