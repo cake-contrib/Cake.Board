@@ -8,12 +8,15 @@
     <projectUrl>$projectUrl$</projectUrl>
     <repository type="git" url="$repositoryUrl$" />
     <language>$language$</language>
-    <releaseNotes>$releaseNotes$</releaseNotes>
-    <id>Cake.Board.Abstractions</id>
+    <releaseNotes>$releaseNotes$</releaseNotes>  
+    <id>Cake.Board.Asana</id>
     <license type="expression">MIT</license>
     <iconUrl>https://cdn.jsdelivr.net/gh/cake-contrib/graphics/png/cake-contrib-medium.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>This add-in allows you to interact directly with the work items of Azure Boards.</description>
-    <tags>cake build azure azure-boards asana work-item wit board</tags>
+    <description>This add-in allows you to interact directly with the tasks of Asana.</description>
+    <tags>cake build asana task board</tags>
+    <dependencies>
+      <dependency id="Cake.Board" version="$version$" />
+    </dependencies>
   </metadata>
 </package>
