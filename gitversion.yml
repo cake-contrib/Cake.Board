@@ -9,7 +9,6 @@ branches:
     regex: ^preview\/ 
     tag: ''
     increment: None
-    track-merge-target: true
     source-branches: 
     - master
     is-release-branch: true
@@ -17,7 +16,6 @@ branches:
     regex: ^stable\/
     tag: ''
     increment: None
-    track-merge-target: true
     source-branches: 
     - master
     is-release-branch: true
