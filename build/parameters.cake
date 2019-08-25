@@ -24,6 +24,7 @@ public class BuildParameters
 
     public bool IsMainRepo { get; private set; }
     public bool IsStableBranch { get; private set; }
+    public bool IsPreviewBranch { get; private set; }
     public bool IsMainBranch { get; private set; }
 
     public bool IsTagged { get; private set; }
@@ -35,7 +36,7 @@ public class BuildParameters
     public BuildCredentials Credentials { get; private set; }
 
     public bool IsStableRelease() => !IsLocalBuild && IsMainRepo && IsStableBranch && !IsPullRequest;
-    public bool IsPreviewRelease() => !IsLocalBuild && IsMainRepo && IsMainBranch && !IsPullRequest;
+    public bool IsPreviewRelease() => !IsLocalBuild && IsMainRepo && IsPreviewBranch && !IsPullRequest;
 
     public Dictionary<string, object> ProcessVariables { get; private set; }
 
@@ -73,6 +74,7 @@ public class BuildParameters
             IsMainRepo = IsOnMainRepo(context),
             IsMainBranch = IsOnBranch(context, "master"),
             IsStableBranch = IsOnBranch(context, "stable"),
+            IsPreviewBranch = IsOnBranch(context, "preview"),
             IsPullRequest = IsPullRequestBuild(context),
             IsTagged = IsBuildTagged(context),
 

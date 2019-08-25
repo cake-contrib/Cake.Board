@@ -1,29 +1,33 @@
+mode: Mainline
 assembly-versioning-scheme: None
 assembly-file-versioning-scheme: None
 assembly-informational-format: None
 branches:
   master:
     regex: ^master
+  preview:
+    regex: ^preview\/ 
+    tag: ''
+    increment: None
+    track-merge-target: true
     source-branches: 
-    - other
-    - feature
-    is-mainline: true
+    - master
+    is-release-branch: true
   stable:
     regex: ^stable\/
     tag: ''
     increment: None
+    track-merge-target: true
     source-branches: 
     - master
     is-release-branch: true
   feature:
     regex: ^feature\/
     tag: ''
-    increment: Minor
     source-branches: 
     - master
-    is-release-branch: true
   other:
-    regex: ^((?!stable)).*\/
+    regex: ^((?!stable)(?!preview)).*\/
     tag: ''
     increment: Patch
     source-branches: 
