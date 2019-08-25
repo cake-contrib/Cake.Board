@@ -13,9 +13,10 @@ Cake Addin for work with work items boards.
 ### Publish packages status
 | Package | NuGet | NuGet Pre-Release |
 | :---: | :---: | :---: |
-| __Cake.Board.Abstractions__ | [![Nuget (with prereleases)](https://img.shields.io/nuget/v/Cake.Board.Abstractions.svg)](https://www.nuget.org/packages/Cake.Board.Abstractions) | [![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Cake.Board.Abstractions.svg)](https://www.nuget.org/packages/Cake.Board.Abstractions) |
-| __Cake.Board__ | [![Nuget (with prereleases)](https://img.shields.io/nuget/v/Cake.Board.svg)](https://www.nuget.org/packages/Cake.Board) | [![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Cake.Board.svg)](https://www.nuget.org/packages/Cake.Board)
-| __Cake.Board.AzureBoards__ | [![Nuget (with prereleases)](https://img.shields.io/nuget/v/Cake.Board.AzureBoards.svg)](https://www.nuget.org/packages/Cake.Board.AzureBoards) | [![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Cake.Board.AzureBoards.svg)](https://www.nuget.org/packages/Cake.Board.AzureBoards)
+| __Cake.Board.Abstractions__ | [![Nuget](https://img.shields.io/nuget/v/Cake.Board.Abstractions.svg)](https://www.nuget.org/packages/Cake.Board.Abstractions) | [![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Cake.Board.Abstractions.svg)](https://www.nuget.org/packages/Cake.Board.Abstractions) |
+| __Cake.Board__ | [![Nuget](https://img.shields.io/nuget/v/Cake.Board.svg)](https://www.nuget.org/packages/Cake.Board) | [![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Cake.Board.svg)](https://www.nuget.org/packages/Cake.Board)
+| __Cake.Board.AzureBoards__ | [![Nuget](https://img.shields.io/nuget/v/Cake.Board.AzureBoards.svg)](https://www.nuget.org/packages/Cake.Board.AzureBoards) | [![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Cake.Board.AzureBoards.svg)](https://www.nuget.org/packages/Cake.Board.AzureBoards)
+| __Cake.Board.Asana__ | [![Nuget](https://img.shields.io/nuget/v/Cake.Board.Asana.svg)](https://www.nuget.org/packages/Cake.Board.Asana) | [![Nuget (with prereleases)](https://img.shields.io/nuget/vpre/Cake.Board.Asana.svg)](https://www.nuget.org/packages/Cake.Board.Asana)
 
 ## Usage
 ### Azure Boards
@@ -56,22 +57,18 @@ Task("GetWorkItemsByQueryIdAsync")
 
 ## Contributing
 You’re thinking about contributing to Cake.Board? Great! It’s really appreciated.
-Please make small changes focused on the purpose of the branch in order to make the changes easily integrable.
-All you have to do to get started is this!
-``` bash
-git clone https://github.com/nicolabiancolini/Cake.Board.git
-git checkout -b <YOUR_BRANCH_NAME>
-```
+Please make small changes focused on the purpose of the branch in order to make the changes easily integrable.  
+
 For major changes, please open an issue first to discuss what you would like to change.
 
 ### How to
-Fork the repository.
-Create a branch to work in.
-Make your feature addition or bug fix.
-Don't forget the unit tests.
-Send a pull request.
+All you have to do to get started is this!
 
-Please make sure to update tests as appropriate.
+1. `git clone https://github.com/cake-contrib/Cake.Board.git`
+2. `git checkout -b <YOUR_BRANCH_NAME>`
+3. Don't forget the unit tests.  
+4. Please make sure to update tests as appropriate.
+5. Send a pull request. 
 
 ## License
 [![MIT license](https://img.shields.io/badge/license-MIT-brightgreen.svg)](https://github.com/nicolabiancolini/Cake.Board/blob/master/LICENSE)

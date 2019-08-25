@@ -72,9 +72,9 @@ public class BuildParameters
             IsRunningOnAzurePipeline = buildSystem.IsRunningOnAzurePipelinesHosted,
 
             IsMainRepo = IsOnMainRepo(context),
-            IsMainBranch = IsOnBranch(context, "master"),
-            IsStableBranch = IsOnBranch(context, "stable"),
-            IsPreviewBranch = IsOnBranch(context, "preview"),
+            IsMainBranch = IsOnBranch(context, new System.Text.RegularExpressions.Regex("master")),
+            IsStableBranch = IsOnBranch(context, new System.Text.RegularExpressions.Regex(@"^stable\/\d[.]\d[.]\d")),
+            IsPreviewBranch = IsOnBranch(context, new System.Text.RegularExpressions.Regex(@"^preview\/\d[.]\d[.]\d")),
             IsPullRequest = IsPullRequestBuild(context),
             IsTagged = IsBuildTagged(context),
 
@@ -134,7 +134,7 @@ public class BuildParameters
 
     private static bool IsOnBranch(
         ICakeContext context,
-        string startWith)
+        System.Text.RegularExpressions.Regex regex)
     {
         var buildSystem = context.BuildSystem();
         string repositoryBranch = null;
@@ -145,7 +145,7 @@ public class BuildParameters
         if(!string.IsNullOrWhiteSpace(repositoryBranch))
             context.Information("Repository Branch: {0}", repositoryBranch);
 
-        return !string.IsNullOrWhiteSpace(repositoryBranch) && repositoryBranch.StartsWith(startWith, StringComparison.OrdinalIgnoreCase);
+        return !string.IsNullOrWhiteSpace(repositoryBranch) && regex.Match(repositoryBranch).Success;
     }
 
     private static bool IsPullRequestBuild(ICakeContext context)
