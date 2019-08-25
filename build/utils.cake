@@ -185,6 +185,15 @@ void Pack(
         {
             Version = version,
             OutputDirectory = outputDir,
-            Files = files
+            Files = files,
+            Properties = new Dictionary<string, string> {
+                { "title", $"{nuspecPath.GetFilenameWithoutExtension()}" },
+                { "authors", "Nicola Biancolini" },
+                { "owners", "Nicola Biancolini" },
+                { "projectUrl", "https://github.com/cake-contrib/Cake.Board" },
+                { "repositoryUrl", "https://github.com/cake-contrib/Cake.Board" },
+                { "language", "en-US" },
+                { "releaseNotes", $"https://github.com/cake-contrib/Cake.Board/releases/tag/{version}" }
+            }
         });
 }
