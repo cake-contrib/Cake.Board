@@ -1,10 +1,21 @@
-mode: Mainline
 assembly-versioning-scheme: None
 assembly-file-versioning-scheme: None
 assembly-informational-format: None
 branches:
+  master:
+    mode: ContinuousDelivery
+    regex: ^master
+    source-branches: ['other']
+    is-mainline: true
   stable:
-    regex: stable[/-]
+    mode: ContinuousDelivery
+    regex: ^stable\/
     tag: ''
     increment: None
+    source-branches: ['master']
+    is-release-branch: true
+  other:
+    mode: ContinuousDelivery
+    regex: ^((?!stable)).*\/
+    tag: ''
     source-branches: ['master']
