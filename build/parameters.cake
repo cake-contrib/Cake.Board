@@ -140,12 +140,12 @@ public class BuildParameters
         string repositoryBranch = null;
 
         if (buildSystem.IsRunningOnAzurePipelinesHosted)
-            repositoryBranch = buildSystem.TFBuild.Environment.Repository.Branch;
+            repositoryBranch = buildSystem.TFBuild.Environment.Repository.SourceBranch;
 
         if(!string.IsNullOrWhiteSpace(repositoryBranch))
             context.Information("Repository Branch: {0}", repositoryBranch);
 
-        return !string.IsNullOrWhiteSpace(repositoryBranch) && regex.Match(repositoryBranch).Success;
+        return !string.IsNullOrWhiteSpace(repositoryBranch) && regex.Match(repositoryBranch.Replace("refs/heads/", string.Empty)).Success;
     }
 
     private static bool IsPullRequestBuild(ICakeContext context)

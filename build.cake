@@ -1,23 +1,23 @@
 /*
  * Install addins.
  */
-#addin "nuget:?package=Cake.Codecov&version=0.6.0"
-#addin "nuget:?package=Cake.Coverlet&version=2.2.1"
-#addin "nuget:?package=Cake.Json&version=3.0.1"
-#addin "nuget:?package=Newtonsoft.Json&version=11.0.2"
+#addin "nuget:?package=Cake.Codecov&version=0.7.0"
+#addin "nuget:?package=Cake.Coverlet&version=2.3.4"
+#addin "nuget:?package=Cake.Json&version=4.0.0"
+#addin "nuget:?package=Newtonsoft.Json&version=12.0.2"
 #addin "nuget:?package=Cake.Gitter&version=0.11.0"
-#addin "nuget:?package=Cake.Incubator&version=5.0.1"
+#addin "nuget:?package=Cake.Incubator&version=5.1.0"
 #addin "nuget:?package=Octokit&version=0.32.0"
 
 /*
  * Install tools.
  */
 #tool "nuget:?package=GitReleaseNotes&version=0.7.1"
-#tool "nuget:?package=GitVersion.CommandLine&version=4.0.0"
-#tool "nuget:?package=ReportGenerator&version=4.1.5"
+#tool "nuget:?package=GitVersion.CommandLine&version=5.0.1"
+#tool "nuget:?package=ReportGenerator&version=4.2.15"
 #tool "nuget:?package=xunit.runner.console&version=2.4.1"
-#tool "nuget:?package=Codecov&version=1.5.0"
-#tool "nuget:?package=NuGet.CommandLine&version=5.0.2"
+#tool "nuget:?package=Codecov&version=1.7.2"
+#tool "nuget:?package=NuGet.CommandLine&version=5.1.0"
 
 /*
  * Load other scripts.
