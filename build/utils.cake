@@ -40,23 +40,15 @@ void ReplaceTextInFile(
     System.IO.File.WriteAllText(file, System.IO.File.ReadAllText(file).Replace(oldValue, newValue));
 }
 
-GitVersion GetVersion(BuildParameters parameters)
+string GetVersion(ICakeContext context, BuildParameters parameters)
 {
-    var settings = new GitVersionSettings
-    {
-        OutputType = GitVersionOutput.Json    
-    };
+    var results = context.StartPowershellFile("./ci/scripts/version.ps1");
 
-    var version = GitVersion(settings);
+    var version = results.Last().BaseObject.ToString();
 
     if (parameters.IsRunningOnAzurePipeline)
     {
-        var serverBuildVersion = version.SemVer;
-
-        if(!parameters.IsPullRequest && parameters.IsStableRelease())
-            serverBuildVersion = $"{serverBuildVersion}-{version.Sha}";
-
-        Console.WriteLine($"##vso[build.updatebuildnumber]{serverBuildVersion}");
+        Console.WriteLine($"##vso[build.updatebuildnumber]{version}");
     }
         
     return version;

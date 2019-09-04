@@ -2,23 +2,21 @@
 
 public class BuildVersion
 {
-    public GitVersion GitVersion { get; private set; }
     public string Version { get; private set; }
     public string SemVersion { get; private set; }
     public string NuGetVersion { get; private set; }
 
-    public static BuildVersion Calculate(ICakeContext context, BuildParameters parameters, GitVersion gitVersion)
+    public static BuildVersion Calculate(ICakeContext context, BuildParameters parameters, string version)
     {
-        var versionSuffix = parameters.IsStableBranch ? "" : "-beta";
-        var version = $"{gitVersion.MajorMinorPatch}{versionSuffix}";
-        var semVersion = gitVersion.MajorMinorPatch;
+        var versionSuffix = parameters.IsStableBranch ? "" : "beta";
+        var semVersion = System.Text.RegularExpressions.Regex.Match(version, @"([\d].[\d].[\d])", System.Text.RegularExpressions.RegexOptions.IgnoreCase).Value;
+        var nugetVersion = $"{semVersion}-{versionSuffix}";
 
         return new BuildVersion
         {
-            GitVersion = gitVersion,
             Version = version,
             SemVersion = semVersion,
-            NuGetVersion = version,
+            NuGetVersion = nugetVersion
         };
     }
 }

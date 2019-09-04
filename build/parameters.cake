@@ -74,7 +74,7 @@ public class BuildParameters
             IsMainRepo = IsOnMainRepo(context),
             IsMainBranch = IsOnBranch(context, new System.Text.RegularExpressions.Regex("master")),
             IsStableBranch = IsOnBranch(context, new System.Text.RegularExpressions.Regex(@"^stable\/\d[.]\d[.]\d")),
-            IsPreviewBranch = IsOnBranch(context, new System.Text.RegularExpressions.Regex(@"^preview\/\d[.]\d[.]\d")),
+            IsPreviewBranch = IsOnBranch(context, new System.Text.RegularExpressions.Regex(@"master")),
             IsPullRequest = IsPullRequestBuild(context),
             IsTagged = IsBuildTagged(context),
 
@@ -87,10 +87,10 @@ public class BuildParameters
      */
     public void Setup(
         ICakeContext context,
-        GitVersion gitVersion,
+        string version,
         int? lineCoverageThreshold = null)
     {
-        Version = BuildVersion.Calculate(context, this, gitVersion);
+        Version = BuildVersion.Calculate(context, this, version);
         CoverageThreshold = lineCoverageThreshold ?? CoverageThreshold;
         MSBuildSettings = GetMsBuildSettings(context, Version);
 
