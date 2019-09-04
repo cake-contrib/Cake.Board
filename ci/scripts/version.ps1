@@ -3,7 +3,9 @@ $branch = git rev-parse --abbrev-ref HEAD
 $latest_tag = git tag -l --merged master --sort='-*authordate' | Select-Object -Last 1
 $count = git rev-list --count ^master..$branch
 
-$bump = $branch -split '([\d].[\d].[\d])'
+if($branch -contains '([\d].[\d].[\d])') {
+  $bump = ($branch -split '([\d].[\d].[\d])')[1]
+}
 
 $version_parts = $latest_tag -split '([\d].[\d].[\d])'
 $prefix = $version_parts[0]
