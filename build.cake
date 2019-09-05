@@ -48,8 +48,11 @@ Setup<BuildParameters>(context =>
     if(!string.IsNullOrWhiteSpace(EnvironmentVariable("DOTNET_ROOT")))
         context.Tools.RegisterFile(EnvironmentVariable("DOTNET_ROOT"));
 
+    StartPowershellFile("./ci/scripts/version.ps1");
+
     var parameters = BuildParameters.GetParameters(Context);
-    var version = GetVersion(context, parameters);
+
+    var version = GetVersion(context, parameters);   
     parameters.Setup(context, version);
 
     if (parameters.IsMainBranch && (context.Log.Verbosity != Verbosity.Diagnostic)) {

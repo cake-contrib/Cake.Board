@@ -42,9 +42,7 @@ void ReplaceTextInFile(
 
 string GetVersion(ICakeContext context, BuildParameters parameters)
 {
-    var results = context.StartPowershellFile("./ci/scripts/version.ps1");
-
-    var version = results.Last().BaseObject.ToString();
+    var version = EnvironmentVariable("CAKEBOARD_VERSION");
 
     if (parameters.IsRunningOnAzurePipeline)
     {
