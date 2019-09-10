@@ -62,8 +62,8 @@ Setup<BuildParameters>(context =>
     Information("Build version : Version {0}, SemVersion {1}, NuGetVersion: {2}",
         parameters.Version.Version, parameters.Version.SemVersion, parameters.Version.NuGetVersion);
 
-    Information("Repository info : IsMainRepo {0}, IsMainBranch {1}, IsStableBranch {2}, IsPreviewBranch {3}, IsTagged: {4}, IsPullRequest: {5}",
-        parameters.IsMainRepo, parameters.IsMainBranch, parameters.IsStableBranch, parameters.IsPreviewBranch, parameters.IsTagged, parameters.IsPullRequest);
+    Information("Repository info : IsMainRepo {0}, IsMainBranch {1}, IsStableRelease {2}, IsPreviewRelease {3}, IsTagged: {4}, IsPullRequest: {5}",
+        parameters.IsMainRepo, parameters.IsMainBranch, parameters.IsStableRelease(), parameters.IsPreviewRelease(), parameters.IsTagged, parameters.IsPullRequest);
 
     return parameters;
 });

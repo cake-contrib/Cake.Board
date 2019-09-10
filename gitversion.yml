@@ -3,14 +3,8 @@ assembly-file-versioning-scheme: None
 assembly-informational-format: None
 branches:
   master:
+    mode: ContinuousDelivery
     regex: ^master
-  stable:
-    regex: ^stable\/
-    tag: ''
-    increment: None
-    source-branches: 
-    - master
-    is-release-branch: true
   feature:
     mode: ContinuousDeployment
     regex: ^feature\/

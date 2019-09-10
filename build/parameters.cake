@@ -23,8 +23,6 @@ public class BuildParameters
     public bool IsRunningOnAzurePipeline { get; private set; }
 
     public bool IsMainRepo { get; private set; }
-    public bool IsStableBranch { get; private set; }
-    public bool IsPreviewBranch { get; private set; }
     public bool IsMainBranch { get; private set; }
 
     public bool IsTagged { get; private set; }
@@ -35,8 +33,8 @@ public class BuildParameters
     public BuildVersion Version { get; private set; }
     public BuildCredentials Credentials { get; private set; }
 
-    public bool IsStableRelease() => !IsLocalBuild && IsMainRepo && IsStableBranch && !IsPullRequest;
-    public bool IsPreviewRelease() => !IsLocalBuild && IsMainRepo && IsPreviewBranch && !IsPullRequest;
+    public bool IsStableRelease() => !IsLocalBuild && IsMainRepo && IsMainBranch && !IsPullRequest && IsTagged;
+    public bool IsPreviewRelease() => !IsLocalBuild && IsMainRepo && IsMainBranch && !IsPullRequest && !IsTagged;
 
     public Dictionary<string, object> ProcessVariables { get; private set; }
 
@@ -73,8 +71,6 @@ public class BuildParameters
 
             IsMainRepo = IsOnMainRepo(context),
             IsMainBranch = IsOnBranch(context, new System.Text.RegularExpressions.Regex("master")),
-            IsStableBranch = IsOnBranch(context, new System.Text.RegularExpressions.Regex(@"^stable\/\d[.]\d[.]\d")),
-            IsPreviewBranch = IsOnBranch(context, new System.Text.RegularExpressions.Regex(@"^preview\/\d[.]\d[.]\d")),
             IsPullRequest = IsPullRequestBuild(context),
             IsTagged = IsBuildTagged(context),
 
