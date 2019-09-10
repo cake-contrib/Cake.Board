@@ -1,9 +1,10 @@
+mode: ContinuousDeployment
 assembly-versioning-scheme: None
 assembly-file-versioning-scheme: None
 assembly-informational-format: None
 branches:
   master:
-    mode: ContinuousDelivery
+    mode: ContinuousDeployment
     regex: ^master
   feature:
     mode: ContinuousDeployment
