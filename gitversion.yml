@@ -1,16 +1,11 @@
+mode: ContinuousDeployment
 assembly-versioning-scheme: None
 assembly-file-versioning-scheme: None
 assembly-informational-format: None
 branches:
   master:
+    mode: ContinuousDeployment
     regex: ^master
-  stable:
-    regex: ^stable\/
-    tag: ''
-    increment: None
-    source-branches: 
-    - master
-    is-release-branch: true
   feature:
     mode: ContinuousDeployment
     regex: ^feature\/
