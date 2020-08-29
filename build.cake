@@ -26,21 +26,6 @@
 #load "./build/utils.cake"
 
 /*
- * Variables.
- */
-bool publishingError = false;
-
-void TaskErrorReporter(
-    string information,
-    Exception exception,
-    bool isPublishing = true) 
-{
-    Information(information);
-    Error(exception.Dump());
-    publishingError = isPublishing; 
-}
-
-/*
  * Setup
  */
 Setup<BuildParameters>(context =>
@@ -76,6 +61,19 @@ Teardown<BuildParameters>((context, parameters) =>
     if (context.Successful)
     {
         Information("Finished running tasks. Thanks for your patience :D");
+
+        if(publishingException != null && parameters.IsRunningOnAzurePipeline)
+        {
+            Gitter.Chat.PostMessage(
+                "Something about the publication went wrong, with exception message:  " +
+                $"```  {publishingException.Dump()}  ```  " +
+                $"More details here [build logs]({BuildSystem.TFBuild.Environment.Build.Uri})",
+                new GitterChatMessageSettings() {
+                    RoomId = parameters.Credentials.Gitter.RoomId,
+                    Token = parameters.Credentials.Gitter.Token,
+                    MessageLevel = GitterMessageLevel.Error
+                });
+        }
     }
     else
     {
@@ -259,6 +257,7 @@ Task("Publish-GitHub")
     .WithCriteria<BuildParameters>((context, parameters) => 
         parameters.IsStableRelease() || parameters.IsPreviewRelease(), "Publish-GitHub works only for releases.")
     .IsDependentOn("Pack-NuGet")
+    .ContinueOnError()
     .ReportError(exception => 
         TaskErrorReporter(
             "Publish-GitHub task failed, but continuing with next Task...",
@@ -537,20 +536,25 @@ Task("Pack")
     {
     });
 
-Task("Publish")
+Task("Stage-Build")
     .IsDependentOn("Pack")
     .IsDependentOn("Publish-Test-Results")
     .IsDependentOn("Publish-Coverage-Results")
     .IsDependentOn("Publish-Artifacts")
+    .Does(() =>
+    {
+    });
+
+Task("Stage-Deploy")
     .IsDependentOn("Publish-Nuget")
     .IsDependentOn("Publish-GitHub")
-    .Does(()=> 
+    .Does(() =>
     {
-
     });
 
 Task("Default")
-    .IsDependentOn("Publish")
+    .IsDependentOn("Stage-Build")
+    .IsDependentOn("Stage-Deploy")
     .Does(() =>
     {
 
