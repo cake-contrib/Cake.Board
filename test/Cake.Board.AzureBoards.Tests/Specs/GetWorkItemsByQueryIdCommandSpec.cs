@@ -15,6 +15,7 @@ using System.Threading.Tasks;
 using Cake.Board.Abstractions;
 using Cake.Board.AzureBoards.Models;
 using Cake.Board.Testing;
+using Cake.Testing;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using Xunit;
@@ -59,7 +60,7 @@ THEN it must be able to obtain the content sought")]
                 StatusCode = HttpStatusCode.OK,
                 Content = new StringContent(JsonConvert.SerializeObject(this._fileContent), Encoding.UTF8, "application/json")
             };
-            var fakeCakeContext = new FakeCakeContext(logBehaviour: () => new FakeCakeLog());
+            var fakeCakeContext = new FakeCakeContext(logBehaviour: () => new FakeLog());
             var fakeClient = new HttpClient(new FakeHttpMessageHandler(fakeResponse))
             {
                 BaseAddress = new Uri($"https://dev.azure.com/{this._organization}")
@@ -95,7 +96,7 @@ THEN it must be able to obtain the content sought")]
                 StatusCode = HttpStatusCode.OK,
                 Content = new StringContent(JsonConvert.SerializeObject(this._fileContent), Encoding.UTF8, "application/json")
             };
-            var fakeCakeContext = new FakeCakeContext(logBehaviour: () => new FakeCakeLog());
+            var fakeCakeContext = new FakeCakeContext(logBehaviour: () => new FakeLog());
             var fakeClient = new HttpClient(new FakeHttpMessageHandler(fakeResponse))
             {
                 BaseAddress = new Uri($"https://dev.azure.com/{this._organization}")
@@ -131,7 +132,7 @@ THEN it must be able to obtain the content sought")]
                 StatusCode = HttpStatusCode.OK,
                 Content = new StringContent(JsonConvert.SerializeObject(this._fileContent), Encoding.UTF8, "application/json")
             };
-            var fakeCakeContext = new FakeCakeContext(logBehaviour: () => new FakeCakeLog());
+            var fakeCakeContext = new FakeCakeContext(logBehaviour: () => new FakeLog());
             var fakeClient = new HttpClient(new FakeHttpMessageHandler(fakeResponse))
             {
                 BaseAddress = new Uri($"https://dev.azure.com/{this._organization}")
