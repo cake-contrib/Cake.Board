@@ -3,7 +3,7 @@
  */
 #addin "nuget:?package=Cake.Codecov&version=0.7.0"
 #addin "nuget:?package=Cake.Coverlet&version=2.3.4"
-#addin "nuget:?package=Cake.Json&version=4.0.0"
+#addin "nuget:?package=Cake.Json&version=5.0.0"
 #addin "nuget:?package=Newtonsoft.Json&version=12.0.2"
 #addin "nuget:?package=Cake.Gitter&version=0.11.0"
 #addin "nuget:?package=Cake.Incubator&version=5.1.0"
