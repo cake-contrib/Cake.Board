@@ -22,7 +22,7 @@ jobs:
   - job: ubuntu_build_agent
     displayName: Ubuntu Agent
     pool:
-      vmImage: ubuntu-18.04
+      vmImage: ubuntu-20-04
 
     steps:
       - template: azure-pipelines-template/build.yml

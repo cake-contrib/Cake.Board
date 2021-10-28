@@ -13,7 +13,7 @@
  * Install tools.
  */
 #tool "nuget:?package=GitReleaseNotes&version=0.7.1"
-#tool "nuget:?package=GitVersion.CommandLine&version=5.1.0"
+#tool "nuget:?package=GitVersion.CommandLine&version=5.7.0"
 #tool "nuget:?package=ReportGenerator&version=4.2.15"
 #tool "nuget:?package=xunit.runner.console&version=2.4.1"
 #tool "nuget:?package=Codecov&version=1.7.2"
