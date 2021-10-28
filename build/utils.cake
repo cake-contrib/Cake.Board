@@ -116,9 +116,9 @@ void PublishCodeCoverage(
     DirectoryPath reportDir,
     FilePath[] additionlFiles) 
 { 
-    new TFBuildCommands(Context.Environment, Context.Log)
-        .PublishCodeCoverage(new TFBuildPublishCodeCoverageData {
-            CodeCoverageTool = TFCodeCoverageToolType.Cobertura,
+    AzurePipelines.Commands
+        .PublishCodeCoverage(new AzurePipelinesPublishCodeCoverageData {
+            CodeCoverageTool = AzurePipelinesCodeCoverageToolType.Cobertura,
             SummaryFileLocation = summary,           
             ReportDirectory = reportDir,
             AdditionalCodeCoverageFiles = additionlFiles
@@ -130,7 +130,7 @@ void PublishArtifacts(
     string artifactName,
     FilePath[] files)
 {
-    var command = new TFBuildCommands(Context.Environment, Context.Log);
+    var command = AzurePipelines.Commands;
 
     foreach(var file in files)
     {
@@ -143,13 +143,13 @@ void PublishTestResults(
     FilePath[] testResults,
     string configuration = "Release") 
 {
-    new TFBuildCommands(Context.Environment, Context.Log)
-        .PublishTestResults(new TFBuildPublishTestResultsData {
+    AzurePipelines.Commands
+        .PublishTestResults(new AzurePipelinesPublishTestResultsData {
             TestResultsFiles = testResults,
             MergeTestResults = true,
             Configuration = configuration,
             TestRunTitle = runTitle,
-            TestRunner = TFTestRunnerType.VSTest
+            TestRunner = AzurePipelinesTestRunnerType.VSTest
         });
 }
 

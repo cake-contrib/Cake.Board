@@ -120,7 +120,7 @@ public class BuildParameters
         string repositoryName = null;
 
         if (buildSystem.IsRunningOnAzurePipelinesHosted)
-            repositoryName = buildSystem.TFBuild.Environment.Repository.RepoName;
+            repositoryName = buildSystem.AzurePipelines.Environment.Repository.RepoName;
 
         if(!string.IsNullOrWhiteSpace(repositoryName))
             context.Information("Repository Name: {0}", repositoryName);
@@ -136,7 +136,7 @@ public class BuildParameters
         string repositoryBranch = null;
 
         if (buildSystem.IsRunningOnAzurePipelinesHosted)
-            repositoryBranch = buildSystem.TFBuild.Environment.Repository.SourceBranch;
+            repositoryBranch = buildSystem.AzurePipelines.Environment.Repository.SourceBranch;
 
         if(!string.IsNullOrWhiteSpace(repositoryBranch))
             context.Information("Repository Branch: {0}", repositoryBranch);
@@ -149,7 +149,7 @@ public class BuildParameters
         var buildSystem = context.BuildSystem();
 
         if (buildSystem.IsRunningOnAzurePipelinesHosted)
-            return buildSystem.TFBuild.Environment.PullRequest.IsPullRequest;
+            return buildSystem.AzurePipelines.Environment.PullRequest.IsPullRequest;
         return false;
     }
 
