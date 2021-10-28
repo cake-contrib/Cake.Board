@@ -9,7 +9,7 @@ public class BuildVersion
 
     public static BuildVersion Calculate(ICakeContext context, BuildParameters parameters, GitVersion gitVersion)
     {
-        var semVersion = $"{gitVersion.Major}.{gitVersion.Minor}.{gitVersion.Patch + gitVersion.PreReleaseNumber}";
+        var semVersion = $"{gitVersion.Major}.{gitVersion.Minor}.{gitVersion.Patch}{gitVersion.PreReleaseNumber}";
         var versionSuffix = parameters.IsStableRelease() ? "" : "-beta";
         var version = $"{semVersion}{versionSuffix}";
 

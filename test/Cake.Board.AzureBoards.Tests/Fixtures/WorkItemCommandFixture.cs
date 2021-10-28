@@ -4,6 +4,7 @@
 using System;
 
 using Cake.Board.Testing;
+using Cake.Testing;
 
 namespace Cake.Board.AzureBoards.Tests.Fixtures
 {
@@ -11,7 +12,7 @@ namespace Cake.Board.AzureBoards.Tests.Fixtures
     {
         private FakeCakeContext _context;
 
-        public WorkItemCommandFixture() => this._context = new FakeCakeContext(logBehaviour: () => new FakeCakeLog());
+        public WorkItemCommandFixture() => this._context = new FakeCakeContext(logBehaviour: () => new FakeLog());
 
         public void Dispose() => this._context = null;
     }
