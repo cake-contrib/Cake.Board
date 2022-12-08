@@ -11,7 +11,7 @@
   <ItemGroup>
     <ProjectReference Include="..\Cake.Board\Cake.Board.csproj" />
     <!-- Newtonsoft.Json needs to match cake.core, see https://github.com/cake-build/cake/blob/v1.0.0/src/Cake.NuGet/Cake.NuGet.csproj -->
-    <PackageReference Include="Newtonsoft.Json" Version="12.0.3" PrivateAssets="all" />
+    <PackageReference Include="Newtonsoft.Json" Version="13.0.2" PrivateAssets="all" />
   </ItemGroup>
 
 </Project>
